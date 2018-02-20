@@ -1021,7 +1021,7 @@ import java.util.List;
         "error"
 })
 @XmlRootElement(name = "amtd")
-public class Balances {
+public class BalancesAndPositions {
 
     @XmlElement(required = true)
     protected String result;
@@ -1030,7 +1030,7 @@ public class Balances {
     @XmlElement
     protected String error;
     @XmlElement
-    protected Balances.Positions positions;
+    protected BalancesAndPositions.Positions positions;
     @XmlTransient
     protected String originalXml;
 
@@ -1098,9 +1098,9 @@ public class Balances {
      * Gets the value of the positions property.
      *
      * @return possible object is
-     * {@link Balances.Positions }
+     * {@link BalancesAndPositions.Positions }
      */
-    public Balances.Positions getPositions() {
+    public BalancesAndPositions.Positions getPositions() {
         return positions;
     }
 
@@ -1108,9 +1108,9 @@ public class Balances {
      * Sets the value of the positions property.
      *
      * @param value allowed object is
-     *              {@link Balances.Positions }
+     *              {@link BalancesAndPositions.Positions }
      */
-    public void setPositions(Balances.Positions value) {
+    public void setPositions(BalancesAndPositions.Positions value) {
         this.positions = value;
     }
 
@@ -4875,9 +4875,9 @@ public class Balances {
         @XmlElement(name = "account-id", required = true)
         protected String accountId;
         @XmlElement(required = true)
-        protected Balances.Positions.Stocks stocks;
+        protected BalancesAndPositions.Positions.Stocks stocks;
         @XmlElement(required = true)
-        protected Balances.Positions.Options options;
+        protected BalancesAndPositions.Positions.Options options;
         @XmlElement(required = true)
         protected String funds;
         @XmlElement(required = true)
@@ -4929,9 +4929,9 @@ public class Balances {
          * Gets the value of the stocks property.
          *
          * @return possible object is
-         * {@link Balances.Positions.Stocks }
+         * {@link BalancesAndPositions.Positions.Stocks }
          */
-        public Balances.Positions.Stocks getStocks() {
+        public BalancesAndPositions.Positions.Stocks getStocks() {
             return stocks;
         }
 
@@ -4939,9 +4939,9 @@ public class Balances {
          * Sets the value of the stocks property.
          *
          * @param value allowed object is
-         *              {@link Balances.Positions.Stocks }
+         *              {@link BalancesAndPositions.Positions.Stocks }
          */
-        public void setStocks(Balances.Positions.Stocks value) {
+        public void setStocks(BalancesAndPositions.Positions.Stocks value) {
             this.stocks = value;
         }
 
@@ -4949,9 +4949,9 @@ public class Balances {
          * Gets the value of the options property.
          *
          * @return possible object is
-         * {@link Balances.Positions.Options }
+         * {@link BalancesAndPositions.Positions.Options }
          */
-        public Balances.Positions.Options getOptions() {
+        public BalancesAndPositions.Positions.Options getOptions() {
             return options;
         }
 
@@ -4959,9 +4959,9 @@ public class Balances {
          * Sets the value of the options property.
          *
          * @param value allowed object is
-         *              {@link Balances.Positions.Options }
+         *              {@link BalancesAndPositions.Positions.Options }
          */
-        public void setOptions(Balances.Positions.Options value) {
+        public void setOptions(BalancesAndPositions.Positions.Options value) {
             this.options = value;
         }
 
@@ -5470,7 +5470,7 @@ public class Balances {
              * <p>
              * <p>
              * Objects of the following type(s) are allowed in the list
-             * {@link Balances.Positions.Options.Position }
+             * {@link BalancesAndPositions.Positions.Options.Position }
              */
             public List<Position> getPosition() {
                 if (position == null) {
@@ -5911,7 +5911,7 @@ public class Balances {
                 @XmlElement(required = true)
                 protected String quantity;
                 @XmlElement(required = true)
-                protected Balances.Positions.Options.Position.Security security;
+                protected BalancesAndPositions.Positions.Options.Position.Security security;
                 @XmlElement(name = "account-type", required = true)
                 protected String accountType;
                 @XmlElement(name = "close-price", required = true)
@@ -5929,7 +5929,7 @@ public class Balances {
                 @XmlElement(name = "bond-factor", required = true)
                 protected String bondFactor;
                 @XmlElement(required = true)
-                protected Balances.Positions.Options.Position.Quote quote;
+                protected BalancesAndPositions.Positions.Options.Position.Quote quote;
                 @XmlElement(name = "maintenance-requirement", required = true)
                 protected String maintenanceRequirement;
 
@@ -5977,9 +5977,9 @@ public class Balances {
                  * Gets the value of the security property.
                  *
                  * @return possible object is
-                 * {@link Balances.Positions.Options.Position.Security }
+                 * {@link BalancesAndPositions.Positions.Options.Position.Security }
                  */
-                public Balances.Positions.Options.Position.Security getSecurity() {
+                public BalancesAndPositions.Positions.Options.Position.Security getSecurity() {
                     return security;
                 }
 
@@ -5987,9 +5987,9 @@ public class Balances {
                  * Sets the value of the security property.
                  *
                  * @param value allowed object is
-                 *              {@link Balances.Positions.Options.Position.Security }
+                 *              {@link BalancesAndPositions.Positions.Options.Position.Security }
                  */
-                public void setSecurity(Balances.Positions.Options.Position.Security value) {
+                public void setSecurity(BalancesAndPositions.Positions.Options.Position.Security value) {
                     this.security = value;
                 }
 
@@ -6157,9 +6157,9 @@ public class Balances {
                  * Gets the value of the quote property.
                  *
                  * @return possible object is
-                 * {@link Balances.Positions.Options.Position.Quote }
+                 * {@link BalancesAndPositions.Positions.Options.Position.Quote }
                  */
-                public Balances.Positions.Options.Position.Quote getQuote() {
+                public BalancesAndPositions.Positions.Options.Position.Quote getQuote() {
                     return quote;
                 }
 
@@ -6167,9 +6167,9 @@ public class Balances {
                  * Sets the value of the quote property.
                  *
                  * @param value allowed object is
-                 *              {@link Balances.Positions.Options.Position.Quote }
+                 *              {@link BalancesAndPositions.Positions.Options.Position.Quote }
                  */
-                public void setQuote(Balances.Positions.Options.Position.Quote value) {
+                public void setQuote(BalancesAndPositions.Positions.Options.Position.Quote value) {
                     this.quote = value;
                 }
 
@@ -7785,7 +7785,7 @@ public class Balances {
              * <p>
              * <p>
              * Objects of the following type(s) are allowed in the list
-             * {@link Balances.Positions.Stocks.Position }
+             * {@link BalancesAndPositions.Positions.Stocks.Position }
              */
             public List<Position> getPosition() {
                 if (position == null) {
@@ -8083,7 +8083,7 @@ public class Balances {
                 @XmlElement(required = true)
                 protected String quantity;
                 @XmlElement(required = true)
-                protected Balances.Positions.Stocks.Position.Security security;
+                protected BalancesAndPositions.Positions.Stocks.Position.Security security;
                 @XmlElement(name = "account-type", required = true)
                 protected String accountType;
                 @XmlElement(name = "close-price", required = true)
@@ -8097,7 +8097,7 @@ public class Balances {
                 @XmlElement(name = "bond-factor", required = true)
                 protected String bondFactor;
                 @XmlElement(required = true)
-                protected Balances.Positions.Stocks.Position.Quote quote;
+                protected BalancesAndPositions.Positions.Stocks.Position.Quote quote;
                 @XmlElement(name = "maintenance-requirement", required = true)
                 protected String maintenanceRequirement;
 
@@ -8145,9 +8145,9 @@ public class Balances {
                  * Gets the value of the security property.
                  *
                  * @return possible object is
-                 * {@link Balances.Positions.Stocks.Position.Security }
+                 * {@link BalancesAndPositions.Positions.Stocks.Position.Security }
                  */
-                public Balances.Positions.Stocks.Position.Security getSecurity() {
+                public BalancesAndPositions.Positions.Stocks.Position.Security getSecurity() {
                     return security;
                 }
 
@@ -8155,9 +8155,9 @@ public class Balances {
                  * Sets the value of the security property.
                  *
                  * @param value allowed object is
-                 *              {@link Balances.Positions.Stocks.Position.Security }
+                 *              {@link BalancesAndPositions.Positions.Stocks.Position.Security }
                  */
-                public void setSecurity(Balances.Positions.Stocks.Position.Security value) {
+                public void setSecurity(BalancesAndPositions.Positions.Stocks.Position.Security value) {
                     this.security = value;
                 }
 
@@ -8285,9 +8285,9 @@ public class Balances {
                  * Gets the value of the quote property.
                  *
                  * @return possible object is
-                 * {@link Balances.Positions.Stocks.Position.Quote }
+                 * {@link BalancesAndPositions.Positions.Stocks.Position.Quote }
                  */
-                public Balances.Positions.Stocks.Position.Quote getQuote() {
+                public BalancesAndPositions.Positions.Stocks.Position.Quote getQuote() {
                     return quote;
                 }
 
@@ -8295,9 +8295,9 @@ public class Balances {
                  * Sets the value of the quote property.
                  *
                  * @param value allowed object is
-                 *              {@link Balances.Positions.Stocks.Position.Quote }
+                 *              {@link BalancesAndPositions.Positions.Stocks.Position.Quote }
                  */
-                public void setQuote(Balances.Positions.Stocks.Position.Quote value) {
+                public void setQuote(BalancesAndPositions.Positions.Stocks.Position.Quote value) {
                     this.quote = value;
                 }
 

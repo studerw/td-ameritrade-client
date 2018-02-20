@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<configuration scan="false" scanPeriod="3 seconds" debug="false">
+<configuration scan="false" scanPeriod="3 seconds" debug="true">
     <contextName>main</contextName>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -10,6 +10,7 @@
         </encoder>
     </appender>
 
+    <logger name="TDA_HTTP" level="debug"/>
     <logger name="com.studerw" level="debug"/>
 
     <root level="WARN">

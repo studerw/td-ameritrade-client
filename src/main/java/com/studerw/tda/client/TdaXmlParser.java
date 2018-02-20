@@ -10,9 +10,28 @@ import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-public abstract class BaseTdaClient implements TdaClient {
+public class TdaXmlParser {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BaseTdaClient.class);
+    private HttpTdaClient client;
+
+    public TdaXmlParser(HttpTdaClient client) {
+        this.client = client;
+    }
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TdaXmlParser.class);
+
+//    protected <T> parseXml(T type, String xml){
+//        try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)){
+//            LOGGER.debug("unmarshalling xml to pojo of type: {}", type.getClass().getName());
+//            JAXBContext context = JAXBContext.newInstance(type.getClass());
+//            Unmarshaller um = context.createUnmarshaller();
+//            final T obj = (T)um.unmarshal(in);
+//            login.setOriginalXml(xml);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw new IllegalStateException("Error parsing login");
+//        }
+//    }
 
     protected Login parseLoginXml(String xml){
         try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)){
@@ -20,6 +39,10 @@ public abstract class BaseTdaClient implements TdaClient {
             Unmarshaller um = context.createUnmarshaller();
             Login login = (Login) um.unmarshal(in);
             login.setOriginalXml(xml);
+            this.client.currentLogin = login;
+            if (login.getResult().equalsIgnoreCase("FAIL")) {
+                login.setTdaError(true);
+            }
             return login;
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,11 +77,11 @@ public abstract class BaseTdaClient implements TdaClient {
 
     }
 
-    protected Balances parseBalances(String xml){
+    protected BalancesAndPositions parseBalances(String xml){
         try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)){
-            JAXBContext context = JAXBContext.newInstance(Balances.class);
+            JAXBContext context = JAXBContext.newInstance(BalancesAndPositions.class);
             Unmarshaller um = context.createUnmarshaller();
-            Balances balances = (Balances) um.unmarshal(in);
+            BalancesAndPositions balances = (BalancesAndPositions) um.unmarshal(in);
             balances.setOriginalXml(xml);
             return balances;
         } catch (Exception e) {

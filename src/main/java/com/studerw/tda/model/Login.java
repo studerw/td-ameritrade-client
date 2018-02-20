@@ -131,17 +131,19 @@ import javax.xml.bind.annotation.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "result",
-    "xmlLogIn"
+    "xmlLogIn",
+    "error"
 })
 @XmlRootElement(name = "amtd")
-public class Login {
+public class Login extends BaseTda {
 
-    @XmlTransient
-    private String originalXml;
     @XmlElement(required = true)
     protected String result;
-    @XmlElement(name = "xml-log-in", required = true)
+    @XmlElement(name = "xml-log-in", required = false)
     protected Login.XmlLogIn xmlLogIn;
+
+    @XmlElement(name = "error", required = false)
+    protected String error;
 
     /**
      * Gets the value of the result property.
@@ -191,12 +193,29 @@ public class Login {
         this.xmlLogIn = value;
     }
 
-    public String getOriginalXml() {
-        return originalXml;
+    /**
+     * Gets the value of the error property if there was an error, otherwise it is empty.
+     *
+     * @return
+     *     possible object is
+     *     {@link String }
+     *
+     */
+    public String getError() {
+        return error;
     }
 
-    public void setOriginalXml(String originalXml) {
-        this.originalXml = originalXml;
+
+    /**
+     * Sets the value of the error property.
+     *
+     * @param error
+     *     allowed object is
+     *     {@link String }
+     *
+     */
+    public void setError(String error) {
+        this.error = error;
     }
 
     /**

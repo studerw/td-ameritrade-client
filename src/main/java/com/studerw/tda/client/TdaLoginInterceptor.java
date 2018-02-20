@@ -1,11 +1,17 @@
 package com.studerw.tda.client;
 
+import com.studerw.tda.model.Login;
 import okhttp3.*;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 /**
@@ -65,13 +71,13 @@ class TdaLoginInterceptor implements Interceptor {
      */
     private boolean doLogin(Chain chain, Response response) throws IOException {
         RequestBody formBody = new FormBody.Builder()
-                .add("userid", properties.getProperty("ameritrade.user"))
-                .add("password", properties.getProperty("ameritrade.password"))
+                .add("userid", this.client.user)
+                .add("password", new String(this.client.password))
                 .add("source", properties.getProperty("ameritrade.source"))
                 .add("version", properties.getProperty("ameritrade.version"))
                 .build();
 
-        HttpUrl url = HttpTdaClient.baseUrl().newBuilder().
+        HttpUrl url = this.client.baseUrl().newBuilder().
                 addPathSegments("300/LogIn").
                 addQueryParameter("source", properties.getProperty("ameritrade.source"))
                 .addQueryParameter("version", properties.getProperty("ameritrade.version"))
@@ -81,10 +87,9 @@ class TdaLoginInterceptor implements Interceptor {
 
         Request authRequest = new Request.Builder()
                 .url(url)
-                .header("Content-Type", "application/x-www-form-urlencoded")
+                .header("Content-Type","application/x-www-form-urlencoded")
                 .post(formBody)
                 .build();
-
 
         try (Response authResponse = chain.proceed(authRequest)) {
 
@@ -94,8 +99,13 @@ class TdaLoginInterceptor implements Interceptor {
                 LOGGER.error("Login Attempt Failed: {}", loginXml);
                 return false;
             }
+            else {
+                Login login = this.parseLoginXml(loginXml);
+                this.client.currentLogin = login;
+                return true;
+
+            }
         }
-        return true;
     }
 
     private boolean isNeedsLogin(String text) {
@@ -105,5 +115,22 @@ class TdaLoginInterceptor implements Interceptor {
     private boolean isFailedLogin(String xml) {
         return (StringUtils.containsIgnoreCase(xml, RESULT_FAIL)
                 && StringUtils.containsIgnoreCase( xml, "<error>Invalid Session</error>"));
+    }
+
+    private Login parseLoginXml(String xml){
+        try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)){
+            JAXBContext context = JAXBContext.newInstance(Login.class);
+            Unmarshaller um = context.createUnmarshaller();
+            Login login = (Login) um.unmarshal(in);
+            login.setOriginalXml(xml);
+            this.client.currentLogin = login;
+            if (login.getResult().equalsIgnoreCase("FAIL")) {
+                login.setTdaError(true);
+            }
+            return login;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalStateException("Error parsing login");
+        }
     }
 }

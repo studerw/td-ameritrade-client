@@ -1,17 +1,35 @@
 package com.studerw.tda.client;
 
-import com.studerw.tda.model.Balances;
-import com.studerw.tda.model.OptionChain;
-import com.studerw.tda.model.OrderStatus;
-import com.studerw.tda.model.QuoteResponse;
+import com.studerw.tda.model.*;
 
 /**
- * This is thread safe. But only one client should be instantiated for each account.
+ * This is a thread safe class. But only one client should be instantiated for each account.
  */
 public interface TdaClient  {
 
+    /**
+     * <p>
+     * Return the {@link com.studerw.tda.model.Login} object which will contain your account information,
+     * among other information.
+     * </p>
+     * Note that you need to make a rest call before obtaining the login since it may not be fetched yet.
+     * @return {@link com.studerw.tda.model.Login} or null if the client has not yet made a call.
+     */
+    Login getCurrentLogin();
+
+    /**
+     * Fetch a single quote.
+     * @param symbol
+     * @return
+     */
     QuoteResponse fetchQuote(String symbol);
-    Balances fetchBalancesAndPositions(String accountId);
+
+    /**
+     *
+     * @param accountId
+     * @return
+     */
+    BalancesAndPositions fetchBalancesAndPositions(String accountId);
 
     boolean cancelOptionOrder(String orderId);
 
