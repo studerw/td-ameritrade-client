@@ -36,8 +36,6 @@ public class HttpClientLoginTestIT {
     String user = props.getProperty("user");
     byte[] pw = props.getProperty("pw").getBytes(StandardCharsets.UTF_8);
     httpTdaClient = new HttpTdaClient(user, pw);
-    final QuoteResponse msft = httpTdaClient.fetchQuote("msft");
-    assertNotNull("should have got order", msft);
   }
 
   @Test

@@ -68,14 +68,14 @@ class TdaLoginInterceptor implements Interceptor {
     RequestBody formBody = new FormBody.Builder()
         .add("userid", this.client.user)
         .add("password", new String(this.client.password))
-        .add("source", properties.getProperty("ameritrade.source"))
-        .add("version", properties.getProperty("ameritrade.version"))
+        .add("source", properties.getProperty("tda.source"))
+        .add("version", properties.getProperty("tda.version"))
         .build();
 
     HttpUrl url = this.client.baseUrl().newBuilder().
         addPathSegments("300/LogIn").
-        addQueryParameter("source", properties.getProperty("ameritrade.source"))
-        .addQueryParameter("version", properties.getProperty("ameritrade.version"))
+        addQueryParameter("source", properties.getProperty("tda.source"))
+        .addQueryParameter("version", properties.getProperty("tda.version"))
         .build();
 
     LOGGER.debug("Attempting login to TD Ameritrade at {}", url.toString());

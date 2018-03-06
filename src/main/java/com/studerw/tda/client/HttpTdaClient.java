@@ -57,9 +57,9 @@ public class HttpTdaClient implements TdaClient {
 
   protected HttpUrl baseUrl() {
     return new HttpUrl.Builder()
-        .scheme(tdProperties.getProperty("ameritrade.http.schema"))
-        .host(tdProperties.getProperty("ameritrade.http.host"))
-        .addPathSegment(tdProperties.getProperty("ameritrade.http.path"))
+        .scheme(tdProperties.getProperty("tda.http.schema"))
+        .host(tdProperties.getProperty("tda.http.host"))
+        .addPathSegment(tdProperties.getProperty("tda.http.path"))
         .build();
   }
 
@@ -67,7 +67,7 @@ public class HttpTdaClient implements TdaClient {
   public QuoteResponse fetchQuote(String symbol) {
     LOGGER.debug("Fetching quote: {}", symbol);
     HttpUrl url = baseUrl().newBuilder().addPathSegments("100/Quote")
-        .addQueryParameter("source", tdProperties.getProperty("ameritrade.source"))
+        .addQueryParameter("source", tdProperties.getProperty("tda.source"))
         .addQueryParameter("symbol", symbol)
         .build();
     Request request = new Request.Builder().url(url).build();
@@ -82,7 +82,7 @@ public class HttpTdaClient implements TdaClient {
   public Logout logout() {
     LOGGER.debug("Logging out...");
     HttpUrl url = baseUrl().newBuilder().addPathSegments("100/LogOut")
-        .addQueryParameter("source", tdProperties.getProperty("ameritrade.source"))
+        .addQueryParameter("source", tdProperties.getProperty("tda.source"))
         .build();
     Request request = new Request.Builder().url(url).build();
     try (Response response = this.httpClient.newCall(request).execute()) {
@@ -97,7 +97,7 @@ public class HttpTdaClient implements TdaClient {
   public BalancesAndPositions fetchBalancesAndPositions(String accountId) {
     LOGGER.debug("Fetching account balance for ID: {}", accountId);
     HttpUrl url = baseUrl().newBuilder().addPathSegments("100/BalancesAndPositions")
-        .addQueryParameter("source", tdProperties.getProperty("ameritrade.source"))
+        .addQueryParameter("source", tdProperties.getProperty("tda.source"))
         .addQueryParameter("accountid", accountId)
 //                .addQueryParameter("type", "b")
         .build();
@@ -113,7 +113,7 @@ public class HttpTdaClient implements TdaClient {
   @Override
   public boolean cancelOptionOrder(String orderId) {
     HttpUrl url = baseUrl().newBuilder().addPathSegments("100/OrderCancel")
-        .addQueryParameter("source", tdProperties.getProperty("ameritrade.source"))
+        .addQueryParameter("source", tdProperties.getProperty("tda.source"))
         .addQueryParameter("orderid", orderId)
         .build();
     Request request = new Request.Builder().url(url).build();
@@ -129,7 +129,7 @@ public class HttpTdaClient implements TdaClient {
   @Override
   public OrderStatus fetchOrderStatus(String... orderIds) {
     final HttpUrl.Builder urlBuilder = baseUrl().newBuilder().addPathSegments("100/OrderStatus")
-        .addQueryParameter("source", tdProperties.getProperty("ameritrade.source"));
+        .addQueryParameter("source", tdProperties.getProperty("tda.source"));
     for (String orderId : orderIds) {
       urlBuilder.addQueryParameter("orderid", orderId);
     }
@@ -146,7 +146,7 @@ public class HttpTdaClient implements TdaClient {
   @Override
   public OptionChain fetchOptionChain(String symbol) {
     HttpUrl url = baseUrl().newBuilder().addPathSegments("200/OptionChain")
-        .addQueryParameter("source", tdProperties.getProperty("ameritrade.source"))
+        .addQueryParameter("source", tdProperties.getProperty("tda.source"))
         .addQueryParameter("symbol", symbol)
         .build();
 
@@ -162,7 +162,7 @@ public class HttpTdaClient implements TdaClient {
   @Override
   public OrderStatus fetchAllOrderStatuses() {
     HttpUrl url = baseUrl().newBuilder().addPathSegments("100/OrderStatus")
-        .addQueryParameter("source", tdProperties.getProperty("ameritrade.source"))
+        .addQueryParameter("source", tdProperties.getProperty("tda.source"))
         .build();
     Request request = new Request.Builder().url(url).build();
     try (Response response = this.httpClient.newCall(request).execute()) {
@@ -172,26 +172,26 @@ public class HttpTdaClient implements TdaClient {
     }
   }
 
-  protected void sendKeepAlive() {
+  @Override
+  public String keepAlive() {
     HttpUrl url = baseUrl().newBuilder().addPathSegment("KeepAlive")
-        .addQueryParameter("source", tdProperties.getProperty("ameritrade.source"))
+        .addQueryParameter("source", tdProperties.getProperty("tda.source"))
         .build();
     Request request = new Request.Builder().url(url).build();
-
     try (Response response = this.httpClient.newCall(request).execute()) {
-      if (!StringUtils.containsIgnoreCase("LoggedOn", response.body().string())) {
-        throw new RuntimeException("Cannot send keep-alive");
-      }
+      return response.body().string();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
+  //if the currentLogin is null, let's just make a simple call to force a login.
   public Login getCurrentLogin() {
-    if (this.currentLogin == null){
-      throw new IllegalStateException(
-          "You must make a call to the service before fetching login information");
+    if (this.currentLogin == null) {
+      final String keepAlive = this.keepAlive();
+      LOGGER.debug("keep-alive: {}", keepAlive);
     }
+
     return this.currentLogin;
   }
 

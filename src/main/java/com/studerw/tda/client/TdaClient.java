@@ -19,13 +19,26 @@ public interface TdaClient {
   Logout logout();
 
   /**
-   * <p> Return the {@link com.studerw.tda.model.Login} object which will contain your account
-   * information, among other information. </p> Note that you need to make a rest call before
-   * obtaining the login since it may not be fetched yet.
-   *
-   * @return {@link com.studerw.tda.model.Login} or null if the client has not yet made a call.
+   * <p> the {@link com.studerw.tda.model.Login} object which will contain your account
+   * information, among other information.
+   * @return {@link com.studerw.tda.model.Login}
    */
   Login getCurrentLogin();
+
+
+  /**
+   * If the login user is inactive for more than the timeout period, the session will expire and the
+   * client will need to login again. This call is designed to refresh the login user session so
+   * that it does not expire.
+   *
+   * NOTE: The client can set their timeout to different times (i.e. 55-minutues or 2, 4, or 8
+   * hours) from the TDA web site "My Profile" page. Therefore, be sure to make a KeepAlive request
+   * before the client's timeout elapses."
+   *
+   * @return The response to the KeepAlive request will be a one world reply. Either "LoggedOn" or
+   * "InvalidSession" without html or xml formatting.  The content type is text/plain.
+   */
+  String keepAlive();
 
   /**
    * Fetch a single quote.
