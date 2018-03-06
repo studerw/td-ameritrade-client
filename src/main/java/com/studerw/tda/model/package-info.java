@@ -4,7 +4,7 @@
 })
 @XmlAccessorType(XmlAccessType.FIELD)
 //@javax.xml.bind.annotation.XmlSchema(namespace = "http://tdameritrade.api.com/")
-package com.studerw.tda.model;
+    package com.studerw.tda.model;
 
 import java.time.ZonedDateTime;
 import java.util.Calendar;

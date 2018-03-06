@@ -9,15 +9,17 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  */
 public class ZonedDateTimeAdapter extends XmlAdapter<String, ZonedDateTime> {
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z");
+  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z");
 
-    @Override
-    public String marshal(ZonedDateTime v) throws Exception {
-        return formatter.format(v);
-    }
+  @Override
+  public String marshal(ZonedDateTime v) throws Exception {
+//        final String format = v.format(formatter);
+//        System.out.println(format);
+    return formatter.format(v);
+  }
 
-    @Override
-    public ZonedDateTime unmarshal(String v) throws Exception {
-        return ZonedDateTime.parse(v, formatter);
-    }
+  @Override
+  public ZonedDateTime unmarshal(String v) throws Exception {
+    return ZonedDateTime.parse(v, formatter);
+  }
 }
