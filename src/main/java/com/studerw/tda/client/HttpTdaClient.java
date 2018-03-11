@@ -11,8 +11,10 @@ import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Properties;
 import okhttp3.HttpUrl;
+import okhttp3.HttpUrl.Builder;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -22,7 +24,6 @@ import org.slf4j.LoggerFactory;
 
 public class HttpTdaClient implements TdaClient {
 
-  public static final String RESULT_FAIL = "<result>FAIL</result>";
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpTdaClient.class);
 
   protected final OkHttpClient httpClient;
@@ -64,12 +65,14 @@ public class HttpTdaClient implements TdaClient {
   }
 
   @Override
-  public QuoteResponse fetchQuote(String symbol) {
-    LOGGER.debug("Fetching quote: {}", symbol);
-    HttpUrl url = baseUrl().newBuilder().addPathSegments("100/Quote")
-        .addQueryParameter("source", tdProperties.getProperty("tda.source"))
-        .addQueryParameter("symbol", symbol)
-        .build();
+  public QuoteResponse fetchQuotes(List<String> symbols) {
+    LOGGER.debug("Fetching quote: {}", symbols);
+    Builder builder = baseUrl().newBuilder();
+    builder.addPathSegments("100/Quote");
+    builder.addQueryParameter("source", tdProperties.getProperty("tda.source"));
+//    symbols.stream().forEach(s -> builder.addQueryParameter("symbol", s));
+    builder.addQueryParameter("symbol", StringUtils.join(symbols, " "));
+    HttpUrl url = builder.build();
     Request request = new Request.Builder().url(url).build();
     try (Response response = this.httpClient.newCall(request).execute()) {
       return tdaXmlParser.parseQuoteResponse(response.body().string());
@@ -79,6 +82,7 @@ public class HttpTdaClient implements TdaClient {
   }
 
 
+  @Override
   public Logout logout() {
     LOGGER.debug("Logging out...");
     HttpUrl url = baseUrl().newBuilder().addPathSegments("100/LogOut")

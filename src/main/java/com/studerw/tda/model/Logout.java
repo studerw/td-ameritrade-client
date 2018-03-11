@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlType;
     "result"
 })
 @XmlRootElement(name = "amtd")
-public class Logout {
+public class Logout extends BaseTda {
 
   @XmlElement(required = true)
   protected String result;

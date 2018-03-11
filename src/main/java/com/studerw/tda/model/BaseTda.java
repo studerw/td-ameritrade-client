@@ -25,7 +25,8 @@ public class BaseTda {
 
   /**
    * The TDA XML has numerous ways to detect an error. This is a convenience method for any returned
-   * TDA model object.
+   * TDA model object. Usually this results from the <em>error</em> element with some failure
+   * string.
    *
    * @return true if an error was detected in the response, false if not.
    */
@@ -33,6 +34,9 @@ public class BaseTda {
     return this.tdaError;
   }
 
+  /**
+   * Set the convenenience error status.
+   */
   public void setTdaError(boolean tdaError) {
     this.tdaError = tdaError;
   }

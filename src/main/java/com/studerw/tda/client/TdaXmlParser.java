@@ -60,6 +60,9 @@ public class TdaXmlParser {
       Unmarshaller um = context.createUnmarshaller();
       QuoteResponse quoteResponse = (QuoteResponse) um.unmarshal(in);
       quoteResponse.setOriginalXml(xml);
+      if (quoteResponse.getResult().equalsIgnoreCase("FAIL")) {
+        quoteResponse.setTdaError(true);
+      }
       return quoteResponse;
     } catch (Exception e) {
       e.printStackTrace();

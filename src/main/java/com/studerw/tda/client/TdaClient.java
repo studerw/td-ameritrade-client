@@ -6,6 +6,7 @@ import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
+import java.util.List;
 
 /**
  * This is a thread safe class. But only one client should be instantiated for each account.
@@ -19,8 +20,9 @@ public interface TdaClient {
   Logout logout();
 
   /**
-   * <p> the {@link com.studerw.tda.model.Login} object which will contain your account
-   * information, among other information.
+   * <p> the {@link com.studerw.tda.model.Login} object which will contain your account information,
+   * among other information.
+   *
    * @return {@link com.studerw.tda.model.Login}
    */
   Login getCurrentLogin();
@@ -41,9 +43,16 @@ public interface TdaClient {
   String keepAlive();
 
   /**
-   * Fetch a single quote.
+   * Fetch Detailed quote information for one or more symbols. Currently the API allows symbol types
+   * of Stocks, Options, Mutual Funds and Indexes. Quotes are real-time for accounts subscribed to
+   * this service; otherwise, quotes are delayed according to exchange rules.
+   *
+   * @param symbols list of valid symbols. Max of 300 based on TDA docs. Index symbols need to be
+   * prefixed with a <em>$</em>, e.g. $inx. Options are in a format like the following:
+   * <em>MNST_061518P60</em> for a put, or <em>MNST_061518C60</em> for a call.
+   * @return QuoteResponse
    */
-  QuoteResponse fetchQuote(String symbol);
+  QuoteResponse fetchQuotes(List<String> symbols);
 
   /**
    * @return {@link com.studerw.tda.model.BalancesAndPositions}
