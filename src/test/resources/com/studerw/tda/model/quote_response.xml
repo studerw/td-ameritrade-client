@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <amtd>
     <result>OK</result>
+    <error>foobar</error>
     <quote-list>
         <error></error>
         <quote>

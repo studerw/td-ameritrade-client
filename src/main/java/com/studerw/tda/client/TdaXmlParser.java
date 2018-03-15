@@ -7,6 +7,7 @@ import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OptionTradeResponse;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
+import com.studerw.tda.model.SymbolLookupResponse;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import javax.xml.bind.JAXBContext;
@@ -134,4 +135,19 @@ public class TdaXmlParser {
     }
   }
 
+  public SymbolLookupResponse parseSymbolLookupResponse(String xml) {
+    try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
+      JAXBContext context = JAXBContext.newInstance(SymbolLookupResponse.class);
+      Unmarshaller um = context.createUnmarshaller();
+      final SymbolLookupResponse result = (SymbolLookupResponse) um.unmarshal(in);
+      result.setOriginalXml(xml);
+      if (result.getResult().equalsIgnoreCase("FAIL")) {
+        result.setTdaError(true);
+      }
+      return result;
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new IllegalStateException("Error parsing symbolLookupResponse");
+    }
+  }
 }

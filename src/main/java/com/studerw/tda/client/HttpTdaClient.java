@@ -9,6 +9,7 @@ import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
+import com.studerw.tda.model.SymbolLookupResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -66,7 +67,7 @@ public class HttpTdaClient implements TdaClient {
 
   @Override
   public QuoteResponse fetchQuotes(List<String> symbols) {
-    LOGGER.debug("Fetching quote: {}", symbols);
+    LOGGER.debug("Fetching quotes: {}", symbols);
     Builder builder = baseUrl().newBuilder();
     builder.addPathSegments("100/Quote");
     builder.addQueryParameter("source", tdProperties.getProperty("tda.source"));
@@ -161,6 +162,23 @@ public class HttpTdaClient implements TdaClient {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  @Override
+  public SymbolLookupResponse symbolLookup(String matchStr) {
+    HttpUrl url = baseUrl().newBuilder().addPathSegments("100/SymbolLookup")
+        .addQueryParameter("source", tdProperties.getProperty("tda.source"))
+        .addQueryParameter("matchstring", matchStr)
+        .build();
+
+    Request request = new Request.Builder().url(url).build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      return tdaXmlParser.parseSymbolLookupResponse(response.body().string());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
   }
 
   @Override

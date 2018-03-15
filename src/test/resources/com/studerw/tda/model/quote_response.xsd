@@ -4,16 +4,17 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element type="xs:string" name="result"/>
-        <xs:element name="quote-list">
+        <xs:element type="xs:string" name="error" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="quote-list" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:sequence>
               <xs:element type="xs:string" name="error"/>
               <xs:element name="quote" maxOccurs="unbounded" minOccurs="0">
                 <xs:complexType>
                   <xs:choice>
-                    <xs:element type="xs:string" name="quoteError" minOccurs="1" maxOccurs="1"/>
-                    <xs:element type="xs:string" name="symbol" minOccurs="0" maxOccurs="1"/>
-                    <xs:element type="xs:string" name="description" minOccurs="0" maxOccurs="1"/>
+                    <xs:element type="xs:string" name="error" minOccurs="1" maxOccurs="1"/>
+                    <xs:element type="xs:string" name="symbol" minOccurs="1" maxOccurs="1"/>
+                    <xs:element type="xs:string" name="description" minOccurs="1" maxOccurs="1"/>
                     <xs:element type="xs:string" name="bid" minOccurs="0" maxOccurs="1"/>
                     <xs:element type="xs:string" name="ask" minOccurs="0" maxOccurs="1"/>
                     <xs:element type="xs:string" name="bid-ask-size" minOccurs="0" maxOccurs="1"/>

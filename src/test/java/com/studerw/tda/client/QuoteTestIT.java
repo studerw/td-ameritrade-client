@@ -2,14 +2,18 @@ package com.studerw.tda.client;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import com.studerw.tda.model.QuoteResponse;
+import com.studerw.tda.model.QuoteResponse.QuoteList.Quote;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -88,6 +92,21 @@ public class QuoteTestIT {
     final QuoteResponse response = httpTdaClient.fetchQuotes(bonds);
     LOGGER.debug(response.toString());
     assertFalse("should be successful result", response.isTdaError());
+  }
+
+  @Test
+//  @Ignore
+  public void testAllQuotes() {
+    List<String> bonds = Arrays.asList("XOM", "MNST_061518C60", "MNST_061518P60", "VFIAX", "VTSAX", "MSFT");
+    final QuoteResponse response = httpTdaClient.fetchQuotes(bonds);
+    LOGGER.debug(response.toString());
+    response.getQuoteList().getQuote().forEach(q -> {
+      LOGGER.debug(q.toString());
+    });
+    assertFalse("should be successful result", response.isTdaError());
+    final Optional<Quote> first = response.getQuoteList().getQuote().stream()
+        .filter(t -> StringUtils.isNotBlank(t.getError())).findFirst();
+    assertTrue("Should have no errors", !first.isPresent());
   }
 
 }

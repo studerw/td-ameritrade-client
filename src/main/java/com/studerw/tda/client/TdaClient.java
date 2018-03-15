@@ -6,6 +6,7 @@ import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
+import com.studerw.tda.model.SymbolLookupResponse;
 import java.util.List;
 
 /**
@@ -66,4 +67,11 @@ public interface TdaClient {
   OrderStatus fetchAllOrderStatuses();
 
   OptionChain fetchOptionChain(String symbol);
+
+  /**
+   * Provides the ability to lookup symbols for stocks and ETFs.
+   * @param matchStr The string being searched for. Partial name of the company for example <em>Bank of Amer</em>
+   * @return a SymbolLookupResponse
+   */
+  SymbolLookupResponse symbolLookup(String matchStr);
 }
