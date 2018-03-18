@@ -35,7 +35,7 @@ public class BaseTda {
   }
 
   /**
-   * Set the convenenience error status.
+   * Set the convenience error status.
    */
   public void setTdaError(boolean tdaError) {
     this.tdaError = tdaError;

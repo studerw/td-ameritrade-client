@@ -987,7 +987,6 @@ public class OrderStatus {
       /**
        * Gets the value of the cancelable property.
        *
-       * @return possible object is {@link boolean }
        */
       public boolean isCancelable() {
         return cancelable;
@@ -996,7 +995,6 @@ public class OrderStatus {
       /**
        * Sets the value of the cancelable property.
        *
-       * @param value allowed object is {@link String }
        */
       public void setCancelable(boolean value) {
         this.cancelable = value;

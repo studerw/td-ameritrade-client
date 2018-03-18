@@ -6,6 +6,7 @@ import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
+import com.studerw.tda.model.QuoteResponseBetter;
 import com.studerw.tda.model.SymbolLookupResponse;
 import java.util.List;
 
@@ -54,6 +55,8 @@ public interface TdaClient {
    * @return QuoteResponse
    */
   QuoteResponse fetchQuotes(List<String> symbols);
+
+  QuoteResponseBetter fetchQuotesBetter(List<String> symbols);
 
   /**
    * @return {@link com.studerw.tda.model.BalancesAndPositions}

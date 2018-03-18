@@ -9,6 +9,7 @@ import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
+import com.studerw.tda.model.QuoteResponseBetter;
 import com.studerw.tda.model.SymbolLookupResponse;
 import java.io.IOException;
 import java.io.InputStream;
@@ -71,7 +72,6 @@ public class HttpTdaClient implements TdaClient {
     Builder builder = baseUrl().newBuilder();
     builder.addPathSegments("100/Quote");
     builder.addQueryParameter("source", tdProperties.getProperty("tda.source"));
-//    symbols.stream().forEach(s -> builder.addQueryParameter("symbol", s));
     builder.addQueryParameter("symbol", StringUtils.join(symbols, " "));
     HttpUrl url = builder.build();
     Request request = new Request.Builder().url(url).build();
@@ -81,6 +81,24 @@ public class HttpTdaClient implements TdaClient {
       throw new RuntimeException(e);
     }
   }
+
+  @Override
+  public QuoteResponseBetter fetchQuotesBetter(List<String> symbols) {
+    LOGGER.debug("Fetching quotes: {}", symbols);
+    Builder builder = baseUrl().newBuilder();
+    builder.addPathSegments("100/Quote");
+    builder.addQueryParameter("source", tdProperties.getProperty("tda.source"));
+//    symbols.stream().forEach(s -> builder.addQueryParameter("symbol", s));
+    builder.addQueryParameter("symbol", StringUtils.join(symbols, " "));
+    HttpUrl url = builder.build();
+    Request request = new Request.Builder().url(url).build();
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      return tdaXmlParser.parseQuoteResponseBetter(response.body().string());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
 
 
   @Override

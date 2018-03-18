@@ -9,7 +9,10 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 /**
- * This
+ * This class will log all HTTP activity to the <em>logname</em>
+ * passed in the constructor.
+ *
+ * This is currently set as <em>TDA_HTTP</em>.
  */
 public class LoggingInterceptor implements Interceptor {
     private final Logger LOGGER;
