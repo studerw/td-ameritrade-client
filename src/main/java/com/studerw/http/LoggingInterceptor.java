@@ -3,6 +3,7 @@ package com.studerw.http;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,8 +17,14 @@ import java.io.IOException;
  */
 public class LoggingInterceptor implements Interceptor {
     private final Logger LOGGER;
+    private final int byteCount;
 
     public LoggingInterceptor(String logName){
+        this(logName, 1000);
+    }
+
+    public LoggingInterceptor(String logName, int byteCount) {
+        this.byteCount = byteCount;
         LOGGER = LoggerFactory.getLogger(logName);
     }
 
@@ -33,11 +40,20 @@ public class LoggingInterceptor implements Interceptor {
 
         long t2 = System.nanoTime();
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Body: {}", response.peekBody(Long.MAX_VALUE).string());
+            //don't debug binary data
+            final String contentType = response.header("content-type");
+            if (StringUtils.equalsIgnoreCase(contentType,"application/octet-stream")){
+                LOGGER.debug("Body[Binary]: {} bytes", response.header("content-length"));
+            }
+            else {
+                LOGGER.debug("Body: {}", response.peekBody(byteCount).string());
+            }
         }
         LOGGER.info(String.format("Response[%d - %s]:  %s in %.1fms%n%s",
                 response.code(), response.message(),response.request().url(), (t2 - t1) / 1e6d, response.headers()));
 
         return response;
     }
+
+
 }

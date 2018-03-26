@@ -52,18 +52,6 @@
     <!--<version>3.9.1</version>-->
     <!--</dependency>-->
 
-    <!-- https://mvnrepository.com/artifact/dom4j/dom4j -->
-    <dependency>
-      <groupId>dom4j</groupId>
-      <artifactId>dom4j</artifactId>
-      <version>1.6.1</version>
-    </dependency>
-    <dependency>
-      <groupId>jaxen</groupId>
-      <artifactId>jaxen</artifactId>
-      <version>1.1.6</version>
-    </dependency>
-
     <!-- Commons -->
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -75,6 +63,7 @@
       <artifactId>commons-io</artifactId>
       <version>2.5</version>
     </dependency>
+
     <!--<dependency>-->
     <!--<groupId>commons-codec</groupId>-->
     <!--<artifactId>commons-codec</artifactId>-->

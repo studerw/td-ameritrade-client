@@ -11,8 +11,12 @@ import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
 import com.studerw.tda.model.QuoteResponseBetter;
 import com.studerw.tda.model.SymbolLookupResponse;
+import com.studerw.tda.model.history.IntervalType;
+import com.studerw.tda.model.history.PeriodType;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Properties;
 import okhttp3.HttpUrl;
@@ -49,7 +53,8 @@ public class HttpTdaClient implements TdaClient {
     httpClient = new OkHttpClient.Builder().
         cookieJar(new CookieJarImpl(new MemoryCookieStore())).
         addInterceptor(new TdaLoginInterceptor(this, tdProperties)).
-        addInterceptor(new LoggingInterceptor("TDA_HTTP")).
+        addInterceptor(new LoggingInterceptor("TDA_HTTP",
+            Integer.parseInt(tdProperties.getProperty("tda.debug.bytes.length")))).
 //                connectTimeout(15, TimeUnit.SECONDS).
 //                readTimeout(15, TimeUnit.SECONDS).    // socket timeout
     build();
@@ -88,7 +93,6 @@ public class HttpTdaClient implements TdaClient {
     Builder builder = baseUrl().newBuilder();
     builder.addPathSegments("100/Quote");
     builder.addQueryParameter("source", tdProperties.getProperty("tda.source"));
-//    symbols.stream().forEach(s -> builder.addQueryParameter("symbol", s));
     builder.addQueryParameter("symbol", StringUtils.join(symbols, " "));
     HttpUrl url = builder.build();
     Request request = new Request.Builder().url(url).build();
@@ -98,7 +102,6 @@ public class HttpTdaClient implements TdaClient {
       throw new RuntimeException(e);
     }
   }
-
 
 
   @Override
@@ -122,7 +125,6 @@ public class HttpTdaClient implements TdaClient {
     HttpUrl url = baseUrl().newBuilder().addPathSegments("100/BalancesAndPositions")
         .addQueryParameter("source", tdProperties.getProperty("tda.source"))
         .addQueryParameter("accountid", accountId)
-//                .addQueryParameter("type", "b")
         .build();
 
     Request request = new Request.Builder().url(url).build();
@@ -233,6 +235,44 @@ public class HttpTdaClient implements TdaClient {
     }
 
     return this.currentLogin;
+  }
+
+  @Override
+  public byte[] priceHistory(List<String> symbols, IntervalType intervalType,
+      Integer intervalDuration, PeriodType periodType, Integer period, LocalDate startDate,
+      LocalDate endDate, Boolean extended) {
+    LOGGER.debug("Fetching priceHistory: {}", symbols);
+    DateTimeFormatter fmt = DateTimeFormatter.BASIC_ISO_DATE;
+    Builder builder = baseUrl().newBuilder().addPathSegments("100/PriceHistory")
+        .addQueryParameter("source", tdProperties.getProperty("tda.source"))
+        .addQueryParameter("requestidentifiertype", "SYMBOL")
+        .addQueryParameter("requestvalue", StringUtils.join(symbols, ", "))
+        .addQueryParameter("intervaltype", intervalType.name())
+        .addQueryParameter("intervalduration", String.valueOf(intervalDuration))
+        .addQueryParameter("extended",
+            extended == null ? Boolean.FALSE.toString() : String.valueOf(extended));
+
+    if (period != null) {
+      builder.addQueryParameter("period", period.toString());
+    }
+    if (periodType != null) {
+      builder.addQueryParameter("periodtype", periodType.name());
+    }
+    if (startDate != null) {
+      builder.addQueryParameter("startdate", startDate.format(fmt));
+    }
+    if (endDate != null) {
+      builder.addQueryParameter("enddate", endDate.format(fmt));
+    }
+
+    HttpUrl url = builder.build();
+    Request request = new Request.Builder().url(url).build();
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      //return tdaXmlParser.parseQuoteResponseBetter(response.body().string());
+      return response.body().bytes();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private void initTdaProps() {
