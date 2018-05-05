@@ -3,8 +3,8 @@ package com.studerw.tda.client;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.studerw.tda.model.SymbolLookupResponse;
-import com.studerw.tda.model.SymbolLookupResponse.SymbolLookupResult.SymbolResult;
+import com.studerw.tda.model.SymbolLookup;
+import com.studerw.tda.model.SymbolLookup.Result.SymbolResult;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -41,20 +41,20 @@ public class SymbolLookupTestIT {
 
   @Test
   public void testSymbolLookup() {
-    final SymbolLookupResponse response = httpTdaClient.symbolLookup("bank of");
+    final SymbolLookup response = httpTdaClient.symbolLookup("bank of");
     LOGGER.debug(response.toString());
     assertFalse("should be successful result", response.isTdaError());
     assertTrue(StringUtils
-        .isNotEmpty(response.getSymbolLookupResult().getSymbolResult().get(0).getSymbol()));
-    for (SymbolResult symbolResult : response.getSymbolLookupResult().getSymbolResult()) {
+        .isNotEmpty(response.getResult().getSymbolResults().get(0).getSymbol()));
+    for (SymbolResult symbolResult : response.getResult().getSymbolResults()) {
       LOGGER.debug("{} - {}", symbolResult.getSymbol(), symbolResult.getDescription());
     }
   }
 
   @Test
   public void testSymbolLookupError() {
-    final SymbolLookupResponse response = httpTdaClient.symbolLookup("");
-    LOGGER.debug(response.toString());
+    final SymbolLookup response = httpTdaClient.symbolLookup("");
+    LOGGER.debug(response.getResultStr());
     assertTrue("should be unsuccessful result", response.isTdaError());
   }
 }

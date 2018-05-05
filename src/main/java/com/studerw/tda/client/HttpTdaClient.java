@@ -10,7 +10,7 @@ import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
 import com.studerw.tda.model.QuoteResponseBetter;
-import com.studerw.tda.model.SymbolLookupResponse;
+import com.studerw.tda.model.SymbolLookup;
 import com.studerw.tda.model.history.IntervalType;
 import com.studerw.tda.model.history.PeriodType;
 import com.studerw.tda.parse.TdaXmlParser;
@@ -185,7 +185,7 @@ public class HttpTdaClient implements TdaClient {
   }
 
   @Override
-  public SymbolLookupResponse symbolLookup(String matchStr) {
+  public SymbolLookup symbolLookup(String matchStr) {
     HttpUrl url = baseUrl().newBuilder().addPathSegments("100/SymbolLookup")
         .addQueryParameter("source", tdProperties.getProperty("tda.source"))
         .addQueryParameter("matchstring", matchStr)
@@ -194,7 +194,7 @@ public class HttpTdaClient implements TdaClient {
     Request request = new Request.Builder().url(url).build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
-      return tdaXmlParser.parseSymbolLookupResponse(response.body().string());
+      return tdaXmlParser.parseSymbolLookup(response.body().string());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

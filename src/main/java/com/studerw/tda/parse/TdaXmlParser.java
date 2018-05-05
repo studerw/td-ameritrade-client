@@ -7,7 +7,7 @@ import com.studerw.tda.model.OptionTradeResponse;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
 import com.studerw.tda.model.QuoteResponseBetter;
-import com.studerw.tda.model.SymbolLookupResponse;
+import com.studerw.tda.model.SymbolLookup;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import javax.xml.bind.JAXBContext;
@@ -17,19 +17,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class is responsible for parsing XML (non-binary) responses
- * from the TDA Server API and converts them to model POJOs.
- * It assumes all XML is well-formed UTF-8.
+ * This class is responsible for parsing XML (non-binary) responses from the TDA Server API and
+ * converts them to model POJOs. It assumes all XML is well-formed UTF-8.
  *
- * It uses JAXB to convert XML to pojos. None of these methods throw checked exceptions,
- * but if an error occurs, an unchecked IllegalStateException is thrown with the wrapped
- * JAXB or other error.
+ * It uses JAXB to convert XML to pojos. None of these methods throw checked exceptions, but if an
+ * error occurs, an unchecked IllegalStateException is thrown with the wrapped JAXB or other error.
  */
 public class TdaXmlParser {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TdaXmlParser.class);
 
-  public TdaXmlParser() {}
+  public TdaXmlParser() {
+  }
 
 //    protected <T> parseXml(T type, String xml){
 //        try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)){
@@ -125,13 +124,14 @@ public class TdaXmlParser {
     }
   }
 
-  public SymbolLookupResponse parseSymbolLookupResponse(String xml) {
+
+  public SymbolLookup parseSymbolLookup(String xml) {
     try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
-      JAXBContext context = JAXBContext.newInstance(SymbolLookupResponse.class);
+      JAXBContext context = JAXBContext.newInstance(SymbolLookup.class);
       Unmarshaller um = context.createUnmarshaller();
-      final SymbolLookupResponse result = (SymbolLookupResponse) um.unmarshal(in);
+      final SymbolLookup result = (SymbolLookup) um.unmarshal(in);
       result.setOriginalXml(xml);
-      if (result.getResult().equalsIgnoreCase("FAIL")) {
+      if (result.getResultStr().equalsIgnoreCase("FAIL")) {
         result.setTdaError(true);
       }
       return result;
@@ -141,19 +141,19 @@ public class TdaXmlParser {
     }
   }
 
-    public QuoteResponseBetter parseQuoteResponseBetter(String xml) {
-      try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
-        JAXBContext context = JAXBContext.newInstance(QuoteResponseBetter.class);
-        Unmarshaller um = context.createUnmarshaller();
-        QuoteResponseBetter quoteResponse = (QuoteResponseBetter) um.unmarshal(in);
-        quoteResponse.setOriginalXml(xml);
-        if (quoteResponse.getResult().equalsIgnoreCase("FAIL")) {
-          quoteResponse.setTdaError(true);
-        }
-        return quoteResponse;
-      } catch (Exception e) {
-        e.printStackTrace();
-        throw new IllegalStateException("Error parsing QuoteResponseBetter");
+  public QuoteResponseBetter parseQuoteResponseBetter(String xml) {
+    try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
+      JAXBContext context = JAXBContext.newInstance(QuoteResponseBetter.class);
+      Unmarshaller um = context.createUnmarshaller();
+      QuoteResponseBetter quoteResponse = (QuoteResponseBetter) um.unmarshal(in);
+      quoteResponse.setOriginalXml(xml);
+      if (quoteResponse.getResult().equalsIgnoreCase("FAIL")) {
+        quoteResponse.setTdaError(true);
       }
+      return quoteResponse;
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new IllegalStateException("Error parsing QuoteResponseBetter");
     }
+  }
 }

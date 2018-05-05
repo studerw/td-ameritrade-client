@@ -3,7 +3,7 @@
   <xs:element name="amtd">
     <xs:complexType>
       <xs:sequence>
-        <xs:element type="xs:string" name="result"/>
+        <xs:element type="xs:string" name="result" minOccurs="1" maxOccurs="1"/>
         <xs:element type="xs:string" name="error" minOccurs="0" maxOccurs="1"/>
         <xs:element name="symbol-lookup-result" minOccurs="0" maxOccurs="1">
           <xs:complexType>

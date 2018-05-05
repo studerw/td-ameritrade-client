@@ -20,11 +20,11 @@ public class LoggingInterceptor implements Interceptor {
     private final int byteCount;
 
     public LoggingInterceptor(String logName){
-        this(logName, 1000);
+        this(logName, -1);
     }
 
     public LoggingInterceptor(String logName, int byteCount) {
-        this.byteCount = byteCount;
+        this.byteCount = byteCount == -1 ? Integer.MAX_VALUE : byteCount;
         LOGGER = LoggerFactory.getLogger(logName);
     }
 

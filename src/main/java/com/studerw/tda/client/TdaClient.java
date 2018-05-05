@@ -7,7 +7,7 @@ import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
 import com.studerw.tda.model.QuoteResponseBetter;
-import com.studerw.tda.model.SymbolLookupResponse;
+import com.studerw.tda.model.SymbolLookup;
 import com.studerw.tda.model.history.IntervalType;
 import com.studerw.tda.model.history.PeriodType;
 import java.time.LocalDate;
@@ -102,7 +102,7 @@ public interface TdaClient {
    *
    * @param matchStr The string being searched for. Partial name of the company for example <em>Bank
    * of Amer</em>
-   * @return a SymbolLookupResponse
+   * @return a LookupResponse
    */
-  SymbolLookupResponse symbolLookup(String matchStr);
+  SymbolLookup symbolLookup(String matchStr);
 }

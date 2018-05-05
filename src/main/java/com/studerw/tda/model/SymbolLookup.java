@@ -53,26 +53,26 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "result",
+    "resultStr",
     "error",
-    "symbolLookupResult"
+    "result"
 })
 @XmlRootElement(name = "amtd")
-public class SymbolLookupResponse extends BaseTda {
+public class SymbolLookup extends BaseTda {
 
-  @XmlElement(required = true)
-  protected String result;
+  @XmlElement(required = true, name = "result")
+  protected String resultStr;
   protected String error;
   @XmlElement(name = "symbol-lookup-result")
-  protected SymbolLookupResponse.SymbolLookupResult symbolLookupResult;
+  protected SymbolLookup.Result result ;
 
   /**
    * Gets the value of the result property.
    *
    * @return possible object is {@link String }
    */
-  public String getResult() {
-    return result;
+  public String getResultStr() {
+    return resultStr;
   }
 
   /**
@@ -80,8 +80,8 @@ public class SymbolLookupResponse extends BaseTda {
    *
    * @param value allowed object is {@link String }
    */
-  public void setResult(String value) {
-    this.result = value;
+  public void setResultStr(String value) {
+    this.resultStr = value;
   }
 
   /**
@@ -105,19 +105,19 @@ public class SymbolLookupResponse extends BaseTda {
   /**
    * Gets the value of the symbolLookupResult property.
    *
-   * @return possible object is {@link SymbolLookupResponse.SymbolLookupResult }
+   * @return possible object is {@link SymbolLookup.Result }
    */
-  public SymbolLookupResponse.SymbolLookupResult getSymbolLookupResult() {
-    return symbolLookupResult;
+  public SymbolLookup.Result getResult() {
+    return result;
   }
 
   /**
    * Sets the value of the symbolLookupResult property.
    *
-   * @param value allowed object is {@link SymbolLookupResponse.SymbolLookupResult }
+   * @param value allowed object is {@link SymbolLookup.Result }
    */
-  public void setSymbolLookupResult(SymbolLookupResponse.SymbolLookupResult value) {
-    this.symbolLookupResult = value;
+  public void setResult(SymbolLookup.Result value) {
+    this.result = value;
   }
 
 
@@ -155,16 +155,16 @@ public class SymbolLookupResponse extends BaseTda {
   @XmlType(name = "", propOrder = {
       "error",
       "searchString",
-      "symbolResult"
+      "symbolResults"
   })
-  public static class SymbolLookupResult {
+  public static class Result {
 
     @XmlElement(required = true)
     protected String error;
     @XmlElement(name = "search-string", required = true)
     protected String searchString;
     @XmlElement(name = "symbol-result")
-    protected List<SymbolLookupResponse.SymbolLookupResult.SymbolResult> symbolResult;
+    protected List<SymbolLookup.Result.SymbolResult> symbolResults;
 
     /**
      * Gets the value of the error property.
@@ -216,13 +216,13 @@ public class SymbolLookupResponse extends BaseTda {
      *
      *
      * <p> Objects of the following type(s) are allowed in the list {@link
-     * SymbolLookupResponse.SymbolLookupResult.SymbolResult }
+     * SymbolLookup.Result.SymbolResult }
      */
-    public List<SymbolLookupResponse.SymbolLookupResult.SymbolResult> getSymbolResult() {
-      if (symbolResult == null) {
-        symbolResult = new ArrayList<SymbolLookupResponse.SymbolLookupResult.SymbolResult>();
+    public List<SymbolLookup.Result.SymbolResult> getSymbolResults() {
+      if (symbolResults == null) {
+        symbolResults = new ArrayList<SymbolLookup.Result.SymbolResult>();
       }
-      return this.symbolResult;
+      return this.symbolResults;
     }
 
 
