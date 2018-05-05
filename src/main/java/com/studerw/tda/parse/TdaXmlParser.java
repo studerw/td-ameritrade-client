@@ -1,7 +1,6 @@
-package com.studerw.tda.client;
+package com.studerw.tda.parse;
 
 import com.studerw.tda.model.BalancesAndPositions;
-import com.studerw.tda.model.Login;
 import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OptionTradeResponse;
@@ -17,14 +16,20 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class is responsible for parsing XML (non-binary) responses
+ * from the TDA Server API and converts them to model POJOs.
+ * It assumes all XML is well-formed UTF-8.
+ *
+ * It uses JAXB to convert XML to pojos. None of these methods throw checked exceptions,
+ * but if an error occurs, an unchecked IllegalStateException is thrown with the wrapped
+ * JAXB or other error.
+ */
 public class TdaXmlParser {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TdaXmlParser.class);
-  private HttpTdaClient client;
 
-  public TdaXmlParser(HttpTdaClient client) {
-    this.client = client;
-  }
+  public TdaXmlParser() {}
 
 //    protected <T> parseXml(T type, String xml){
 //        try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)){
@@ -39,24 +44,8 @@ public class TdaXmlParser {
 //        }
 //    }
 
-  protected Login parseLoginXml(String xml) {
-    try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
-      JAXBContext context = JAXBContext.newInstance(Login.class);
-      Unmarshaller um = context.createUnmarshaller();
-      Login login = (Login) um.unmarshal(in);
-      login.setOriginalXml(xml);
-      this.client.currentLogin = login;
-      if (login.getResult().equalsIgnoreCase("FAIL")) {
-        login.setTdaError(true);
-      }
-      return login;
-    } catch (Exception e) {
-      e.printStackTrace();
-      throw new IllegalStateException("Error parsing login");
-    }
-  }
 
-  protected QuoteResponse parseQuoteResponse(String xml) {
+  public QuoteResponse parseQuoteResponse(String xml) {
     try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
       JAXBContext context = JAXBContext.newInstance(QuoteResponse.class);
       Unmarshaller um = context.createUnmarshaller();
@@ -72,7 +61,7 @@ public class TdaXmlParser {
     }
   }
 
-  protected OrderStatus parseOrderStatus(String xml) {
+  public OrderStatus parseOrderStatus(String xml) {
     try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
       JAXBContext context = JAXBContext.newInstance(OrderStatus.class);
       Unmarshaller um = context.createUnmarshaller();
@@ -86,7 +75,7 @@ public class TdaXmlParser {
 
   }
 
-  protected BalancesAndPositions parseBalances(String xml) {
+  public BalancesAndPositions parseBalances(String xml) {
     try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
       JAXBContext context = JAXBContext.newInstance(BalancesAndPositions.class);
       Unmarshaller um = context.createUnmarshaller();
@@ -99,7 +88,7 @@ public class TdaXmlParser {
     }
   }
 
-  protected OptionTradeResponse parseOptionTradeResponse(String xml) {
+  public OptionTradeResponse parseOptionTradeResponse(String xml) {
     try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
       JAXBContext context = JAXBContext.newInstance(OptionTradeResponse.class);
       Unmarshaller um = context.createUnmarshaller();
@@ -112,7 +101,7 @@ public class TdaXmlParser {
     }
   }
 
-  protected OptionChain parseOptionChain(String xml) {
+  public OptionChain parseOptionChain(String xml) {
     try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
       JAXBContext context = JAXBContext.newInstance(OptionChain.class);
       Unmarshaller um = context.createUnmarshaller();
@@ -125,7 +114,7 @@ public class TdaXmlParser {
     }
   }
 
-  protected Logout parseLogout(String xml) {
+  public Logout parseLogout(String xml) {
     try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
       JAXBContext context = JAXBContext.newInstance(Logout.class);
       Unmarshaller um = context.createUnmarshaller();
@@ -152,7 +141,7 @@ public class TdaXmlParser {
     }
   }
 
-    protected QuoteResponseBetter parseQuoteResponseBetter(String xml) {
+    public QuoteResponseBetter parseQuoteResponseBetter(String xml) {
       try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
         JAXBContext context = JAXBContext.newInstance(QuoteResponseBetter.class);
         Unmarshaller um = context.createUnmarshaller();

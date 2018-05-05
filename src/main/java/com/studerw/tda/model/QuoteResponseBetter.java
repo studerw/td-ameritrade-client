@@ -78,7 +78,7 @@ public class QuoteResponseBetter extends BaseTda {
 			this.error = value;
 		}
 
-		public List<QuoteResponseBetter.QuoteList.Quote> getQuote() {
+		public List<QuoteResponseBetter.QuoteList.Quote> getQuotes() {
 			if (quotes == null) {
 				quotes = new ArrayList<QuoteResponseBetter.QuoteList.Quote>();
 			}

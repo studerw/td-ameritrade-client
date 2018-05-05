@@ -13,6 +13,7 @@ import com.studerw.tda.model.QuoteResponseBetter;
 import com.studerw.tda.model.SymbolLookupResponse;
 import com.studerw.tda.model.history.IntervalType;
 import com.studerw.tda.model.history.PeriodType;
+import com.studerw.tda.parse.TdaXmlParser;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -33,11 +34,11 @@ public class HttpTdaClient implements TdaClient {
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpTdaClient.class);
 
   protected final OkHttpClient httpClient;
-  final String user;
-  final byte[] password;
-  final private TdaXmlParser tdaXmlParser;
+  protected final String user;
+  protected final byte[] password;
+  protected final TdaXmlParser tdaXmlParser;
   protected Properties tdProperties;
-  Login currentLogin;
+  protected Login currentLogin;
 
   /**
    * @param user TDA user account name
@@ -45,7 +46,7 @@ public class HttpTdaClient implements TdaClient {
    */
   public HttpTdaClient(String user, byte[] password) {
     LOGGER.info("Initiating HttpTdaClient...");
-    this.tdaXmlParser = new TdaXmlParser(this);
+    this.tdaXmlParser = new TdaXmlParser();
 
     this.user = user;
     this.password = password;
@@ -113,7 +114,6 @@ public class HttpTdaClient implements TdaClient {
     Request request = new Request.Builder().url(url).build();
     try (Response response = this.httpClient.newCall(request).execute()) {
       return tdaXmlParser.parseLogout(response.body().string());
-
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

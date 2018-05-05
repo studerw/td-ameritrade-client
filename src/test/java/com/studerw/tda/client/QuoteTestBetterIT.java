@@ -50,8 +50,8 @@ public class QuoteTestBetterIT {
     final QuoteResponseBetter response = httpTdaClient.fetchQuotesBetter(stocks);
     LOGGER.debug(response.toString());
     assertFalse("should be successful result", response.isTdaError());
-    assertEquals(response.getQuoteList().getQuote().get(0).getAssetType(), "E");
-    assertEquals(response.getQuoteList().getQuote().get(1).getAssetType(), "E");
+    assertEquals(response.getQuoteList().getQuotes().get(0).getAssetType(), "E");
+    assertEquals(response.getQuoteList().getQuotes().get(1).getAssetType(), "E");
   }
 
   @Test
@@ -60,8 +60,8 @@ public class QuoteTestBetterIT {
     final QuoteResponseBetter response = httpTdaClient.fetchQuotesBetter(mfs);
     LOGGER.debug(response.toString());
     assertFalse("should be successful result", response.isTdaError());
-    assertEquals(response.getQuoteList().getQuote().get(0).getAssetType(), "F");
-    assertEquals(response.getQuoteList().getQuote().get(1).getAssetType(), "F");
+    assertEquals(response.getQuoteList().getQuotes().get(0).getAssetType(), "F");
+    assertEquals(response.getQuoteList().getQuotes().get(1).getAssetType(), "F");
   }
 
   @Test
@@ -70,7 +70,7 @@ public class QuoteTestBetterIT {
     final QuoteResponseBetter response = httpTdaClient.fetchQuotesBetter(indexes);
     LOGGER.debug(response.toString());
     assertFalse("should be successful result", response.isTdaError());
-    assertEquals(response.getQuoteList().getQuote().get(0).getAssetType(), "I");
+    assertEquals(response.getQuoteList().getQuotes().get(0).getAssetType(), "I");
   }
 
   //These will eventually expire and be invalid
@@ -80,8 +80,8 @@ public class QuoteTestBetterIT {
     final QuoteResponseBetter response = httpTdaClient.fetchQuotesBetter(options);
     LOGGER.debug(response.toString());
     assertFalse("should be successful result", response.isTdaError());
-    assertEquals(response.getQuoteList().getQuote().get(0).getAssetType(), "O");
-    assertEquals(response.getQuoteList().getQuote().get(1).getAssetType(), "O");
+    assertEquals(response.getQuoteList().getQuotes().get(0).getAssetType(), "O");
+    assertEquals(response.getQuoteList().getQuotes().get(1).getAssetType(), "O");
   }
 
   //Not sure what a valid bond ticker symbol is.
@@ -100,11 +100,11 @@ public class QuoteTestBetterIT {
     List<String> bonds = Arrays.asList("XOM", "MNST_061518C60", "MNST_061518P60", "VFIAX", "VTSAX", "MSFT");
     final QuoteResponseBetter response = httpTdaClient.fetchQuotesBetter(bonds);
     LOGGER.debug(response.toString());
-    response.getQuoteList().getQuote().forEach(q -> {
+    response.getQuoteList().getQuotes().forEach(q -> {
       LOGGER.debug(q.toString());
     });
     assertFalse("should be successful result", response.isTdaError());
-    final Optional<Quote> first = response.getQuoteList().getQuote().stream()
+    final Optional<Quote> first = response.getQuoteList().getQuotes().stream()
         .filter(t -> StringUtils.isNotBlank(t.getError())).findFirst();
     assertTrue("Should have no errors", !first.isPresent());
   }
