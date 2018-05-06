@@ -1,4 +1,4 @@
-package com.studerw.http;
+package com.studerw.tda.http;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;

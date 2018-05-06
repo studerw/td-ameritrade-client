@@ -1,8 +1,8 @@
 package com.studerw.tda.client;
 
-import com.studerw.http.LoggingInterceptor;
-import com.studerw.http.cookie.CookieJarImpl;
-import com.studerw.http.cookie.store.MemoryCookieStore;
+import com.studerw.tda.http.LoggingInterceptor;
+import com.studerw.tda.http.cookie.CookieJarImpl;
+import com.studerw.tda.http.cookie.store.MemoryCookieStore;
 import com.studerw.tda.model.BalancesAndPositions;
 import com.studerw.tda.model.Login;
 import com.studerw.tda.model.Logout;

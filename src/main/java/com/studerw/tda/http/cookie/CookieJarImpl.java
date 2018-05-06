@@ -1,6 +1,6 @@
-package com.studerw.http.cookie;
+package com.studerw.tda.http.cookie;
 
-import com.studerw.http.cookie.store.CookieStore;
+import com.studerw.tda.http.cookie.store.CookieStore;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;

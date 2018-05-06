@@ -1,4 +1,4 @@
-package com.studerw.http.cookie.store;
+package com.studerw.tda.http.cookie.store;
 
 public interface HasCookieStore {
     CookieStore getCookieStore();

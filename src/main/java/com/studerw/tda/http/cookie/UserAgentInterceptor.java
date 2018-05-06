@@ -1,4 +1,4 @@
-package com.studerw.http.cookie;
+package com.studerw.tda.http.cookie;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;

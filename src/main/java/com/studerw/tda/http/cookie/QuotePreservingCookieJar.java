@@ -1,4 +1,4 @@
-package com.studerw.http.cookie;
+package com.studerw.tda.http.cookie;
 /*
  * Copyright (C) 2016 Square, Inc.
  *
