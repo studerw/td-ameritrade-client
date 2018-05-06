@@ -4,10 +4,10 @@ Java rest client for TD Ameritrade Api. Uses [OKHttp 3](https://github.com/squar
 ## Usage
 
 ```java
-  TdaClient tdaClient = new TdaClient("user", "pass".getBytes());
-  QuoteResponse response = httpTdaClient.fetchQuotes(Arrays.asList("AMTD"));
-  String askPrice = response.getResults.getQuotes().get(0).getAsk();
-  System.out.println("Current price of TDA: "+askPrice);
+TdaClient tdaClient = new HttpTdaClient("user", "pass".getBytes());
+QuoteResponse response = tdaClient.fetchQuotes(Arrays.asList("AMTD"));
+String askPrice = response.getResults.getQuotes().get(0).getAsk();
+System.out.println("Current price of TDA: " + askPrice);
 ```
 
 ### Build
