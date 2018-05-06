@@ -6,7 +6,6 @@ import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
-import com.studerw.tda.model.QuoteResponseBetter;
 import com.studerw.tda.model.SymbolLookup;
 import com.studerw.tda.model.history.IntervalType;
 import com.studerw.tda.model.history.PeriodType;
@@ -80,9 +79,7 @@ public interface TdaClient {
    * <em>MNST_061518P60</em> for a put, or <em>MNST_061518C60</em> for a call.
    * @return QuoteResponse
    */
-  QuoteResponse fetchQuotes(List<String> symbols);
-
-  QuoteResponseBetter fetchQuotesBetter(List<String> symbols);
+  QuoteResponse fetchQuotesBetter(List<String> symbols);
 
   /**
    * @return {@link com.studerw.tda.model.BalancesAndPositions}

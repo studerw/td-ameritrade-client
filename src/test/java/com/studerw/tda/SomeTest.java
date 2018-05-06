@@ -2,8 +2,6 @@ package com.studerw.tda;
 
 import static org.junit.Assert.assertTrue;
 
-import com.studerw.tda.model.QuoteResponse;
-import com.studerw.tda.model.QuoteResponseBetter;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

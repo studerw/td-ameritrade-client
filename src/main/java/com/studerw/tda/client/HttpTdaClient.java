@@ -9,7 +9,6 @@ import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
-import com.studerw.tda.model.QuoteResponseBetter;
 import com.studerw.tda.model.SymbolLookup;
 import com.studerw.tda.model.history.IntervalType;
 import com.studerw.tda.model.history.PeriodType;
@@ -73,7 +72,7 @@ public class HttpTdaClient implements TdaClient {
   }
 
   @Override
-  public QuoteResponse fetchQuotes(List<String> symbols) {
+  public QuoteResponse fetchQuotesBetter(List<String> symbols) {
     LOGGER.debug("Fetching quotes: {}", symbols);
     Builder builder = baseUrl().newBuilder();
     builder.addPathSegments("100/Quote");
@@ -83,22 +82,6 @@ public class HttpTdaClient implements TdaClient {
     Request request = new Request.Builder().url(url).build();
     try (Response response = this.httpClient.newCall(request).execute()) {
       return tdaXmlParser.parseQuoteResponse(response.body().string());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  @Override
-  public QuoteResponseBetter fetchQuotesBetter(List<String> symbols) {
-    LOGGER.debug("Fetching quotes: {}", symbols);
-    Builder builder = baseUrl().newBuilder();
-    builder.addPathSegments("100/Quote");
-    builder.addQueryParameter("source", tdProperties.getProperty("tda.source"));
-    builder.addQueryParameter("symbol", StringUtils.join(symbols, " "));
-    HttpUrl url = builder.build();
-    Request request = new Request.Builder().url(url).build();
-    try (Response response = this.httpClient.newCall(request).execute()) {
-      return tdaXmlParser.parseQuoteResponseBetter(response.body().string());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -268,7 +251,7 @@ public class HttpTdaClient implements TdaClient {
     HttpUrl url = builder.build();
     Request request = new Request.Builder().url(url).build();
     try (Response response = this.httpClient.newCall(request).execute()) {
-      //return tdaXmlParser.parseQuoteResponseBetter(response.body().string());
+      //return tdaXmlParser.parseQuoteResponse(response.body().string());
       return response.body().bytes();
     } catch (IOException e) {
       throw new RuntimeException(e);

@@ -6,7 +6,6 @@ import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OptionTradeResponse;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
-import com.studerw.tda.model.QuoteResponseBetter;
 import com.studerw.tda.model.SymbolLookup;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -43,22 +42,6 @@ public class TdaXmlParser {
 //        }
 //    }
 
-
-  public QuoteResponse parseQuoteResponse(String xml) {
-    try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
-      JAXBContext context = JAXBContext.newInstance(QuoteResponse.class);
-      Unmarshaller um = context.createUnmarshaller();
-      QuoteResponse quoteResponse = (QuoteResponse) um.unmarshal(in);
-      quoteResponse.setOriginalXml(xml);
-      if (quoteResponse.getResult().equalsIgnoreCase("FAIL")) {
-        quoteResponse.setTdaError(true);
-      }
-      return quoteResponse;
-    } catch (Exception e) {
-      e.printStackTrace();
-      throw new IllegalStateException("Error parsing Quote Response");
-    }
-  }
 
   public OrderStatus parseOrderStatus(String xml) {
     try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
@@ -141,19 +124,19 @@ public class TdaXmlParser {
     }
   }
 
-  public QuoteResponseBetter parseQuoteResponseBetter(String xml) {
+  public QuoteResponse parseQuoteResponse(String xml) {
     try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
-      JAXBContext context = JAXBContext.newInstance(QuoteResponseBetter.class);
+      JAXBContext context = JAXBContext.newInstance(QuoteResponse.class);
       Unmarshaller um = context.createUnmarshaller();
-      QuoteResponseBetter quoteResponse = (QuoteResponseBetter) um.unmarshal(in);
+      QuoteResponse quoteResponse = (QuoteResponse) um.unmarshal(in);
       quoteResponse.setOriginalXml(xml);
-      if (quoteResponse.getResult().equalsIgnoreCase("FAIL")) {
+      if (quoteResponse.getResultStr().equalsIgnoreCase("FAIL")) {
         quoteResponse.setTdaError(true);
       }
       return quoteResponse;
     } catch (Exception e) {
       e.printStackTrace();
-      throw new IllegalStateException("Error parsing QuoteResponseBetter");
+      throw new IllegalStateException("Error parsing QuoteResponse");
     }
   }
 }

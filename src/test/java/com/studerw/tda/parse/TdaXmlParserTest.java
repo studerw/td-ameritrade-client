@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import com.studerw.tda.model.QuoteResponse;
-import com.studerw.tda.model.QuoteResponseBetter;
 import com.studerw.tda.model.SymbolLookup;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -19,6 +18,7 @@ public class TdaXmlParserTest {
   private static final Logger LOGGER = LoggerFactory.getLogger(TdaXmlParserTest.class);
   private TdaXmlParser xmlParser = new TdaXmlParser();
 
+
   @Test
   public void testParseQuoteResponse() throws Exception {
     try (InputStream in = TdaXmlParserTest.class.getClassLoader().
@@ -26,10 +26,10 @@ public class TdaXmlParserTest {
       String xml = IOUtils.toString(in, Charset.forName("UTF-8"));
       QuoteResponse qr = xmlParser.parseQuoteResponse(xml);
 
-      assertEquals("result should be ok", qr.getResult(), "OK");
+      assertEquals("result should be ok", qr.getResultStr(), "OK");
       assertFalse("Should be tdaError", qr.isTdaError());
-      assertTrue("should have list of 7", qr.getQuoteList().getQuote().size() == 7);
-      qr.getQuoteList().getQuote().stream().forEach(q -> {
+      assertTrue("should have list of 7", qr.getResult().getQuotes().size() == 7);
+      qr.getResult().getQuotes().stream().forEach(q -> {
         assertFalse("should not be empty", StringUtils.isBlank(q.getSymbol()));
         LOGGER.debug("{} -> {}", q.getSymbol(), q.getAssetType());
       });
@@ -37,22 +37,15 @@ public class TdaXmlParserTest {
   }
 
   @Test
-  public void testParseQuoteResponseBetter() throws Exception {
+  public void testQuoteResponseError() throws Exception {
     try (InputStream in = TdaXmlParserTest.class.getClassLoader().
-        getResourceAsStream("com/studerw/tda/model/quote_response.xml")) {
+        getResourceAsStream("com/studerw/tda/model/quote_response_error.xml")) {
       String xml = IOUtils.toString(in, Charset.forName("UTF-8"));
-      QuoteResponseBetter qr = xmlParser.parseQuoteResponseBetter(xml);
-
-      assertEquals("result should be ok", qr.getResult(), "OK");
-      assertFalse("Should be tdaError", qr.isTdaError());
-      assertTrue("should have list of 7", qr.getQuoteList().getQuotes().size() == 7);
-      qr.getQuoteList().getQuotes().stream().forEach(q -> {
-        assertFalse("should not be empty", StringUtils.isBlank(q.getSymbol()));
-        LOGGER.debug("{} -> {}", q.getSymbol(), q.getAssetType());
-      });
+      QuoteResponse qr = xmlParser.parseQuoteResponse(xml);
+      assertTrue("Should be tdaError", qr.isTdaError());
+      LOGGER.debug("Error: {}", qr.getError());
     }
   }
-
 
   @Test
   public void testSymbolLookupError() throws Exception {
