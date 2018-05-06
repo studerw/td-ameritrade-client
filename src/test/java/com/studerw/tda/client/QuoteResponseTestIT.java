@@ -47,7 +47,7 @@ public class QuoteResponseTestIT {
   @Test
   public void testStockQuote() {
     List<String> stocks = Arrays.asList("msft", "xom");
-    final QuoteResponse response = httpTdaClient.fetchQuotesBetter(stocks);
+    final QuoteResponse response = httpTdaClient.fetchQuotes(stocks);
     LOGGER.debug(response.toString());
     assertFalse("should be successful result", response.isTdaError());
     assertEquals(response.getResult().getQuotes().get(0).getAssetType(), "E");
@@ -57,7 +57,7 @@ public class QuoteResponseTestIT {
   @Test
   public void testMutualFundQuotes() {
     List<String> mfs = Arrays.asList("VFIAX", "VTSAX");
-    final QuoteResponse response = httpTdaClient.fetchQuotesBetter(mfs);
+    final QuoteResponse response = httpTdaClient.fetchQuotes(mfs);
     LOGGER.debug(response.toString());
     assertFalse("should be successful result", response.isTdaError());
     assertEquals(response.getResult().getQuotes().get(0).getAssetType(), "F");
@@ -67,7 +67,7 @@ public class QuoteResponseTestIT {
   @Test
   public void testIndexQuotes() {
     List<String> indexes = Arrays.asList("$inx");
-    final QuoteResponse response = httpTdaClient.fetchQuotesBetter(indexes);
+    final QuoteResponse response = httpTdaClient.fetchQuotes(indexes);
     LOGGER.debug(response.toString());
     assertFalse("should be successful result", response.isTdaError());
     assertEquals(response.getResult().getQuotes().get(0).getAssetType(), "I");
@@ -77,7 +77,7 @@ public class QuoteResponseTestIT {
   @Test
   public void testOptionQuote() {
     List<String> options = Arrays.asList("MNST_061518C60", "MNST_061518P60");
-    final QuoteResponse response = httpTdaClient.fetchQuotesBetter(options);
+    final QuoteResponse response = httpTdaClient.fetchQuotes(options);
     LOGGER.debug(response.toString());
     assertFalse("should be successful result", response.isTdaError());
     assertEquals(response.getResult().getQuotes().get(0).getAssetType(), "O");
@@ -89,7 +89,7 @@ public class QuoteResponseTestIT {
   @Test
   public void testBondQuote() {
     List<String> bonds = Arrays.asList("UST10Y");
-    final QuoteResponse response = httpTdaClient.fetchQuotesBetter(bonds);
+    final QuoteResponse response = httpTdaClient.fetchQuotes(bonds);
     LOGGER.debug(response.toString());
     assertFalse("should be successful result", response.isTdaError());
   }
@@ -98,7 +98,7 @@ public class QuoteResponseTestIT {
   @Ignore
   public void testAllQuotes() {
     List<String> bonds = Arrays.asList("XOM", "MNST_061518C60", "MNST_061518P60", "VFIAX", "VTSAX", "MSFT");
-    final QuoteResponse response = httpTdaClient.fetchQuotesBetter(bonds);
+    final QuoteResponse response = httpTdaClient.fetchQuotes(bonds);
     LOGGER.debug(response.toString());
     response.getResult().getQuotes().forEach(q -> {
       LOGGER.debug(q.toString());

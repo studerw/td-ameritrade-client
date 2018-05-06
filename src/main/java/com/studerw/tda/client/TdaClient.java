@@ -79,7 +79,7 @@ public interface TdaClient {
    * <em>MNST_061518P60</em> for a put, or <em>MNST_061518C60</em> for a call.
    * @return QuoteResponse
    */
-  QuoteResponse fetchQuotesBetter(List<String> symbols);
+  QuoteResponse fetchQuotes(List<String> symbols);
 
   /**
    * @return {@link com.studerw.tda.model.BalancesAndPositions}

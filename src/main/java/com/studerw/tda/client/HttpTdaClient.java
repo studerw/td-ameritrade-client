@@ -72,7 +72,7 @@ public class HttpTdaClient implements TdaClient {
   }
 
   @Override
-  public QuoteResponse fetchQuotesBetter(List<String> symbols) {
+  public QuoteResponse fetchQuotes(List<String> symbols) {
     LOGGER.debug("Fetching quotes: {}", symbols);
     Builder builder = baseUrl().newBuilder();
     builder.addPathSegments("100/Quote");

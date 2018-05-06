@@ -54,7 +54,6 @@ public class LoginTestIT {
     Logout logout = httpTdaClient.logout();
     LOGGER.debug(logout.getResult());
     assertEquals("should equal LoggedOut", logout.getResult(), "LoggedOut");
-    assertFalse("Should be successful logout", logout.isTdaError());
   }
 
 }
