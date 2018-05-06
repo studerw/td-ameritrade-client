@@ -1,88 +1,70 @@
 package com.studerw.tda.client;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import com.studerw.tda.model.SymbolLookup;
+import com.studerw.tda.model.PriceHistory;
+import com.studerw.tda.model.PriceHistory.Result;
 import com.studerw.tda.model.history.IntervalType;
 import com.studerw.tda.model.history.PeriodType;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 import org.apache.commons.io.FileUtils;
-import org.junit.BeforeClass;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class PriceHistoryTestIT {
+public class PriceHistoryTestIT extends BaseTestIT {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(PriceHistoryTestIT.class);
-  static Properties props = null;
-  static HttpTdaClient httpTdaClient;
 
-  @BeforeClass
-  public static void beforeClass() {
-    try (InputStream in = PriceHistoryTestIT.class.getClassLoader().
-        getResourceAsStream("com/studerw/tda/client/my-test.properties")) {
-      props = new Properties();
-      props.load(in);
-    } catch (IOException e) {
-      throw new IllegalStateException(
-          "Could not load default properties from com.studerw.tda.tda-api.properties in classpath");
-    }
-
-    String user = props.getProperty("user");
-    byte[] pw = props.getProperty("pw").getBytes(StandardCharsets.UTF_8);
-    httpTdaClient = new HttpTdaClient(user, pw);
+  @Test
+  public void testPriceHistory() throws Exception {
+    PriceHistory priceHistory = httpTdaClient
+        .priceHistory(Arrays.asList("CBI"), IntervalType.DAILY, 1, PeriodType.MONTH, 1, null,
+            null, false);
+    assertNotNull("priceHistory not null", priceHistory);
+    List<Result> results = priceHistory.getResults();
+    assertTrue("should have only 1 result", results.size() == 1);
+    Result result = results.get(0);
+    LOGGER.debug("Count of chart bars: {}", result.getChartBars().size());
+    assertEquals("Should have symbol CBI", result.getSymbol(), "CBI");
+    result.getChartBars().stream().forEach(cb -> {
+      assertFalse("should not be null", cb.getClose() == null);
+      LOGGER.debug("{}", cb.toString());
+    });
   }
 
 
-  @Ignore
   @Test
-  public void testPriceHistory() throws IOException {
-    List<String> symbols = Arrays.asList("T");
-    byte[] bytes = httpTdaClient.priceHistory(symbols, IntervalType.WEEKLY, 1,
+  public void testPriceHistoryError() {
+    List<String> symbols = Arrays.asList("");
+    PriceHistory priceHistory = httpTdaClient.priceHistory(symbols, IntervalType.WEEKLY, 1,
         PeriodType.YEAR, 1, null, null, false);
+    assertTrue("Should be error", priceHistory.isError());
+    LOGGER.debug("Error: {}", priceHistory.getErrorMsg());
+    assertFalse("Not empty", StringUtils.isBlank(priceHistory.getErrorMsg()));
+    assertTrue("Result should be null", priceHistory.getResults() == null);
+  }
+
+  @Test
+  @Ignore
+  public void getPriceHistoryData() throws IOException {
+    List<String> symbols = Arrays.asList("T");
+    byte[] bytes = httpTdaClient
+        .priceHistoryBytes(symbols, IntervalType.MINUTE, 30, PeriodType.DAY, 1, null, null, false);
     LOGGER.debug("Length: {}", bytes.length);
-    File tempFile = File.createTempFile("tda-sybmol-lookup-", ".dat");
+    File tempFile = File.createTempFile("price-history", ".dat");
     FileUtils.writeByteArrayToFile(tempFile, bytes);
     LOGGER.debug("Wrote: {} bytes to file: {}", bytes.length, tempFile.getAbsolutePath());
-    readBytes(bytes);
-//    assertFalse("should be successful result", response.isTdaError());
-//    assertTrue(StringUtils
-//        .isNotEmpty(response.getSymbolLookupResult().getSymbolResult().get(0).getSymbol()));
-//    for (SymbolResult symbolResult : response.getSymbolLookupResult().getSymbolResult()) {
-//      LOGGER.debug("{} - {}", symbolResult.getSymbol(), symbolResult.getDescription());
-//    }
   }
 
-  @Test
-  @Ignore
-  public void testPriceHistoryError() {
-    final SymbolLookup response = httpTdaClient.symbolLookup("");
-    LOGGER.debug(response.toString());
-    assertTrue("should be unsuccessful result", response.isTdaError());
-  }
-
-  private void readBytes(byte[] bytes) {
-    try {
-    DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes));
-
-    }
-    catch (Exception e){
-      throw new RuntimeException(e);
-    }
-    finally{
-
-    }
-  }
 }

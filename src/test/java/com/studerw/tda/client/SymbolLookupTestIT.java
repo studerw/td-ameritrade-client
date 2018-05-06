@@ -16,28 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class SymbolLookupTestIT {
+public class SymbolLookupTestIT extends BaseTestIT {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SymbolLookupTestIT.class);
-  static Properties props = null;
-  static HttpTdaClient httpTdaClient;
-
-  @BeforeClass
-  public static void beforeClass() {
-    try (InputStream in = SymbolLookupTestIT.class.getClassLoader().
-        getResourceAsStream("com/studerw/tda/client/my-test.properties")) {
-      props = new Properties();
-      props.load(in);
-    } catch (IOException e) {
-      throw new IllegalStateException(
-          "Could not load default properties from com.studerw.tda.tda-api.properties in classpath");
-    }
-
-    String user = props.getProperty("user");
-    byte[] pw = props.getProperty("pw").getBytes(StandardCharsets.UTF_8);
-    httpTdaClient = new HttpTdaClient(user, pw);
-  }
-
 
   @Test
   public void testSymbolLookup() {

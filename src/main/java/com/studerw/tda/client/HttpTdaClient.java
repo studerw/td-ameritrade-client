@@ -8,10 +8,12 @@ import com.studerw.tda.model.Login;
 import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OrderStatus;
+import com.studerw.tda.model.PriceHistory;
 import com.studerw.tda.model.QuoteResponse;
 import com.studerw.tda.model.SymbolLookup;
 import com.studerw.tda.model.history.IntervalType;
 import com.studerw.tda.model.history.PeriodType;
+import com.studerw.tda.parse.TdaBinaryParser;
 import com.studerw.tda.parse.TdaXmlParser;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,6 +38,7 @@ public class HttpTdaClient implements TdaClient {
   protected final String user;
   protected final byte[] password;
   protected final TdaXmlParser tdaXmlParser;
+  protected final TdaBinaryParser tdaBinaryParser;
   protected Properties tdProperties;
   protected Login currentLogin;
 
@@ -46,7 +49,7 @@ public class HttpTdaClient implements TdaClient {
   public HttpTdaClient(String user, byte[] password) {
     LOGGER.info("Initiating HttpTdaClient...");
     this.tdaXmlParser = new TdaXmlParser();
-
+    this.tdaBinaryParser = new TdaBinaryParser();
     this.user = user;
     this.password = password;
     initTdaProps();
@@ -221,7 +224,7 @@ public class HttpTdaClient implements TdaClient {
   }
 
   @Override
-  public byte[] priceHistory(List<String> symbols, IntervalType intervalType,
+  public PriceHistory priceHistory(List<String> symbols, IntervalType intervalType,
       Integer intervalDuration, PeriodType periodType, Integer period, LocalDate startDate,
       LocalDate endDate, Boolean extended) {
     LOGGER.debug("Fetching priceHistory: {}", symbols);
@@ -251,21 +254,62 @@ public class HttpTdaClient implements TdaClient {
     HttpUrl url = builder.build();
     Request request = new Request.Builder().url(url).build();
     try (Response response = this.httpClient.newCall(request).execute()) {
-      //return tdaXmlParser.parseQuoteResponse(response.body().string());
-      return response.body().bytes();
+      if (!response.isSuccessful()) {
+        return new PriceHistory(response.body().string().substring(1));
+      } else {
+        return tdaBinaryParser.parsePriceHistory(response.body().bytes());
+      }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  private void initTdaProps() {
-    try (InputStream in = getClass().getClassLoader()
-        .getResourceAsStream("com/studerw/tda/tda-api.properties")) {
-      tdProperties = new Properties();
-      tdProperties.load(in);
-    } catch (IOException e) {
-      throw new IllegalStateException(
-          "Could not load default properties from com.studerw.tda.tda-api.properties in classpath");
+  @Override
+  public byte[] priceHistoryBytes(List<String> symbols, IntervalType intervalType,
+    Integer intervalDuration, PeriodType periodType, Integer period, LocalDate startDate,
+        LocalDate endDate, Boolean extended){
+      LOGGER.debug("Fetching priceHistoryBytes: {}", symbols);
+      DateTimeFormatter fmt = DateTimeFormatter.BASIC_ISO_DATE;
+      Builder builder = baseUrl().newBuilder().addPathSegments("100/PriceHistory")
+          .addQueryParameter("source", tdProperties.getProperty("tda.source"))
+          .addQueryParameter("requestidentifiertype", "SYMBOL")
+          .addQueryParameter("requestvalue", StringUtils.join(symbols, ", "))
+          .addQueryParameter("intervaltype", intervalType.name())
+          .addQueryParameter("intervalduration", String.valueOf(intervalDuration))
+          .addQueryParameter("extended",
+              extended == null ? Boolean.FALSE.toString() : String.valueOf(extended));
+
+      if (period != null) {
+        builder.addQueryParameter("period", period.toString());
+      }
+      if (periodType != null) {
+        builder.addQueryParameter("periodtype", periodType.name());
+      }
+      if (startDate != null) {
+        builder.addQueryParameter("startdate", startDate.format(fmt));
+      }
+      if (endDate != null) {
+        builder.addQueryParameter("enddate", endDate.format(fmt));
+      }
+
+      HttpUrl url = builder.build();
+      Request request = new Request.Builder().url(url).build();
+      try (Response response = this.httpClient.newCall(request).execute()) {
+        return response.body().bytes();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+
+    }
+
+    private void initTdaProps () {
+      try (InputStream in = getClass().getClassLoader()
+          .getResourceAsStream("com/studerw/tda/tda-api.properties")) {
+        tdProperties = new Properties();
+        tdProperties.load(in);
+      } catch (IOException e) {
+        throw new IllegalStateException(
+            "Could not load default properties from com.studerw.tda.tda-api.properties in classpath");
+      }
     }
   }
-}

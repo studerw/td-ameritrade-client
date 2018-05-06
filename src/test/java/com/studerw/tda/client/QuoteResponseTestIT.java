@@ -6,43 +6,19 @@ import static org.junit.Assert.assertTrue;
 
 import com.studerw.tda.model.QuoteResponse;
 import com.studerw.tda.model.QuoteResponse.Result.Quote;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class QuoteResponseTestIT {
+public class QuoteResponseTestIT extends BaseTestIT {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(QuoteResponseTestIT.class);
-  static Properties props = null;
-  static HttpTdaClient httpTdaClient;
-
-  @BeforeClass
-  public static void beforeClass() {
-    try (InputStream in = QuoteResponseTestIT.class.getClassLoader().
-        getResourceAsStream("com/studerw/tda/client/my-test.properties")) {
-      props = new Properties();
-      props.load(in);
-    } catch (IOException e) {
-      throw new IllegalStateException(
-          "Could not load default properties from com.studerw.tda.tda-api.properties in classpath");
-    }
-
-    String user = props.getProperty("user");
-    byte[] pw = props.getProperty("pw").getBytes(StandardCharsets.UTF_8);
-    httpTdaClient = new HttpTdaClient(user, pw);
-  }
-
 
   @Test
   public void testStockQuote() {
@@ -97,7 +73,8 @@ public class QuoteResponseTestIT {
   @Test
   @Ignore
   public void testAllQuotes() {
-    List<String> bonds = Arrays.asList("XOM", "MNST_061518C60", "MNST_061518P60", "VFIAX", "VTSAX", "MSFT");
+    List<String> bonds = Arrays
+        .asList("XOM", "MNST_061518C60", "MNST_061518P60", "VFIAX", "VTSAX", "MSFT");
     final QuoteResponse response = httpTdaClient.fetchQuotes(bonds);
     LOGGER.debug(response.toString());
     response.getResult().getQuotes().forEach(q -> {

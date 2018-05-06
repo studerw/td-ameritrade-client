@@ -5,6 +5,7 @@ import com.studerw.tda.model.Login;
 import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OrderStatus;
+import com.studerw.tda.model.PriceHistory;
 import com.studerw.tda.model.QuoteResponse;
 import com.studerw.tda.model.SymbolLookup;
 import com.studerw.tda.model.history.IntervalType;
@@ -35,24 +36,45 @@ public interface TdaClient {
   /**
    * @see com.studerw.tda.model.history for full validation rules.
    *
-   * retrieve historical intraday and end of day quote data consolidated in OHLC format. This is the
+   * Retrieve historical intraday and end of day quote data consolidated in OHLC format. This is the
    * most basic form of the method. Default parameters are based on the <em>intervalType</em> and
    * <em>intervalDuration</em> arguments. Note that some of these parameters may be null, and then
-   * the arguments will be assumed by the non null parameters.
+   * some of the other arguments will be assumed by the non null parameters.
    *
    * @param symbols list of symbols such as <em>INTC, MSFT</em>
    * @param intervalType
    * @param intervalDuration depending on the {@link IntervalType} parameter. See its docs.
    * @param periodType
    * @param period The number of periods for which the data is returned. For example, if <em>periodtype=DAY</em> and <em>period=10</em>, then the request is for 10 days of data
-   * @param startDate The start date of the data being requested (Inclusive). If the startdate is not specified, then it will be (<em>enddate - period</em>) excluding weekends and holidays.  If specified, then <em>period</em> and <em>periodtype</em> CANNOT be specified.
+   * @param startDate The start date of the data being requested (Inclusive). If the <em>startDate</em> is not specified, then it will be (<em>endDate - period</em>) excluding weekends and holidays.  If specified, then <em>period</em> and <em>periodType</em> CANNOT be specified.
    * @param endDate The end date of the data being requested (Inclusive). If NULL, then the default is the previous business day.
    * @param extended Indicates if extended hours data is to be included in the response. FALSE if null. NOTE: Only valid for intraday data requests.
-   *
-   * @return xml
+   * @return priceHistory with a result for each symbol
    */
-  byte[] priceHistory(List<String> symbols, IntervalType intervalType, Integer intervalDuration,
+  PriceHistory priceHistory(List<String> symbols, IntervalType intervalType, Integer intervalDuration,
       PeriodType periodType, Integer period, LocalDate startDate, LocalDate endDate, Boolean extended);
+
+  /**
+   * @see com.studerw.tda.model.history for full validation rules.
+   *
+   * Retrieve historical intraday and end of day quote data consolidated in OHLC format. This is the
+   * most basic form of the method. Default parameters are based on the <em>intervalType</em> and
+   * <em>intervalDuration</em> arguments. Note that some of these parameters may be null, and then
+   * some of the other arguments will be assumed by the non null parameters.
+   *
+   * @param symbols list of symbols such as <em>INTC, MSFT</em>
+   * @param intervalType
+   * @param intervalDuration depending on the {@link IntervalType} parameter. See its docs.
+   * @param periodType
+   * @param period The number of periods for which the data is returned. For example, if <em>periodtype=DAY</em> and <em>period=10</em>, then the request is for 10 days of data
+   * @param startDate The start date of the data being requested (Inclusive). If the <em>startDate</em> is not specified, then it will be (<em>endDate - period</em>) excluding weekends and holidays.  If specified, then <em>period</em> and <em>periodType</em> CANNOT be specified.
+   * @param endDate The end date of the data being requested (Inclusive). If NULL, then the default is the previous business day.
+   * @param extended Indicates if extended hours data is to be included in the response. FALSE if null. NOTE: Only valid for intraday data requests.
+   * @return priceHistory with a result for each symbol
+   */
+  byte[] priceHistoryBytes(List<String> symbols, IntervalType intervalType, Integer intervalDuration,
+      PeriodType periodType, Integer period, LocalDate startDate, LocalDate endDate, Boolean extended);
+
 
 
   /**

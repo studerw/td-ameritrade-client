@@ -16,27 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class LoginTestIT {
-
+public class LoginTestIT extends BaseTestIT{
   private static final Logger LOGGER = LoggerFactory.getLogger(LoginTestIT.class);
-  static Properties props = null;
-  static HttpTdaClient httpTdaClient;
-
-  @BeforeClass
-  public static void beforeClass() {
-    try (InputStream in = LoginTestIT.class.getClassLoader().
-        getResourceAsStream("com/studerw/tda/client/my-test.properties")) {
-      props = new Properties();
-      props.load(in);
-    } catch (IOException e) {
-      throw new IllegalStateException(
-          "Could not load default properties from classpath at com.studerw.my-test.properties");
-    }
-
-    String user = props.getProperty("user");
-    byte[] pw = props.getProperty("pw").getBytes(StandardCharsets.UTF_8);
-    httpTdaClient = new HttpTdaClient(user, pw);
-  }
 
   @Test
   public void testLogin() {
