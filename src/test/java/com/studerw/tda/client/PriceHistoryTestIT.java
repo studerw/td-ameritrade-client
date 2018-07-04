@@ -29,14 +29,14 @@ public class PriceHistoryTestIT extends BaseTestIT {
   @Test
   public void testPriceHistory() throws Exception {
     PriceHistory priceHistory = httpTdaClient
-        .priceHistory(Arrays.asList("CBI"), IntervalType.DAILY, 1, PeriodType.MONTH, 1, null,
+        .priceHistory(Arrays.asList("MSFT"), IntervalType.DAILY, 1, PeriodType.MONTH, 1, null,
             null, false);
     assertNotNull("priceHistory not null", priceHistory);
     List<Result> results = priceHistory.getResults();
     assertTrue("should have only 1 result", results.size() == 1);
     Result result = results.get(0);
     LOGGER.debug("Count of chart bars: {}", result.getChartBars().size());
-    assertEquals("Should have symbol CBI", result.getSymbol(), "CBI");
+    assertEquals("Should have symbol MSFT", result.getSymbol(), "MSFT");
     result.getChartBars().stream().forEach(cb -> {
       assertFalse("should not be null", cb.getClose() == null);
       LOGGER.debug("{}", cb.toString());
