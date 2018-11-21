@@ -1,6 +1,10 @@
 # TD Ameritrade API
 Java rest client for TD Ameritrade Api. Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
 
+** 2018 Notes
+
+Sometime in-between use of this API and now, TDA released a 'better' [API](https://developer.tdameritrade.com/). The backend is still similar, as far as I can tell. I'm happy to colloborate contractually or OSS with other devs...
+
 ## Build
 
 To build the jar, checkout the source and run:
