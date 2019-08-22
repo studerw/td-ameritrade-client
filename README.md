@@ -14,7 +14,8 @@ mvn clean install
 ```
 
 ## Usage
-Until the project is finished, you will need to have build this locally in order to put the necessary jars in your local Maven repo.
+Until the project is finished, you will need to have built this locally in order to put the necessary jars in your local Maven repo.
+Once we have a 1.0.0 version, we will submit it to Maven Central. 
 
 Add the following to your Maven build file:
 
@@ -37,7 +38,7 @@ You need a valid TDA user and password which is the same that is used when loggi
 
 
 ## Integration Tests
-Integration tests do require a TDA user and password are not needed to build.
+Integration tests do require a TDA user and password, though are not needed to just build.
 
 To run integration tests, you will need to rename this file *src/test/resources/com/studerw/tda/client/my-test.properties.changeme* to *my-test.properties* and add your own TDA user and pw.
 Then run the following command.
@@ -45,6 +46,8 @@ Then run the following command.
 ```
 mvn failsafe:integration-test
 ```
+
+Don't worry - no purchases or transfers (to @studerw's account) will be made :/. Basicallyl we just check login and quote methods only.
 
 ## Issues / Todo
 * pass around inputstreams instead of XML to parses, and get rid of XML strings stored in POJOs. 

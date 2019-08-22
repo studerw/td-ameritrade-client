@@ -51,7 +51,7 @@
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
-      <version>3.10.0</version>
+      <version>3.14.2</version>
     </dependency>
     <!--<dependency>-->
     <!--<groupId>com.squareup.okhttp3</groupId>-->
@@ -63,7 +63,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.7</version>
+      <version>3.9</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -80,7 +80,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.25</version>
+      <version>1.7.26</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
