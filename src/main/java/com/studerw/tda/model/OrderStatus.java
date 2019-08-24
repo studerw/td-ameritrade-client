@@ -307,7 +307,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "orderstatusList"
 })
 @XmlRootElement(name = "amtd")
-public class OrderStatus {
+public class OrderStatus extends BaseTda {
 
   @XmlElement(required = true)
   protected String result;

@@ -6,11 +6,6 @@ import static org.junit.Assert.assertNotNull;
 
 import com.studerw.tda.model.Login;
 import com.studerw.tda.model.Logout;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Properties;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +23,7 @@ public class LoginTestIT extends BaseTestIT{
     assertNotNull("accounts should not be null", accounts);
     assertFalse("Should be successful login", currentLogin.isTdaError());
     LOGGER.debug(currentLogin.toString());
+    LOGGER.debug(currentLogin.getOriginalXml().toString());
   }
 
   @Test

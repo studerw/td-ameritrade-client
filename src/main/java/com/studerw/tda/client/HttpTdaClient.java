@@ -4,6 +4,7 @@ import com.studerw.tda.http.LoggingInterceptor;
 import com.studerw.tda.http.cookie.CookieJarImpl;
 import com.studerw.tda.http.cookie.store.MemoryCookieStore;
 import com.studerw.tda.model.BalancesAndPositions;
+import com.studerw.tda.model.CancelOrder;
 import com.studerw.tda.model.Login;
 import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.OptionChain;
@@ -90,7 +91,6 @@ public class HttpTdaClient implements TdaClient {
     }
   }
 
-
   @Override
   public Logout logout() {
     LOGGER.debug("Logging out...");
@@ -106,6 +106,12 @@ public class HttpTdaClient implements TdaClient {
   }
 
   @Override
+  public BalancesAndPositions fetchBalancesAndPositions() {
+    final String id = this.getCurrentLogin().getXmlLogIn().getAssociatedAccountId();
+    return this.fetchBalancesAndPositions(id);
+  }
+
+  @Override
   public BalancesAndPositions fetchBalancesAndPositions(String accountId) {
     LOGGER.debug("Fetching account balance for ID: {}", accountId);
     HttpUrl url = baseUrl().newBuilder().addPathSegments("100/BalancesAndPositions")
@@ -115,23 +121,21 @@ public class HttpTdaClient implements TdaClient {
 
     Request request = new Request.Builder().url(url).build();
     try (Response response = this.httpClient.newCall(request).execute()) {
-      return tdaXmlParser.parseBalances(response.body().string());
+      return tdaXmlParser.parseBalancesAndPositions(response.body().string());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
   @Override
-  public boolean cancelOptionOrder(String orderId) {
+  public CancelOrder cancelOrder(String orderId) {
     HttpUrl url = baseUrl().newBuilder().addPathSegments("100/OrderCancel")
         .addQueryParameter("source", tdProperties.getProperty("tda.source"))
         .addQueryParameter("orderid", orderId)
         .build();
     Request request = new Request.Builder().url(url).build();
     try (Response response = this.httpClient.newCall(request).execute()) {
-      final String xml = response.body().string();
-      LOGGER.debug(xml);
-      return StringUtils.containsIgnoreCase(xml, "<result>OK</result>");
+      return tdaXmlParser.parseCancelOrder(response.body().string());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -219,7 +223,6 @@ public class HttpTdaClient implements TdaClient {
       final String keepAlive = this.keepAlive();
       LOGGER.debug("keep-alive: {}", keepAlive);
     }
-
     return this.currentLogin;
   }
 

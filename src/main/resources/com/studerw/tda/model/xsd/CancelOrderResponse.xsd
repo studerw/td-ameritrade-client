@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="amtd">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element type="xs:string" name="result"/>
+        <xs:element name="cancel-order-messages" type="xs:string"/>
+        <xs:element type="xs:string" name="account-id"/>
+        <xs:element name="order" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="order-id" type="xs:string"/>
+              <xs:element name="message" type="xs:string"/>
+              <xs:element name="error" type="xs:string"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

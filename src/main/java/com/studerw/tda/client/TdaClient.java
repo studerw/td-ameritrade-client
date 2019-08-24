@@ -1,6 +1,7 @@
 package com.studerw.tda.client;
 
 import com.studerw.tda.model.BalancesAndPositions;
+import com.studerw.tda.model.CancelOrder;
 import com.studerw.tda.model.Login;
 import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.OptionChain;
@@ -104,21 +105,50 @@ public interface TdaClient {
   QuoteResponse fetchQuotes(List<String> symbols);
 
   /**
+   * Provides detailed information on positions and balances in the account.
+   * Uses the default account of the user, both balances and positions are returned,
+   * quotes will not be suppressed, and balances will not be returned in 'alternative format'.
+   * @return {@link com.studerw.tda.model.BalancesAndPositions}
+   */
+  BalancesAndPositions fetchBalancesAndPositions();
+
+  /**
+   * Provides detailed information on positions and balances in the account.
+   * @param accountId of the associated account. If it is empty or null, the default account will be used.
+   * All other parameters are set as default.
    * @return {@link com.studerw.tda.model.BalancesAndPositions}
    */
   BalancesAndPositions fetchBalancesAndPositions(String accountId);
 
-  boolean cancelOptionOrder(String orderId);
+  /**
+   * Cancel one or more open orders or the balance of partially filled orders.
+   * @param orderId - the id of the order
+   * @return {@link com.studerw.tda.model.CancelOrder}
+   */
+  CancelOrder cancelOrder(String orderId);
 
+  /**
+   *
+   * @param orderIds
+   * @return {@link com.studerw.tda.model.OrderStatus}
+   */
   OrderStatus fetchOrderStatus(String... orderIds);
 
+  /**
+   * @return {@link com.studerw.tda.model.OrderStatus}
+   */
   OrderStatus fetchAllOrderStatuses();
 
+  /**
+   * Partially complete.
+   * @param symbol e.g. TDA
+   * @return {@link com.studerw.tda.model.OptionChain}
+   */
   OptionChain fetchOptionChain(String symbol);
 
   /**
    * Provides the ability to lookup symbols for stocks and ETFs.
-   *
+   *f
    * @param matchStr The string being searched for. Partial name of the company for example <em>Bank
    * of Amer</em>
    * @return a LookupResponse

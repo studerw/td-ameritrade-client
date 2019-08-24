@@ -111,7 +111,7 @@ import javax.xml.bind.annotation.XmlType;
     "optionChainResults"
 })
 @XmlRootElement(name = "amtd")
-public class OptionChain {
+public class OptionChain extends BaseTda {
 
   @XmlElement(required = true)
   protected String result;

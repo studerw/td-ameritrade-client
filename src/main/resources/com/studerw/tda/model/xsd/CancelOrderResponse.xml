@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<amtd>
+  <result>OK</result>
+  <cancel-order-messages>
+    <account-id>123456789</account-id>
+    <order>
+      <order-id>2148881399</order-id>
+      <message>The order was submitted for cancellation. Please check its status.</message>
+      <error></error>
+    </order>
+    <order>
+      <order-id>2147949999</order-id>
+      <message></message>
+      <error>The order could not found. Please check its status.</error>
+    </order>
+  </cancel-order-messages>
+</amtd>

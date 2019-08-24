@@ -1,9 +1,10 @@
 package com.studerw.tda.parse;
 
 import com.studerw.tda.model.BalancesAndPositions;
+import com.studerw.tda.model.CancelOrder;
 import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.OptionChain;
-import com.studerw.tda.model.OptionTradeResponse;
+import com.studerw.tda.model.OptionTrade;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
 import com.studerw.tda.model.SymbolLookup;
@@ -49,6 +50,9 @@ public class TdaXmlParser {
       Unmarshaller um = context.createUnmarshaller();
       OrderStatus orderStatus = (OrderStatus) um.unmarshal(in);
       orderStatus.setOriginalXml(xml);
+      if (orderStatus.getResult().equalsIgnoreCase("FAIL")) {
+        orderStatus.setTdaError(true);
+      }
       return orderStatus;
     } catch (Exception e) {
       e.printStackTrace();
@@ -57,12 +61,15 @@ public class TdaXmlParser {
 
   }
 
-  public BalancesAndPositions parseBalances(String xml) {
+  public BalancesAndPositions parseBalancesAndPositions(String xml) {
     try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
       JAXBContext context = JAXBContext.newInstance(BalancesAndPositions.class);
       Unmarshaller um = context.createUnmarshaller();
       BalancesAndPositions balances = (BalancesAndPositions) um.unmarshal(in);
       balances.setOriginalXml(xml);
+      if (balances.getResult().equalsIgnoreCase("FAIL")) {
+        balances.setTdaError(true);
+      }
       return balances;
     } catch (Exception e) {
       e.printStackTrace();
@@ -70,13 +77,16 @@ public class TdaXmlParser {
     }
   }
 
-  public OptionTradeResponse parseOptionTradeResponse(String xml) {
+  public OptionTrade parseOptionTrade(String xml) {
     try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
-      JAXBContext context = JAXBContext.newInstance(OptionTradeResponse.class);
+      JAXBContext context = JAXBContext.newInstance(OptionTrade.class);
       Unmarshaller um = context.createUnmarshaller();
-      OptionTradeResponse optionTradeResponse = (OptionTradeResponse) um.unmarshal(in);
-      optionTradeResponse.setOriginalXml(xml);
-      return optionTradeResponse;
+      OptionTrade optionTrade = (OptionTrade) um.unmarshal(in);
+      optionTrade.setOriginalXml(xml);
+      if (optionTrade.getResult().equalsIgnoreCase("FAIL")) {
+        optionTrade.setTdaError(true);
+      }
+      return optionTrade;
     } catch (Exception e) {
       e.printStackTrace();
       throw new IllegalStateException("Error parsing option trade response");
@@ -89,6 +99,9 @@ public class TdaXmlParser {
       Unmarshaller um = context.createUnmarshaller();
       OptionChain optionChain = (OptionChain) um.unmarshal(in);
       optionChain.setOriginalXml(xml);
+      if (optionChain.getResult().equalsIgnoreCase("FAIL")) {
+        optionChain.setTdaError(true);
+      }
       return optionChain;
     } catch (Exception e) {
       e.printStackTrace();
@@ -121,6 +134,22 @@ public class TdaXmlParser {
     } catch (Exception e) {
       e.printStackTrace();
       throw new IllegalStateException("Error parsing symbolLookupResponse");
+    }
+  }
+
+  public CancelOrder parseCancelOrder(String xml) {
+    try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
+      JAXBContext context = JAXBContext.newInstance(CancelOrder.class);
+      Unmarshaller um = context.createUnmarshaller();
+      final CancelOrder result = (CancelOrder) um.unmarshal(in);
+      result.setOriginalXml(xml);
+      if (result.getResult().equalsIgnoreCase("FAIL")) {
+        result.setTdaError(true);
+      }
+      return result;
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new IllegalStateException("Error parsing CancelOrder");
     }
   }
 

@@ -5,12 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.studerw.tda.model.SymbolLookup;
 import com.studerw.tda.model.SymbolLookup.Result.SymbolResult;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +17,10 @@ public class SymbolLookupTestIT extends BaseTestIT {
 
   @Test
   public void testSymbolLookup() {
-    final SymbolLookup response = httpTdaClient.symbolLookup("bank of");
+    final SymbolLookup response = httpTdaClient.symbolLookup("bank");
     LOGGER.debug(response.toString());
     assertFalse("should be successful result", response.isTdaError());
-    assertTrue(StringUtils
-        .isNotEmpty(response.getResult().getSymbolResults().get(0).getSymbol()));
+    assertTrue(StringUtils.isNotEmpty(response.getResult().getSymbolResults().get(0).getSymbol()));
     for (SymbolResult symbolResult : response.getResult().getSymbolResults()) {
       LOGGER.debug("{} - {}", symbolResult.getSymbol(), symbolResult.getDescription());
     }

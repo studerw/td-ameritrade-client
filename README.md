@@ -49,9 +49,78 @@ mvn failsafe:integration-test
 
 Don't worry - no purchases or transfers (to @studerw's account) will be made :/. Basicallyl we just check login and quote methods only.
 
+## API Completed and TODO
+
+### Authentication
+* Login - DONE
+* Logout - DONE
+* KeepAlive - DONE
+
+### Lookup 
+* Quotes - DONE
+* SymbolLookup - DONE
+* PriceHistory - DONE
+* VolatilityHistory - TODO
+* OptionChain - PARTIAL
+* BinaryOptionChain - TODO
+* BalanceAndPosition - DONE
+* OrderStatus - DONE
+* PriceHistory - DONE
+
+### Newes
+* MarketOverview - TODO
+* News - TODO
+* FullStoryNews - TODO
+* QuoteNews - TODO
+
+### Trading
+* EquityTrade - TODO
+* OptionTrade - TODO
+* EditOrder - TODO
+* CancelOrder - TODO
+
+### Conditional Trading
+* ConditionalEquityTrade - TODO
+* ConditionalOptionTrade - TODO
+
+### Option Trading
+* BuyWriteOptionTrade - TODO
+* SpreadOptionTrade - TODO
+* StraddleOptionTrade - TODO
+* StrangleOptionTrade - TODO
+* ComboOptionTrade - TODO
+* MultiLegOptionTrade - TODO
+
+### Saved Orders
+* SavedOrders - TODO
+* SaveEquityTrade - TODO
+* SaveOptionTrade - TODO
+* DeleteSavedOrders - TODO
+
+### WatchLists
+* GetWatchList - TODO
+* CreateWatchList - TODO
+* EditWatchlist - TODO
+* DeleteWatchList - TODO
+
+### Status
+* BankingStatus - TODO
+* CreateBankTransaction - TODO
+* EditBankTransaction - TODO
+* EditInternalTransaction - TODO
+* DeleteBankTransaction - TODO
+
+### Settings
+* GetWebSettings - TODO
+* EditWebSettings - TODO
+
+### Streaming Data 
+* All - TODO
+* StreamerInfo - TODO
+* MessageKey - TODO
+
 ## Issues / Todo
 * pass around inputstreams instead of XML to parses, and get rid of XML strings stored in POJOs. 
 * Need a validator for PriceHistory
 * converting floats to BigDecimal causes loss of precision
 * javadoc check and see if working correctly with package html
-* Build Amazon API Gateway, S3 bucket Vue.js app for demo purposes

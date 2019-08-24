@@ -12,8 +12,9 @@ public class PriceHistory {
   private boolean error;
   private String errorMsg;
   private List<Result> results;
-  public PriceHistory() {
-  }
+
+  public PriceHistory() {}
+
   public PriceHistory(String errorMsg) {
     this.setError(true);
     this.setErrorMsg(errorMsg);
@@ -42,7 +43,6 @@ public class PriceHistory {
   public void setResults(List<Result> results) {
     this.results = results;
   }
-
 
   public static class Result {
 
@@ -160,8 +160,5 @@ public class PriceHistory {
           .append("volume", volume)
           .append("timestamp", getTimeStampStr()).toString();
     }
-
   }
-
-
 }

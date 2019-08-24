@@ -1108,7 +1108,7 @@ import javax.xml.bind.annotation.XmlType;
     "error"
 })
 @XmlRootElement(name = "amtd")
-public class BalancesAndPositions {
+public class BalancesAndPositions extends BaseTda {
 
   @XmlElement(required = true)
   protected String result;

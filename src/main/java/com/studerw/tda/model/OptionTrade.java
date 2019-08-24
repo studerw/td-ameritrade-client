@@ -114,7 +114,7 @@ import javax.xml.bind.annotation.XmlType;
     "orderWrapper"
 })
 @XmlRootElement(name = "amtd")
-public class OptionTradeResponse {
+public class OptionTrade extends BaseTda {
 
   @XmlElement(required = true)
   protected String result;
@@ -123,7 +123,7 @@ public class OptionTradeResponse {
   protected String originalXml;
 
   @XmlElement(name = "order-wrapper", required = true)
-  protected OptionTradeResponse.OrderWrapper orderWrapper;
+  protected OptionTrade.OrderWrapper orderWrapper;
 
   /**
    * Gets the value of the result property.
@@ -146,18 +146,18 @@ public class OptionTradeResponse {
   /**
    * Gets the value of the orderWrapper property.
    *
-   * @return possible object is {@link OptionTradeResponse.OrderWrapper }
+   * @return possible object is {@link OptionTrade.OrderWrapper }
    */
-  public OptionTradeResponse.OrderWrapper getOrderWrapper() {
+  public OptionTrade.OrderWrapper getOrderWrapper() {
     return orderWrapper;
   }
 
   /**
    * Sets the value of the orderWrapper property.
    *
-   * @param value allowed object is {@link OptionTradeResponse.OrderWrapper }
+   * @param value allowed object is {@link OptionTrade.OrderWrapper }
    */
-  public void setOrderWrapper(OptionTradeResponse.OrderWrapper value) {
+  public void setOrderWrapper(OptionTrade.OrderWrapper value) {
     this.orderWrapper = value;
   }
 
@@ -315,7 +315,7 @@ public class OptionTradeResponse {
      *
      *
      * <p> Objects of the following type(s) are allowed in the list {@link
-     * OptionTradeResponse.OrderWrapper.Order }
+     * OptionTrade.OrderWrapper.Order }
      */
     public List<Order> getOrder() {
       if (order == null) {
@@ -417,7 +417,7 @@ public class OptionTradeResponse {
       @XmlElement(required = true)
       protected String symbol;
       @XmlElement(required = true)
-      protected OptionTradeResponse.OrderWrapper.Order.Security security;
+      protected OptionTrade.OrderWrapper.Order.Security security;
       @XmlElement(required = true)
       protected String quantity;
       @XmlElement(name = "order-id", required = true)
@@ -427,7 +427,7 @@ public class OptionTradeResponse {
       @XmlElement(name = "trade-type", required = true)
       protected String tradeType;
       @XmlElement(name = "requested-destination", required = true)
-      protected OptionTradeResponse.OrderWrapper.Order.RequestedDestination requestedDestination;
+      protected OptionTrade.OrderWrapper.Order.RequestedDestination requestedDestination;
       @XmlElement(name = "routing-display-size", required = true)
       protected String routingDisplaySize;
       @XmlElement(name = "order-type", required = true)
@@ -437,7 +437,7 @@ public class OptionTradeResponse {
       @XmlElement(name = "stop-price", required = true)
       protected String stopPrice;
       @XmlElement(name = "time-in-force", required = true)
-      protected OptionTradeResponse.OrderWrapper.Order.TimeInForce timeInForce;
+      protected OptionTrade.OrderWrapper.Order.TimeInForce timeInForce;
       @XmlElement(name = "put-call", required = true)
       protected String putCall;
       @XmlElement(name = "open-close", required = true)
@@ -482,18 +482,18 @@ public class OptionTradeResponse {
       /**
        * Gets the value of the security property.
        *
-       * @return possible object is {@link OptionTradeResponse.OrderWrapper.Order.Security }
+       * @return possible object is {@link OptionTrade.OrderWrapper.Order.Security }
        */
-      public OptionTradeResponse.OrderWrapper.Order.Security getSecurity() {
+      public OptionTrade.OrderWrapper.Order.Security getSecurity() {
         return security;
       }
 
       /**
        * Sets the value of the security property.
        *
-       * @param value allowed object is {@link OptionTradeResponse.OrderWrapper.Order.Security }
+       * @param value allowed object is {@link OptionTrade.OrderWrapper.Order.Security }
        */
-      public void setSecurity(OptionTradeResponse.OrderWrapper.Order.Security value) {
+      public void setSecurity(OptionTrade.OrderWrapper.Order.Security value) {
         this.security = value;
       }
 
@@ -572,21 +572,21 @@ public class OptionTradeResponse {
       /**
        * Gets the value of the requestedDestination property.
        *
-       * @return possible object is {@link OptionTradeResponse.OrderWrapper.Order.RequestedDestination
+       * @return possible object is {@link OptionTrade.OrderWrapper.Order.RequestedDestination
        * }
        */
-      public OptionTradeResponse.OrderWrapper.Order.RequestedDestination getRequestedDestination() {
+      public OptionTrade.OrderWrapper.Order.RequestedDestination getRequestedDestination() {
         return requestedDestination;
       }
 
       /**
        * Sets the value of the requestedDestination property.
        *
-       * @param value allowed object is {@link OptionTradeResponse.OrderWrapper.Order.RequestedDestination
+       * @param value allowed object is {@link OptionTrade.OrderWrapper.Order.RequestedDestination
        * }
        */
       public void setRequestedDestination(
-          OptionTradeResponse.OrderWrapper.Order.RequestedDestination value) {
+          OptionTrade.OrderWrapper.Order.RequestedDestination value) {
         this.requestedDestination = value;
       }
 
@@ -665,18 +665,18 @@ public class OptionTradeResponse {
       /**
        * Gets the value of the timeInForce property.
        *
-       * @return possible object is {@link OptionTradeResponse.OrderWrapper.Order.TimeInForce }
+       * @return possible object is {@link OptionTrade.OrderWrapper.Order.TimeInForce }
        */
-      public OptionTradeResponse.OrderWrapper.Order.TimeInForce getTimeInForce() {
+      public OptionTrade.OrderWrapper.Order.TimeInForce getTimeInForce() {
         return timeInForce;
       }
 
       /**
        * Sets the value of the timeInForce property.
        *
-       * @param value allowed object is {@link OptionTradeResponse.OrderWrapper.Order.TimeInForce }
+       * @param value allowed object is {@link OptionTrade.OrderWrapper.Order.TimeInForce }
        */
-      public void setTimeInForce(OptionTradeResponse.OrderWrapper.Order.TimeInForce value) {
+      public void setTimeInForce(OptionTrade.OrderWrapper.Order.TimeInForce value) {
         this.timeInForce = value;
       }
 
