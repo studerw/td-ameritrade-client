@@ -1,7 +1,8 @@
 package com.studerw.tda;
 
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -15,15 +16,21 @@ public class SomeTest {
   private static final Logger LOGGER = LoggerFactory.getLogger(SomeTest.class);
 
   @Test
-  public void doTest() {
-    LOGGER.debug("Testing someTest...");
-    assertTrue("should be true", true);
+  public void testUnicodeByteToStr(){
+    byte[] bytes = "T".getBytes();
+    assertThat(bytes.length == 1).isTrue();
+    LOGGER.debug(Arrays.toString(bytes));
   }
 
   @Test
-  public void testUnicodeByteToStr(){
-    byte[] bytes = "T".getBytes();
-    assertTrue("There is no null terminator", bytes.length == 1);
-    LOGGER.debug(Arrays.toString(bytes));
+  public void BigDecimalTest(){
+    BigDecimal b = new BigDecimal("-23.52");
+    assertThat(b.longValue()).isLessThan(0);
+    LOGGER.debug(b.toString());
+
+    BigDecimal b2 = new BigDecimal("+23.52");
+    assertThat(b2.longValue()).isGreaterThan(0);
+    LOGGER.debug(b2.toString());
+
   }
 }

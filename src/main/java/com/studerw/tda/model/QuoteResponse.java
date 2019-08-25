@@ -1,5 +1,7 @@
 package com.studerw.tda.model;
 
+import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -131,30 +133,30 @@ public class QuoteResponse extends BaseTda {
       protected String error;
       protected String symbol;
       protected String description;
-      protected String bid;
-      protected String ask;
+      protected BigDecimal bid;
+      protected BigDecimal ask;
       @XmlElement(name = "bid-ask-size")
       protected String bidAskSize;
-      protected String last;
+      protected BigDecimal last;
       @XmlElement(name = "last-trade-size")
-      protected String lastTradeSize;
+      protected Integer lastTradeSize;
       @XmlElement(name = "last-trade-date")
-      protected String lastTradeDate;
-      protected String open;
-      protected String high;
-      protected String low;
-      protected String close;
-      protected String volume;
+      protected ZonedDateTime lastTradeDate;
+      protected BigDecimal open;
+      protected BigDecimal high;
+      protected BigDecimal low;
+      protected BigDecimal close;
+      protected Integer volume;
       @XmlElement(name = "year-high")
-      protected String yearHigh;
+      protected BigDecimal yearHigh;
       @XmlElement(name = "year-low")
-      protected String yearLow;
+      protected BigDecimal yearLow;
       @XmlElement(name = "real-time")
-      protected String realTime;
+      protected Boolean realTime;
       protected String exchange;
       @XmlElement(name = "asset-type")
       protected String assetType;
-      protected String change;
+      protected BigDecimal change;
       @XmlElement(name = "change-percent")
       protected String changePercent;
       protected String nav;
@@ -173,18 +175,18 @@ public class QuoteResponse extends BaseTda {
       protected String underlyingSymbol;
       @XmlElement(name = "put-call")
       protected String putCall;
-      protected String delta;
-      protected String gamma;
-      protected String theta;
-      protected String vega;
-      protected String rho;
+      protected Double delta;
+      protected Double gamma;
+      protected Double theta;
+      protected Double vega;
+      protected Double rho;
       @XmlElement(name = "implied-volatility")
-      protected String impliedVolatility;
+      protected Double impliedVolatility;
       @XmlElement(name = "days-to-expiration")
-      protected String daysToExpiration;
+      protected Integer daysToExpiration;
       @XmlElement(name = "time-value-index")
-      protected String timeValueIndex;
-      protected String multiplier;
+      protected Double timeValueIndex;
+      protected BigDecimal multiplier;
 
       public String getError() {
         return error;
@@ -210,19 +212,19 @@ public class QuoteResponse extends BaseTda {
         this.description = value;
       }
 
-      public String getBid() {
+      public BigDecimal getBid() {
         return bid;
       }
 
-      public void setBid(String value) {
+      public void setBid(BigDecimal value) {
         this.bid = value;
       }
 
-      public String getAsk() {
+      public BigDecimal getAsk() {
         return ask;
       }
 
-      public void setAsk(String value) {
+      public void setAsk(BigDecimal value) {
         this.ask = value;
       }
 
@@ -234,91 +236,91 @@ public class QuoteResponse extends BaseTda {
         this.bidAskSize = value;
       }
 
-      public String getLast() {
+      public BigDecimal getLast() {
         return last;
       }
 
-      public void setLast(String value) {
+      public void setLast(BigDecimal value) {
         this.last = value;
       }
 
-      public String getLastTradeSize() {
+      public Integer getLastTradeSize() {
         return lastTradeSize;
       }
 
-      public void setLastTradeSize(String value) {
+      public void setLastTradeSize(Integer value) {
         this.lastTradeSize = value;
       }
 
-      public String getLastTradeDate() {
+      public ZonedDateTime getLastTradeDate() {
         return lastTradeDate;
       }
 
-      public void setLastTradeDate(String value) {
+      public void setLastTradeDate(ZonedDateTime value) {
         this.lastTradeDate = value;
       }
 
-      public String getOpen() {
+      public BigDecimal getOpen() {
         return open;
       }
 
-      public void setOpen(String value) {
+      public void setOpen(BigDecimal value) {
         this.open = value;
       }
 
-      public String getHigh() {
+      public BigDecimal getHigh() {
         return high;
       }
 
-      public void setHigh(String value) {
+      public void setHigh(BigDecimal value) {
         this.high = value;
       }
 
-      public String getLow() {
+      public BigDecimal getLow() {
         return low;
       }
 
-      public void setLow(String value) {
+      public void setLow(BigDecimal value) {
         this.low = value;
       }
 
-      public String getClose() {
+      public BigDecimal getClose() {
         return close;
       }
 
-      public void setClose(String value) {
+      public void setClose(BigDecimal value) {
         this.close = value;
       }
 
-      public String getVolume() {
+      public Integer getVolume() {
         return volume;
       }
 
-      public void setVolume(String value) {
+      public void setVolume(Integer value) {
         this.volume = value;
       }
 
-      public String getYearHigh() {
+      public BigDecimal getYearHigh() {
         return yearHigh;
       }
 
-      public void setYearHigh(String value) {
+      public void setYearHigh(BigDecimal value) {
         this.yearHigh = value;
       }
 
-      public String getYearLow() {
+      public BigDecimal getYearLow() {
         return yearLow;
       }
 
-      public void setYearLow(String value) {
+      public void setYearLow(BigDecimal value) {
         this.yearLow = value;
       }
 
-      public String getRealTime() {
+      public Boolean getRealTime() {
         return realTime;
       }
 
-      public void setRealTime(String value) {
+      public void setRealTime(Boolean value) {
         this.realTime = value;
       }
 
@@ -338,11 +340,11 @@ public class QuoteResponse extends BaseTda {
         this.assetType = value;
       }
 
-      public String getChange() {
+      public BigDecimal getChange() {
         return change;
       }
 
-      public void setChange(String value) {
+      public void setChange(BigDecimal value) {
         this.change = value;
       }
 
@@ -426,75 +428,75 @@ public class QuoteResponse extends BaseTda {
         this.putCall = value;
       }
 
-      public String getDelta() {
+      public Double getDelta() {
         return delta;
       }
 
-      public void setDelta(String value) {
+      public void setDelta(Double value) {
         this.delta = value;
       }
 
-      public String getGamma() {
+      public Double getGamma() {
         return gamma;
       }
 
-      public void setGamma(String value) {
+      public void setGamma(Double value) {
         this.gamma = value;
       }
 
-      public String getTheta() {
+      public Double getTheta() {
         return theta;
       }
 
-      public void setTheta(String value) {
+      public void setTheta(Double value) {
         this.theta = value;
       }
 
-      public String getVega() {
+      public Double getVega() {
         return vega;
       }
 
-      public void setVega(String value) {
+      public void setVega(Double value) {
         this.vega = value;
       }
 
-      public String getRho() {
+      public Double getRho() {
         return rho;
       }
 
-      public void setRho(String value) {
+      public void setRho(Double value) {
         this.rho = value;
       }
 
-      public String getImpliedVolatility() {
+      public Double getImpliedVolatility() {
         return impliedVolatility;
       }
 
-      public void setImpliedVolatility(String value) {
+      public void setImpliedVolatility(Double value) {
         this.impliedVolatility = value;
       }
 
-      public String getDaysToExpiration() {
+      public Integer getDaysToExpiration() {
         return daysToExpiration;
       }
 
-      public void setDaysToExpiration(String value) {
+      public void setDaysToExpiration(Integer value) {
         this.daysToExpiration = value;
       }
 
-      public String getTimeValueIndex() {
+      public Double getTimeValueIndex() {
         return timeValueIndex;
       }
 
-      public void setTimeValueIndex(String value) {
+      public void setTimeValueIndex(Double value) {
         this.timeValueIndex = value;
       }
 
-      public String getMultiplier() {
+      public BigDecimal getMultiplier() {
         return multiplier;
       }
 
-      public void setMultiplier(String value) {
+      public void setMultiplier(BigDecimal value) {
         this.multiplier = value;
       }
 

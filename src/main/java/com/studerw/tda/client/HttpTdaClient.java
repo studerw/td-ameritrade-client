@@ -5,6 +5,7 @@ import com.studerw.tda.http.cookie.CookieJarImpl;
 import com.studerw.tda.http.cookie.store.MemoryCookieStore;
 import com.studerw.tda.model.BalancesAndPositions;
 import com.studerw.tda.model.CancelOrder;
+import com.studerw.tda.model.LastOrderStatus;
 import com.studerw.tda.model.Login;
 import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.OptionChain;
@@ -31,6 +32,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This is a thread safe class. But only one client should be instantiated for each session.
+ */
 public class HttpTdaClient implements TdaClient {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpTdaClient.class);
@@ -43,17 +47,24 @@ public class HttpTdaClient implements TdaClient {
   protected Properties tdProperties;
   protected Login currentLogin;
 
+
   /**
+   * Create a new client explicitly setting the source which is obtained from TDA apparently.
+   *
    * @param user TDA user account name
    * @param password TDA user account password
+   * @param source given out by TDA
    */
-  public HttpTdaClient(String user, byte[] password) {
-    LOGGER.info("Initiating HttpTdaClient...");
+  public HttpTdaClient(String user, byte[] password, String source) {
+    LOGGER.info("Initiating HttpTdaClient for user: ...", user);
     this.tdaXmlParser = new TdaXmlParser();
     this.tdaBinaryParser = new TdaBinaryParser();
     this.user = user;
     this.password = password;
     initTdaProps();
+    if (StringUtils.isNotEmpty(source)) {
+      this.tdProperties.setProperty("tda.source", source);
+    }
     httpClient = new OkHttpClient.Builder().
         cookieJar(new CookieJarImpl(new MemoryCookieStore())).
         addInterceptor(new TdaLoginInterceptor(this, tdProperties)).
@@ -65,6 +76,16 @@ public class HttpTdaClient implements TdaClient {
 
 //        this.currentLogin = this.doLogin();
 //        LOGGER.info("Logged in with account: {}", currentLogin.getXmlLogIn().getAssociatedAccountId());
+  }
+
+  /**
+   * Create a new client using default version, source, etc.
+   *
+   * @param user TDA user account name
+   * @param password TDA user account password
+   */
+  public HttpTdaClient(String user, byte[] password) {
+    this(user, password, null);
   }
 
   protected HttpUrl baseUrl() {
@@ -205,6 +226,19 @@ public class HttpTdaClient implements TdaClient {
   }
 
   @Override
+  public LastOrderStatus fetchLastOrderStatus() {
+    HttpUrl url = baseUrl().newBuilder().addPathSegments("100/LastOrderStatus")
+        .addQueryParameter("source", tdProperties.getProperty("tda.source"))
+        .build();
+    Request request = new Request.Builder().url(url).build();
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      return tdaXmlParser.parseLastOrderStatus(response.body().string());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
   public String keepAlive() {
     HttpUrl url = baseUrl().newBuilder().addPathSegment("KeepAlive")
         .addQueryParameter("source", tdProperties.getProperty("tda.source"))
@@ -269,50 +303,84 @@ public class HttpTdaClient implements TdaClient {
 
   @Override
   public byte[] priceHistoryBytes(List<String> symbols, IntervalType intervalType,
-    Integer intervalDuration, PeriodType periodType, Integer period, LocalDate startDate,
-        LocalDate endDate, Boolean extended){
-      LOGGER.debug("Fetching priceHistoryBytes: {}", symbols);
-      DateTimeFormatter fmt = DateTimeFormatter.BASIC_ISO_DATE;
-      Builder builder = baseUrl().newBuilder().addPathSegments("100/PriceHistory")
-          .addQueryParameter("source", tdProperties.getProperty("tda.source"))
-          .addQueryParameter("requestidentifiertype", "SYMBOL")
-          .addQueryParameter("requestvalue", StringUtils.join(symbols, ", "))
-          .addQueryParameter("intervaltype", intervalType.name())
-          .addQueryParameter("intervalduration", String.valueOf(intervalDuration))
-          .addQueryParameter("extended",
-              extended == null ? Boolean.FALSE.toString() : String.valueOf(extended));
+      Integer intervalDuration, PeriodType periodType, Integer period, LocalDate startDate,
+      LocalDate endDate, Boolean extended) {
+    LOGGER.debug("Fetching priceHistoryBytes: {}", symbols);
+    DateTimeFormatter fmt = DateTimeFormatter.BASIC_ISO_DATE;
+    Builder builder = baseUrl().newBuilder().addPathSegments("100/PriceHistory")
+        .addQueryParameter("source", tdProperties.getProperty("tda.source"))
+        .addQueryParameter("requestidentifiertype", "SYMBOL")
+        .addQueryParameter("requestvalue", StringUtils.join(symbols, ", "))
+        .addQueryParameter("intervaltype", intervalType.name())
+        .addQueryParameter("intervalduration", String.valueOf(intervalDuration))
+        .addQueryParameter("extended",
+            extended == null ? Boolean.FALSE.toString() : String.valueOf(extended));
 
-      if (period != null) {
-        builder.addQueryParameter("period", period.toString());
-      }
-      if (periodType != null) {
-        builder.addQueryParameter("periodtype", periodType.name());
-      }
-      if (startDate != null) {
-        builder.addQueryParameter("startdate", startDate.format(fmt));
-      }
-      if (endDate != null) {
-        builder.addQueryParameter("enddate", endDate.format(fmt));
-      }
-
-      HttpUrl url = builder.build();
-      Request request = new Request.Builder().url(url).build();
-      try (Response response = this.httpClient.newCall(request).execute()) {
-        return response.body().bytes();
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-
+    if (period != null) {
+      builder.addQueryParameter("period", period.toString());
+    }
+    if (periodType != null) {
+      builder.addQueryParameter("periodtype", periodType.name());
+    }
+    if (startDate != null) {
+      builder.addQueryParameter("startdate", startDate.format(fmt));
+    }
+    if (endDate != null) {
+      builder.addQueryParameter("enddate", endDate.format(fmt));
     }
 
-    private void initTdaProps () {
-      try (InputStream in = getClass().getClassLoader()
-          .getResourceAsStream("com/studerw/tda/tda-api.properties")) {
-        tdProperties = new Properties();
-        tdProperties.load(in);
-      } catch (IOException e) {
-        throw new IllegalStateException(
-            "Could not load default properties from com.studerw.tda.tda-api.properties in classpath");
-      }
+    HttpUrl url = builder.build();
+    Request request = new Request.Builder().url(url).build();
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      return response.body().bytes();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+  }
+
+//  @Override
+//  public OptionTradeResponse buyOption(OptionOrder optionOrder, String accountId) {
+//    LOGGER.debug("Buying option[accountId={}]: {}", accountId, optionOrder.toString());
+//
+//    List<String> orderParams = new ArrayList<>();
+//    orderParams.add("accountid=" + accountId);
+//    orderParams.add("action=buytoopen");
+//    orderParams.add("expire=day");
+//    orderParams.add("quantity=" + optionOrder.getQuantity());
+//    orderParams.add("symbol=" + optionOrder.getTdaTicker());
+//    orderParams.add("ordtype=" + (optionOrder.getLimit() != null ? "limit" : "market"));
+//    if (optionOrder.getLimit() != null) {
+//      orderParams.add("price=" + optionOrder.getLimit().toString());
+//    }
+//
+//    HttpUrl url = baseUrl().newBuilder().addPathSegments("100/OptionTrade")
+//        .addQueryParameter("source", env.getRequiredProperty("ameritrade.source"))
+//        .addQueryParameter("orderstring", StringUtils.join(orderParams, "~"))
+//        .build();
+//
+//    Request request = new Request.Builder().url(url).build();
+//    if (isMockProfile(env)) {
+//      LOGGER.warn("'mock' profile is on - not making actual buy order)");
+//      return getMockTradeResponse(request);
+//    }
+//    try (Response response = this.httpClient.newCall(request).execute()) {
+//      final String xml = response.body().string();
+//      final OptionTradeResponse optionTradeResponse= parseOptionTradeResponse(xml);
+//      return optionTradeResponse;
+//    } catch (IOException e) {
+//      throw new RuntimeException(e);
+//    }
+//  }
+
+  private void initTdaProps() {
+    try (InputStream in = getClass().getClassLoader()
+        .getResourceAsStream("com/studerw/tda/tda-api.properties")) {
+      tdProperties = new Properties();
+      tdProperties.load(in);
+    } catch (IOException e) {
+      throw new IllegalStateException(
+          "Could not load default properties from com.studerw.tda.tda-api.properties in classpath");
     }
   }
+}

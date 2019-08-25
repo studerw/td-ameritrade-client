@@ -2,6 +2,7 @@ package com.studerw.tda.parse;
 
 import com.studerw.tda.model.BalancesAndPositions;
 import com.studerw.tda.model.CancelOrder;
+import com.studerw.tda.model.LastOrderStatus;
 import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OptionTrade;
@@ -163,6 +164,22 @@ public class TdaXmlParser {
         quoteResponse.setTdaError(true);
       }
       return quoteResponse;
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new IllegalStateException("Error parsing QuoteResponse");
+    }
+  }
+
+  public LastOrderStatus parseLastOrderStatus(String xml) {
+    try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
+      JAXBContext context = JAXBContext.newInstance(LastOrderStatus.class);
+      Unmarshaller um = context.createUnmarshaller();
+      LastOrderStatus lastOrderStatus = (LastOrderStatus) um.unmarshal(in);
+      lastOrderStatus.setOriginalXml(xml);
+      if (lastOrderStatus.getResult().equalsIgnoreCase("FAIL")) {
+        lastOrderStatus.setTdaError(true);
+      }
+      return lastOrderStatus;
     } catch (Exception e) {
       e.printStackTrace();
       throw new IllegalStateException("Error parsing QuoteResponse");

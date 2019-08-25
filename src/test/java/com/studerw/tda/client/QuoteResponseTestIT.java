@@ -52,7 +52,7 @@ public class QuoteResponseTestIT extends BaseTestIT {
   //These will eventually expire and be invalid
   @Test
   public void testOptionQuote() {
-    List<String> options = Arrays.asList("MNST_061518C60", "MNST_061518P60");
+    List<String> options = Arrays.asList("MSFT_061821C120", "MNST_011521P45");
     final QuoteResponse response = httpTdaClient.fetchQuotes(options);
     LOGGER.debug(response.toString());
     assertFalse("should be successful result", response.isTdaError());

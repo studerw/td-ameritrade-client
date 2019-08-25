@@ -1,5 +1,6 @@
 package com.studerw.tda.model;
 
+import java.time.ZonedDateTime;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -77,7 +78,7 @@ import javax.xml.bind.annotation.XmlType;
  *                                               &lt;sequence>
  *                                                 &lt;element name="express-trading"
  * type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                                                 &lt;element name="optionOrder-direct-routing"
+ *                                                 &lt;element name="option-direct-routing"
  * type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                                                 &lt;element name="stock-direct-routing"
  * type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -97,7 +98,7 @@ import javax.xml.bind.annotation.XmlType;
  * type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                                                 &lt;element name="stock-tax-lot-method"
  * type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                                                 &lt;element name="optionOrder-tax-lot-method"
+ *                                                 &lt;element name="option-tax-lot-method"
  * type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                                                 &lt;element name="mutual-fund-tax-lot-method"
  * type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -123,7 +124,7 @@ import javax.xml.bind.annotation.XmlType;
  * type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                                                 &lt;element name="streaming-news"
  * type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                                                 &lt;element name="optionOrder-trading"
+ *                                                 &lt;element name="option-trading"
  * type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                                                 &lt;element name="streamer"
  * type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -288,7 +289,7 @@ public class Login extends BaseTda {
    *                                     &lt;sequence>
    *                                       &lt;element name="express-trading"
    * type="{http://www.w3.org/2001/XMLSchema}string"/>
-   *                                       &lt;element name="optionOrder-direct-routing"
+   *                                       &lt;element name="option-direct-routing"
    * type="{http://www.w3.org/2001/XMLSchema}string"/>
    *                                       &lt;element name="stock-direct-routing"
    * type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -308,7 +309,7 @@ public class Login extends BaseTda {
    * type="{http://www.w3.org/2001/XMLSchema}string"/>
    *                                       &lt;element name="stock-tax-lot-method"
    * type="{http://www.w3.org/2001/XMLSchema}string"/>
-   *                                       &lt;element name="optionOrder-tax-lot-method"
+   *                                       &lt;element name="option-tax-lot-method"
    * type="{http://www.w3.org/2001/XMLSchema}string"/>
    *                                       &lt;element name="mutual-fund-tax-lot-method"
    * type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -332,7 +333,7 @@ public class Login extends BaseTda {
    * type="{http://www.w3.org/2001/XMLSchema}string"/>
    *                                       &lt;element name="streaming-news"
    * type="{http://www.w3.org/2001/XMLSchema}string"/>
-   *                                       &lt;element name="optionOrder-trading"
+   *                                       &lt;element name="option-trading"
    * type="{http://www.w3.org/2001/XMLSchema}string"/>
    *                                       &lt;element name="streamer"
    * type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -387,9 +388,9 @@ public class Login extends BaseTda {
     @XmlElement(required = true)
     protected String cdi;
     @XmlElement(required = true)
-    protected String timeout;
+    protected Integer timeout;
     @XmlElement(name = "login-time", required = true)
-    protected String loginTime;
+    protected ZonedDateTime loginTime;
     @XmlElement(name = "associated-account-id", required = true)
     protected String associatedAccountId;
     @XmlElement(name = "nyse-quotes", required = true)
@@ -472,7 +473,7 @@ public class Login extends BaseTda {
      *
      * @return possible object is {@link String }
      */
-    public String getTimeout() {
+    public Integer getTimeout() {
       return timeout;
     }
 
@@ -481,7 +482,7 @@ public class Login extends BaseTda {
      *
      * @param value allowed object is {@link String }
      */
-    public void setTimeout(String value) {
+    public void setTimeout(Integer value) {
       this.timeout = value;
     }
 
@@ -490,7 +491,7 @@ public class Login extends BaseTda {
      *
      * @return possible object is {@link String }
      */
-    public String getLoginTime() {
+    public ZonedDateTime getLoginTime() {
       return loginTime;
     }
 
@@ -499,7 +500,7 @@ public class Login extends BaseTda {
      *
      * @param value allowed object is {@link String }
      */
-    public void setLoginTime(String value) {
+    public void setLoginTime(ZonedDateTime value) {
       this.loginTime = value;
     }
 
@@ -731,7 +732,7 @@ public class Login extends BaseTda {
      *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *                           &lt;sequence>
      *                             &lt;element name="express-trading" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *                             &lt;element name="optionOrder-direct-routing"
+     *                             &lt;element name="option-direct-routing"
      * type="{http://www.w3.org/2001/XMLSchema}string"/>
      *                             &lt;element name="stock-direct-routing"
      * type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -751,7 +752,7 @@ public class Login extends BaseTda {
      * type="{http://www.w3.org/2001/XMLSchema}string"/>
      *                             &lt;element name="stock-tax-lot-method"
      * type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *                             &lt;element name="optionOrder-tax-lot-method"
+     *                             &lt;element name="option-tax-lot-method"
      * type="{http://www.w3.org/2001/XMLSchema}string"/>
      *                             &lt;element name="mutual-fund-tax-lot-method"
      * type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -772,7 +773,7 @@ public class Login extends BaseTda {
      *                             &lt;element name="stock-trading" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *                             &lt;element name="margin-trading" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *                             &lt;element name="streaming-news" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *                             &lt;element name="optionOrder-trading"
+     *                             &lt;element name="option-trading"
      * type="{http://www.w3.org/2001/XMLSchema}string"/>
      *                             &lt;element name="streamer" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *                             &lt;element name="advanced-margin" type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -845,7 +846,7 @@ public class Login extends BaseTda {
        *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
        *                 &lt;sequence>
        *                   &lt;element name="express-trading" type="{http://www.w3.org/2001/XMLSchema}string"/>
-       *                   &lt;element name="optionOrder-direct-routing"
+       *                   &lt;element name="option-direct-routing"
        * type="{http://www.w3.org/2001/XMLSchema}string"/>
        *                   &lt;element name="stock-direct-routing" type="{http://www.w3.org/2001/XMLSchema}string"/>
        *                   &lt;element name="default-stock-action" type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -860,7 +861,7 @@ public class Login extends BaseTda {
        *                   &lt;element name="default-stock-display-size"
        * type="{http://www.w3.org/2001/XMLSchema}string"/>
        *                   &lt;element name="stock-tax-lot-method" type="{http://www.w3.org/2001/XMLSchema}string"/>
-       *                   &lt;element name="optionOrder-tax-lot-method"
+       *                   &lt;element name="option-tax-lot-method"
        * type="{http://www.w3.org/2001/XMLSchema}string"/>
        *                   &lt;element name="mutual-fund-tax-lot-method"
        * type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -881,7 +882,7 @@ public class Login extends BaseTda {
        *                   &lt;element name="stock-trading" type="{http://www.w3.org/2001/XMLSchema}string"/>
        *                   &lt;element name="margin-trading" type="{http://www.w3.org/2001/XMLSchema}string"/>
        *                   &lt;element name="streaming-news" type="{http://www.w3.org/2001/XMLSchema}string"/>
-       *                   &lt;element name="optionOrder-trading" type="{http://www.w3.org/2001/XMLSchema}string"/>
+       *                   &lt;element name="option-trading" type="{http://www.w3.org/2001/XMLSchema}string"/>
        *                   &lt;element name="streamer" type="{http://www.w3.org/2001/XMLSchema}string"/>
        *                   &lt;element name="advanced-margin" type="{http://www.w3.org/2001/XMLSchema}string"/>
        *                 &lt;/sequence>
@@ -919,13 +920,13 @@ public class Login extends BaseTda {
         @XmlElement(required = true)
         protected String description;
         @XmlElement(name = "associated-account", required = true)
-        protected String associatedAccount;
+        protected Boolean associatedAccount;
         @XmlElement(required = true)
         protected String company;
         @XmlElement(required = true)
         protected String segment;
         @XmlElement(required = true)
-        protected String unified;
+        protected Boolean unified;
         @XmlElement(required = true)
         protected Login.XmlLogIn.Accounts.Account.Preferences preferences;
         @XmlElement(required = true)
@@ -1008,7 +1009,7 @@ public class Login extends BaseTda {
          *
          * @return possible object is {@link String }
          */
-        public String getAssociatedAccount() {
+        public Boolean getAssociatedAccount() {
           return associatedAccount;
         }
 
@@ -1017,7 +1018,7 @@ public class Login extends BaseTda {
          *
          * @param value allowed object is {@link String }
          */
-        public void setAssociatedAccount(String value) {
+        public void setAssociatedAccount(Boolean value) {
           this.associatedAccount = value;
         }
 
@@ -1062,7 +1063,7 @@ public class Login extends BaseTda {
          *
          * @return possible object is {@link String }
          */
-        public String getUnified() {
+        public Boolean getUnified() {
           return unified;
         }
 
@@ -1071,7 +1072,7 @@ public class Login extends BaseTda {
          *
          * @param value allowed object is {@link String }
          */
-        public void setUnified(String value) {
+        public void setUnified(Boolean value) {
           this.unified = value;
         }
 
@@ -1128,7 +1129,7 @@ public class Login extends BaseTda {
          *         &lt;element name="stock-trading" type="{http://www.w3.org/2001/XMLSchema}string"/>
          *         &lt;element name="margin-trading" type="{http://www.w3.org/2001/XMLSchema}string"/>
          *         &lt;element name="streaming-news" type="{http://www.w3.org/2001/XMLSchema}string"/>
-         *         &lt;element name="optionOrder-trading" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *         &lt;element name="option-trading" type="{http://www.w3.org/2001/XMLSchema}string"/>
          *         &lt;element name="streamer" type="{http://www.w3.org/2001/XMLSchema}string"/>
          *         &lt;element name="advanced-margin" type="{http://www.w3.org/2001/XMLSchema}string"/>
          *       &lt;/sequence>
@@ -1144,35 +1145,35 @@ public class Login extends BaseTda {
             "stockTrading",
             "marginTrading",
             "streamingNews",
-            "optionOrderTrading",
+            "optionTrading",
             "streamer",
             "advancedMargin"
         })
         public static class Authorizations {
 
           @XmlElement(required = true)
-          protected String apex;
+          protected Boolean apex;
           @XmlElement(required = true)
-          protected String level2;
+          protected Boolean level2;
           @XmlElement(name = "stock-trading", required = true)
-          protected String stockTrading;
+          protected Boolean stockTrading;
           @XmlElement(name = "margin-trading", required = true)
-          protected String marginTrading;
+          protected Boolean marginTrading;
           @XmlElement(name = "streaming-news", required = true)
-          protected String streamingNews;
-          @XmlElement(name = "optionOrder-trading", required = true)
-          protected String optionOrderTrading;
+          protected Boolean streamingNews;
+          @XmlElement(name = "option-trading", required = true)
+          protected String optionTrading;
           @XmlElement(required = true)
-          protected String streamer;
+          protected Boolean streamer;
           @XmlElement(name = "advanced-margin", required = true)
-          protected String advancedMargin;
+          protected Boolean advancedMargin;
 
           /**
            * Gets the value of the apex property.
            *
            * @return possible object is {@link String }
            */
-          public String getApex() {
+          public Boolean getApex() {
             return apex;
           }
 
@@ -1181,7 +1182,7 @@ public class Login extends BaseTda {
            *
            * @param value allowed object is {@link String }
            */
-          public void setApex(String value) {
+          public void setApex(Boolean value) {
             this.apex = value;
           }
 
@@ -1190,7 +1191,7 @@ public class Login extends BaseTda {
            *
            * @return possible object is {@link String }
            */
-          public String getLevel2() {
+          public Boolean getLevel2() {
             return level2;
           }
 
@@ -1199,7 +1200,7 @@ public class Login extends BaseTda {
            *
            * @param value allowed object is {@link String }
            */
-          public void setLevel2(String value) {
+          public void setLevel2(Boolean value) {
             this.level2 = value;
           }
 
@@ -1208,7 +1209,7 @@ public class Login extends BaseTda {
            *
            * @return possible object is {@link String }
            */
-          public String getStockTrading() {
+          public Boolean getStockTrading() {
             return stockTrading;
           }
 
@@ -1217,7 +1218,7 @@ public class Login extends BaseTda {
            *
            * @param value allowed object is {@link String }
            */
-          public void setStockTrading(String value) {
+          public void setStockTrading(Boolean value) {
             this.stockTrading = value;
           }
 
@@ -1226,7 +1227,7 @@ public class Login extends BaseTda {
            *
            * @return possible object is {@link String }
            */
-          public String getMarginTrading() {
+          public Boolean getMarginTrading() {
             return marginTrading;
           }
 
@@ -1235,7 +1236,7 @@ public class Login extends BaseTda {
            *
            * @param value allowed object is {@link String }
            */
-          public void setMarginTrading(String value) {
+          public void setMarginTrading(Boolean value) {
             this.marginTrading = value;
           }
 
@@ -1244,7 +1245,7 @@ public class Login extends BaseTda {
            *
            * @return possible object is {@link String }
            */
-          public String getStreamingNews() {
+          public Boolean getStreamingNews() {
             return streamingNews;
           }
 
@@ -1253,26 +1254,26 @@ public class Login extends BaseTda {
            *
            * @param value allowed object is {@link String }
            */
-          public void setStreamingNews(String value) {
+          public void setStreamingNews(Boolean value) {
             this.streamingNews = value;
           }
 
           /**
-           * Gets the value of the optionOrderTrading property.
+           * Gets the value of the optionTrading property.
            *
            * @return possible object is {@link String }
            */
-          public String getOptionOrderTrading() {
-            return optionOrderTrading;
+          public String getOptionTrading() {
+            return optionTrading;
           }
 
           /**
-           * Sets the value of the optionOrderTrading property.
+           * Sets the value of the optionTrading property.
            *
            * @param value allowed object is {@link String }
            */
-          public void setOptionOrderTrading(String value) {
-            this.optionOrderTrading = value;
+          public void setOptionTrading(String value) {
+            this.optionTrading = value;
           }
 
           /**
@@ -1280,7 +1281,7 @@ public class Login extends BaseTda {
            *
            * @return possible object is {@link String }
            */
-          public String getStreamer() {
+          public Boolean getStreamer() {
             return streamer;
           }
 
@@ -1289,7 +1290,7 @@ public class Login extends BaseTda {
            *
            * @param value allowed object is {@link String }
            */
-          public void setStreamer(String value) {
+          public void setStreamer(Boolean value) {
             this.streamer = value;
           }
 
@@ -1298,7 +1299,7 @@ public class Login extends BaseTda {
            *
            * @return possible object is {@link String }
            */
-          public String getAdvancedMargin() {
+          public Boolean getAdvancedMargin() {
             return advancedMargin;
           }
 
@@ -1307,7 +1308,7 @@ public class Login extends BaseTda {
            *
            * @param value allowed object is {@link String }
            */
-          public void setAdvancedMargin(String value) {
+          public void setAdvancedMargin(Boolean value) {
             this.advancedMargin = value;
           }
 
@@ -1326,7 +1327,7 @@ public class Login extends BaseTda {
          *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
          *       &lt;sequence>
          *         &lt;element name="express-trading" type="{http://www.w3.org/2001/XMLSchema}string"/>
-         *         &lt;element name="optionOrder-direct-routing" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *         &lt;element name="option-direct-routing" type="{http://www.w3.org/2001/XMLSchema}string"/>
          *         &lt;element name="stock-direct-routing" type="{http://www.w3.org/2001/XMLSchema}string"/>
          *         &lt;element name="default-stock-action" type="{http://www.w3.org/2001/XMLSchema}string"/>
          *         &lt;element name="default-stock-order-type" type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -1337,7 +1338,7 @@ public class Login extends BaseTda {
          *         &lt;element name="default-stock-routing" type="{http://www.w3.org/2001/XMLSchema}string"/>
          *         &lt;element name="default-stock-display-size" type="{http://www.w3.org/2001/XMLSchema}string"/>
          *         &lt;element name="stock-tax-lot-method" type="{http://www.w3.org/2001/XMLSchema}string"/>
-         *         &lt;element name="optionOrder-tax-lot-method" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *         &lt;element name="option-tax-lot-method" type="{http://www.w3.org/2001/XMLSchema}string"/>
          *         &lt;element name="mutual-fund-tax-lot-method" type="{http://www.w3.org/2001/XMLSchema}string"/>
          *         &lt;element name="default-advanced-tool-launch" type="{http://www.w3.org/2001/XMLSchema}string"/>
          *       &lt;/sequence>
@@ -1349,7 +1350,7 @@ public class Login extends BaseTda {
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = {
             "expressTrading",
-            "optionOrderDirectRouting",
+            "optionDirectRouting",
             "stockDirectRouting",
             "defaultStockAction",
             "defaultStockOrderType",
@@ -1359,18 +1360,18 @@ public class Login extends BaseTda {
             "defaultStockRouting",
             "defaultStockDisplaySize",
             "stockTaxLotMethod",
-            "optionOrderTaxLotMethod",
+            "optionTaxLotMethod",
             "mutualFundTaxLotMethod",
             "defaultAdvancedToolLaunch"
         })
         public static class Preferences {
 
           @XmlElement(name = "express-trading", required = true)
-          protected String expressTrading;
-          @XmlElement(name = "optionOrder-direct-routing", required = true)
-          protected String optionOrderDirectRouting;
+          protected Boolean expressTrading;
+          @XmlElement(name = "option-direct-routing", required = true)
+          protected Boolean optionDirectRouting;
           @XmlElement(name = "stock-direct-routing", required = true)
-          protected String stockDirectRouting;
+          protected Boolean stockDirectRouting;
           @XmlElement(name = "default-stock-action", required = true)
           protected String defaultStockAction;
           @XmlElement(name = "default-stock-order-type", required = true)
@@ -1387,8 +1388,8 @@ public class Login extends BaseTda {
           protected String defaultStockDisplaySize;
           @XmlElement(name = "stock-tax-lot-method", required = true)
           protected String stockTaxLotMethod;
-          @XmlElement(name = "optionOrder-tax-lot-method", required = true)
-          protected String optionOrderTaxLotMethod;
+          @XmlElement(name = "option-tax-lot-method", required = true)
+          protected String optionTaxLotMethod;
           @XmlElement(name = "mutual-fund-tax-lot-method", required = true)
           protected String mutualFundTaxLotMethod;
           @XmlElement(name = "default-advanced-tool-launch", required = true)
@@ -1399,7 +1400,7 @@ public class Login extends BaseTda {
            *
            * @return possible object is {@link String }
            */
-          public String getExpressTrading() {
+          public Boolean getExpressTrading() {
             return expressTrading;
           }
 
@@ -1408,26 +1409,26 @@ public class Login extends BaseTda {
            *
            * @param value allowed object is {@link String }
            */
-          public void setExpressTrading(String value) {
+          public void setExpressTrading(Boolean value) {
             this.expressTrading = value;
           }
 
           /**
-           * Gets the value of the optionOrderDirectRouting property.
+           * Gets the value of the optionDirectRouting property.
            *
            * @return possible object is {@link String }
            */
-          public String getOptionOrderDirectRouting() {
-            return optionOrderDirectRouting;
+          public Boolean getOptionDirectRouting() {
+            return optionDirectRouting;
           }
 
           /**
-           * Sets the value of the optionOrderDirectRouting property.
+           * Sets the value of the optionDirectRouting property.
            *
            * @param value allowed object is {@link String }
            */
-          public void setOptionOrderDirectRouting(String value) {
-            this.optionOrderDirectRouting = value;
+          public void setOptionDirectRouting(Boolean value) {
+            this.optionDirectRouting = value;
           }
 
           /**
@@ -1435,7 +1436,7 @@ public class Login extends BaseTda {
            *
            * @return possible object is {@link String }
            */
-          public String getStockDirectRouting() {
+          public Boolean getStockDirectRouting() {
             return stockDirectRouting;
           }
 
@@ -1444,7 +1445,7 @@ public class Login extends BaseTda {
            *
            * @param value allowed object is {@link String }
            */
-          public void setStockDirectRouting(String value) {
+          public void setStockDirectRouting(Boolean value) {
             this.stockDirectRouting = value;
           }
 
@@ -1593,21 +1594,21 @@ public class Login extends BaseTda {
           }
 
           /**
-           * Gets the value of the optionOrderTaxLotMethod property.
+           * Gets the value of the optionTaxLotMethod property.
            *
            * @return possible object is {@link String }
            */
-          public String getOptionOrderTaxLotMethod() {
-            return optionOrderTaxLotMethod;
+          public String getOptionTaxLotMethod() {
+            return optionTaxLotMethod;
           }
 
           /**
-           * Sets the value of the optionOrderTaxLotMethod property.
+           * Sets the value of the optionTaxLotMethod property.
            *
            * @param value allowed object is {@link String }
            */
-          public void setOptionOrderTaxLotMethod(String value) {
-            this.optionOrderTaxLotMethod = value;
+          public void setOptionTaxLotMethod(String value) {
+            this.optionTaxLotMethod = value;
           }
 
           /**

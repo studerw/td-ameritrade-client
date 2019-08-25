@@ -2,6 +2,7 @@ package com.studerw.tda.client;
 
 import com.studerw.tda.model.BalancesAndPositions;
 import com.studerw.tda.model.CancelOrder;
+import com.studerw.tda.model.LastOrderStatus;
 import com.studerw.tda.model.Login;
 import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.OptionChain;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * This is a thread safe class. But only one client should be instantiated for each account.
+ * Main interface of the TDA Client. Implementations should be thread safe.
  */
 public interface TdaClient {
 
@@ -76,8 +77,6 @@ public interface TdaClient {
   byte[] priceHistoryBytes(List<String> symbols, IntervalType intervalType, Integer intervalDuration,
       PeriodType periodType, Integer period, LocalDate startDate, LocalDate endDate, Boolean extended);
 
-
-
   /**
    * If the login user is inactive for more than the timeout period, the session will expire and the
    * client will need to login again. This call is designed to refresh the login user session so
@@ -128,6 +127,9 @@ public interface TdaClient {
   CancelOrder cancelOrder(String orderId);
 
   /**
+   *  detailed order status for an account, allowing filtering of orders by status, entry date,
+   *  order id, and other criteria.  OrderStatus is a synchronous request.
+   *  If you need an update, you need to issue the request again.
    *
    * @param orderIds
    * @return {@link com.studerw.tda.model.OrderStatus}
@@ -135,12 +137,19 @@ public interface TdaClient {
   OrderStatus fetchOrderStatus(String... orderIds);
 
   /**
+   *
    * @return {@link com.studerw.tda.model.OrderStatus}
    */
   OrderStatus fetchAllOrderStatuses();
 
   /**
-   * Partially complete.
+   *  returns the date and time of the last order status activity for the primary account associated with the login userID, or the explicitly specified account.
+   * @return  {@link com.studerw.tda.model.LastOrderStatus}
+   */
+  LastOrderStatus fetchLastOrderStatus();
+
+  /**
+   * Partially complete....
    * @param symbol e.g. TDA
    * @return {@link com.studerw.tda.model.OptionChain}
    */

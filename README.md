@@ -113,7 +113,7 @@ System.out.println(response.getOriginalXml());
 </amtd>
 ```
 
-In java, you will get a `QuoteResponse` pojo. All of the resonse objects extend the base `BaseTda`
+In java, you will get a `QuoteResponse` pojo. All of the response objects extend the base `BaseTda`
 which has convenience methods:
 
 * `getOriginalXml` - get the XML as above, though shouldn't be needed except for special purposes.
@@ -125,7 +125,11 @@ get the `askPrice` for Exxon, it looks like this:
 ```java
 response.getResult().getQuotes().get(1).getAsk();
 ```
+Or for example, fetching the date of your last order: 
 
+```java
+response.getLastOrderStatus(0).getLast()
+```
 ## Error Handling
 
 The TDA server returns 200 success responses **even if the call was bad**, for example you cannot login
@@ -172,6 +176,7 @@ Don't worry - no purchases or transfers (to @studerw's account) will be made :/.
 * BinaryOptionChain - TODO
 * BalanceAndPosition - DONE
 * OrderStatus - DONE
+* LastOrderStatus - DONE
 * PriceHistory - DONE
 
 ### Newes
@@ -243,14 +248,22 @@ schema type (e.g. what each field refers to and its general type).
 
 * Take the example return XML and generate JAXB Pojo with the correct annotations.
 
-* Modify the Pojo which means extend the `BaseTda` class, determine the error code,
-modify String types to Java *Integer*, *BigDecimal*, possibly DateTime if it makes sense.
+* Modify the Pojo which means
+  - rename from `amtd` to actual response name, delete the ObjectFactory
+  - extend the `BaseTda` class, determine the error code, check `responseStr` needed
+  - modify String types to Java *Integer*, *BigDecimal*, *Double*, *Boolean* and *ZonedDateTime* if it makes sense.
 
 * Create the call within `TdaHttpClient` using the required parameters at a minimum
 and write an accompanying integration test to ensure the call is successful with at least my
-individual account. 
+individual account.  
 
 ## Streaming API
 
 * This API is significantly different than the other calls that it requires time
 I currently do not have to implement. Hopefully, I will have time to finish it in the future.
+
+## Login Parameters
+The client only requires a username and password. The actual call to TDA, though, also
+requires a `source` and `version`. Because I have not seen these change, they are
+hardcoded, as are all other properties, in the `src/main/resources/com/studerw/tda/tda-api.properties`
+file. You can change these 
