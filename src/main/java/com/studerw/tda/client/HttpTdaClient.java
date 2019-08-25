@@ -8,6 +8,7 @@ import com.studerw.tda.model.CancelOrder;
 import com.studerw.tda.model.LastOrderStatus;
 import com.studerw.tda.model.Login;
 import com.studerw.tda.model.Logout;
+import com.studerw.tda.model.MarketSnapshot;
 import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.PriceHistory;
@@ -209,7 +210,26 @@ public class HttpTdaClient implements TdaClient {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
 
+  @Override
+  public MarketSnapshot fetchMarketSnapshot() {
+    HttpUrl url = baseUrl().newBuilder().addPathSegments("100/MarketOverview")
+        .addQueryParameter("source", tdProperties.getProperty("tda.source"))
+        .build();
+
+    Request request = new Request.Builder().url(url).build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      return tdaXmlParser.parseMarketSnapshot(response.body().string());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public MarketSnapshot fetchMarketOverview() {
+    return this.fetchMarketSnapshot();
   }
 
   @Override

@@ -5,6 +5,7 @@ import com.studerw.tda.model.CancelOrder;
 import com.studerw.tda.model.LastOrderStatus;
 import com.studerw.tda.model.Login;
 import com.studerw.tda.model.Logout;
+import com.studerw.tda.model.MarketSnapshot;
 import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.PriceHistory;
@@ -163,4 +164,16 @@ public interface TdaClient {
    * @return a LookupResponse
    */
   SymbolLookup symbolLookup(String matchStr);
+
+  /**
+   *  A snapshot of the five main indices.
+   * @return {@link MarketSnapshot} MarketSnapshot
+   */
+  MarketSnapshot fetchMarketSnapshot();
+
+  /**
+   * This is just an alias method for {@link TdaClient#fetchMarketOverview()}  due to the way TDA names their services.
+   * @return {@link MarketSnapshot} MarketSnapshot
+   */
+  MarketSnapshot fetchMarketOverview();
 }

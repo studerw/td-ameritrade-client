@@ -4,6 +4,7 @@ import com.studerw.tda.model.BalancesAndPositions;
 import com.studerw.tda.model.CancelOrder;
 import com.studerw.tda.model.LastOrderStatus;
 import com.studerw.tda.model.Logout;
+import com.studerw.tda.model.MarketSnapshot;
 import com.studerw.tda.model.OptionChain;
 import com.studerw.tda.model.OptionTrade;
 import com.studerw.tda.model.OrderStatus;
@@ -180,6 +181,22 @@ public class TdaXmlParser {
         lastOrderStatus.setTdaError(true);
       }
       return lastOrderStatus;
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new IllegalStateException("Error parsing QuoteResponse");
+    }
+  }
+
+  public MarketSnapshot parseMarketSnapshot(String xml) {
+    try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
+      JAXBContext context = JAXBContext.newInstance(MarketSnapshot.class);
+      Unmarshaller um = context.createUnmarshaller();
+      MarketSnapshot marketSnapshot = (MarketSnapshot) um.unmarshal(in);
+      marketSnapshot.setOriginalXml(xml);
+      if (marketSnapshot.getResult().equalsIgnoreCase("FAIL")) {
+        marketSnapshot.setTdaError(true);
+      }
+      return marketSnapshot;
     } catch (Exception e) {
       e.printStackTrace();
       throw new IllegalStateException("Error parsing QuoteResponse");
