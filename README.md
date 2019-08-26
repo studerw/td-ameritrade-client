@@ -1,4 +1,6 @@
 # TD Ameritrade Java Client
+![travisci-passing](https://api.travis-ci.org/studerw/td-ameritrade-client.svg?branch=master)
+----
 ![TDA_LOGO](https://github.com/studerw/td-ameritrade-client/blob/master/td_logo.png)
 
 Java rest client for TD Ameritrade Api. Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
