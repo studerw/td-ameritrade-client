@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 public abstract class BaseTestIT {
@@ -26,5 +27,12 @@ public abstract class BaseTestIT {
     byte[] pw = props.getProperty("pw").getBytes(StandardCharsets.UTF_8);
     httpTdaClient = new HttpTdaClient(user, pw);
   }
+
+  @AfterClass
+  public static void afterClass () {
+    httpTdaClient.logout();
+    httpTdaClient = null;
+  }
+
 
 }

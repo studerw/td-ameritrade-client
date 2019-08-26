@@ -6,7 +6,7 @@ import com.studerw.tda.model.LastOrderStatus;
 import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.MarketSnapshot;
 import com.studerw.tda.model.OptionChain;
-import com.studerw.tda.model.OptionTrade;
+import com.studerw.tda.model.trade.OptionTrade;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
 import com.studerw.tda.model.SymbolLookup;

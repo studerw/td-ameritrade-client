@@ -13,6 +13,8 @@ import com.studerw.tda.model.QuoteResponse;
 import com.studerw.tda.model.SymbolLookup;
 import com.studerw.tda.model.history.IntervalType;
 import com.studerw.tda.model.history.PeriodType;
+import com.studerw.tda.model.trade.EquityOrder;
+import com.studerw.tda.model.trade.EquityTrade;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -28,9 +30,7 @@ public interface TdaClient {
   Logout logout();
 
   /**
-   * <p> the {@link com.studerw.tda.model.Login} object which will contain your account information,
-   * among other information.
-   *
+   * <p> the {@link com.studerw.tda.model.Login} object which will contain your account information.
    * @return {@link com.studerw.tda.model.Login}
    */
   Login getCurrentLogin();
@@ -151,7 +151,7 @@ public interface TdaClient {
 
   /**
    * Partially complete....
-   * @param symbol e.g. TDA
+   * @param symbol in TDA format (e.g. {@code MSFT_061821C120} which denotes MSFT for June 18, 2021 Call@$20
    * @return {@link com.studerw.tda.model.OptionChain}
    */
   OptionChain fetchOptionChain(String symbol);
@@ -176,4 +176,12 @@ public interface TdaClient {
    * @return {@link MarketSnapshot} MarketSnapshot
    */
   MarketSnapshot fetchMarketOverview();
+
+  /**
+   *
+   * @param equityOrder note that this requires a {@link com.studerw.tda.model.trade.EquityOrder.EquityOrderBldr} to create.
+   * @return an {@link EquityTrade}
+   *
+   */
+  EquityTrade tradeEquity(EquityOrder equityOrder);
 }

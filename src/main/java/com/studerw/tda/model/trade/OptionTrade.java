@@ -1,5 +1,6 @@
-package com.studerw.tda.model;
+package com.studerw.tda.model.trade;
 
+import com.studerw.tda.model.BaseTda;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;

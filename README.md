@@ -23,6 +23,8 @@ To build the jar, checkout the source and run:
 ```bash
 mvn clean install
 ```
+Note that beginning with JDK 11, the JAXB classes are [no longer included by default](https://openjdk.java.net/jeps/320) in the standard JDK.
+So you will need to build with a JDK under 11. The *pom.xml* file states that JDK 8 should be used, and that is what has so far been tested.   
 
 ## Usage
 Until the project is finished, you will need to have built this locally in order to put the necessary jars in your local Maven repo.
@@ -144,9 +146,8 @@ The rules are this within the Client:
 The error check is important because no calls throw checked exceptions, but instead `RuntimeExceptions` which
 you may or may not check for. These are only called for errors we cannot recover from (bad internet connect, server is down, bad login, etc).
 
-You should especially do this on the first call because if you cannot login (e.g. bad password), no further calls
-will actually return valid data, just that all the responses will have `isTdaError=true` in the result.
-
+The only exception to this rule is if we cannot login - either due to bad credentials, locked account, or otherwise.
+When this occurs, an `IllegalStateException` is thrown. 
 
 ## Integration Tests
 Integration tests do require a TDA user and password, though are not needed to just build.
@@ -163,24 +164,24 @@ Don't worry - no purchases or transfers (to @studerw's account) will be made :/.
 ## API Completed and TODO
 
 ### Authentication
-* Login - DONE
-* Logout - DONE
-* KeepAlive - DONE
+* ~~Login~~
+* ~~Logout~~
+* ~~KeepAlive~~
 
 ### Lookup 
-* Quotes - DONE
-* SymbolLookup - DONE
-* PriceHistory - DONE
-* VolatilityHistory - TODO
+* ~~Quotes~~
+* ~~SymbolLookup~~
+* ~~PriceHistory~~
+* ~~VolatilityHistory~~
 * OptionChain - PARTIAL
-* BinaryOptionChain - TODO
-* BalanceAndPosition - DONE
-* OrderStatus - DONE
-* LastOrderStatus - DONE
-* PriceHistory - DONE
+* ~~BinaryOptionChain~~
+* ~~BalanceAndPosition~~
+* ~~OrderStatus
+* ~~LastOrderStatus~~
+* ~~PriceHistory~~
 
 ### News
-* MarketOverview - DONE
+* ~~MarketOverview~~
 * News - TODO
 * FullStoryNews - TODO
 * QuoteNews - TODO
@@ -261,4 +262,10 @@ individual account.
 The client only requires a username and password. The actual call to TDA, though, also
 requires a `source` and `version`. Because I have not seen these change, they are
 hardcoded, as are all other properties, in the `src/main/resources/com/studerw/tda/tda-api.properties`
-file. You can change these 
+file. You can change these there if needed, and rebuild as they are included in the output jar.
+
+## TODO
+
+* Add a section here in README to describe how TDA expects certain strings for Option and equity orders, etc.
+  - link to the new API docs where appropriate
+  - Clean and post javadoc, import to Sonatype first.

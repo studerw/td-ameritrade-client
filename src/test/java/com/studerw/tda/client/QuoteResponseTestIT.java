@@ -1,9 +1,6 @@
 package com.studerw.tda.client;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import com.studerw.tda.model.QuoteResponse;
 import com.studerw.tda.model.QuoteResponse.Result.Quote;
 import java.util.Arrays;
@@ -25,9 +22,9 @@ public class QuoteResponseTestIT extends BaseTestIT {
     List<String> stocks = Arrays.asList("msft", "xom");
     final QuoteResponse response = httpTdaClient.fetchQuotes(stocks);
     LOGGER.debug(response.toString());
-    assertFalse("should be successful result", response.isTdaError());
-    assertEquals(response.getResult().getQuotes().get(0).getAssetType(), "E");
-    assertEquals(response.getResult().getQuotes().get(1).getAssetType(), "E");
+    assertThat(response.isTdaError()).isFalse();
+    assertThat(response.getResult().getQuotes().get(0).getAssetType()).isEqualTo("E");
+    assertThat(response.getResult().getQuotes().get(1).getAssetType()).isEqualTo("E");
   }
 
   @Test
@@ -35,9 +32,9 @@ public class QuoteResponseTestIT extends BaseTestIT {
     List<String> mfs = Arrays.asList("VFIAX", "VTSAX");
     final QuoteResponse response = httpTdaClient.fetchQuotes(mfs);
     LOGGER.debug(response.toString());
-    assertFalse("should be successful result", response.isTdaError());
-    assertEquals(response.getResult().getQuotes().get(0).getAssetType(), "F");
-    assertEquals(response.getResult().getQuotes().get(1).getAssetType(), "F");
+    assertThat(response.isTdaError()).isFalse();
+    assertThat(response.getResult().getQuotes().get(0).getAssetType()).isEqualTo("F");
+    assertThat(response.getResult().getQuotes().get(1).getAssetType()).isEqualTo("F");
   }
 
   @Test
@@ -45,8 +42,8 @@ public class QuoteResponseTestIT extends BaseTestIT {
     List<String> indexes = Arrays.asList("$inx");
     final QuoteResponse response = httpTdaClient.fetchQuotes(indexes);
     LOGGER.debug(response.toString());
-    assertFalse("should be successful result", response.isTdaError());
-    assertEquals(response.getResult().getQuotes().get(0).getAssetType(), "I");
+    assertThat(response.isTdaError()).isFalse();
+    assertThat(response.getResult().getQuotes().get(0).getAssetType()).isEqualTo("I");
   }
 
   //These will eventually expire and be invalid
@@ -55,9 +52,9 @@ public class QuoteResponseTestIT extends BaseTestIT {
     List<String> options = Arrays.asList("MSFT_061821C120", "MNST_011521P45");
     final QuoteResponse response = httpTdaClient.fetchQuotes(options);
     LOGGER.debug(response.toString());
-    assertFalse("should be successful result", response.isTdaError());
-    assertEquals(response.getResult().getQuotes().get(0).getAssetType(), "O");
-    assertEquals(response.getResult().getQuotes().get(1).getAssetType(), "O");
+    assertThat(response.isTdaError()).isFalse();
+    assertThat(response.getResult().getQuotes().get(0).getAssetType()).isEqualTo("O");
+    assertThat(response.getResult().getQuotes().get(1).getAssetType()).isEqualTo("O");
   }
 
   //Not sure what a valid bond ticker symbol is.
@@ -67,7 +64,7 @@ public class QuoteResponseTestIT extends BaseTestIT {
     List<String> bonds = Arrays.asList("UST10Y");
     final QuoteResponse response = httpTdaClient.fetchQuotes(bonds);
     LOGGER.debug(response.toString());
-    assertFalse("should be successful result", response.isTdaError());
+    assertThat(response.isTdaError()).isFalse();
   }
 
   @Test
@@ -80,10 +77,9 @@ public class QuoteResponseTestIT extends BaseTestIT {
     response.getResult().getQuotes().forEach(q -> {
       LOGGER.debug(q.toString());
     });
-    assertFalse("should be successful result", response.isTdaError());
+    assertThat(response.isTdaError()).isFalse();
     final Optional<Quote> first = response.getResult().getQuotes().stream()
         .filter(t -> StringUtils.isNotBlank(t.getError())).findFirst();
-    assertTrue("Should have no errors", !first.isPresent());
+    assertThat(!first.isPresent()).isTrue();
   }
-
 }

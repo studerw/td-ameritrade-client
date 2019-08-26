@@ -16,14 +16,21 @@ import com.studerw.tda.model.QuoteResponse;
 import com.studerw.tda.model.SymbolLookup;
 import com.studerw.tda.model.history.IntervalType;
 import com.studerw.tda.model.history.PeriodType;
+import com.studerw.tda.model.trade.EquityOrder;
+import com.studerw.tda.model.trade.EquityOrderValidator;
+import com.studerw.tda.model.trade.EquityTrade;
 import com.studerw.tda.parse.TdaBinaryParser;
 import com.studerw.tda.parse.TdaXmlParser;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.ValidationException;
 import okhttp3.HttpUrl;
 import okhttp3.HttpUrl.Builder;
 import okhttp3.OkHttpClient;
@@ -43,8 +50,8 @@ public class HttpTdaClient implements TdaClient {
   protected final OkHttpClient httpClient;
   protected final String user;
   protected final byte[] password;
-  protected final TdaXmlParser tdaXmlParser;
-  protected final TdaBinaryParser tdaBinaryParser;
+  protected final TdaXmlParser tdaXmlParser = new TdaXmlParser();
+  protected final TdaBinaryParser tdaBinaryParser = new TdaBinaryParser();
   protected Properties tdProperties;
   protected Login currentLogin;
 
@@ -54,29 +61,10 @@ public class HttpTdaClient implements TdaClient {
    *
    * @param user TDA user account name
    * @param password TDA user account password
-   * @param source given out by TDA
+   * @param source given out by TDA. If null the 'tda.source' property from <em>tda-api.properties</em> file will used.
    */
   public HttpTdaClient(String user, byte[] password, String source) {
-    LOGGER.info("Initiating HttpTdaClient for user: ...", user);
-    this.tdaXmlParser = new TdaXmlParser();
-    this.tdaBinaryParser = new TdaBinaryParser();
-    this.user = user;
-    this.password = password;
-    initTdaProps();
-    if (StringUtils.isNotEmpty(source)) {
-      this.tdProperties.setProperty("tda.source", source);
-    }
-    httpClient = new OkHttpClient.Builder().
-        cookieJar(new CookieJarImpl(new MemoryCookieStore())).
-        addInterceptor(new TdaLoginInterceptor(this, tdProperties)).
-        addInterceptor(new LoggingInterceptor("TDA_HTTP",
-            Integer.parseInt(tdProperties.getProperty("tda.debug.bytes.length")))).
-//                connectTimeout(15, TimeUnit.SECONDS).
-//                readTimeout(15, TimeUnit.SECONDS).    // socket timeout
-    build();
-
-//        this.currentLogin = this.doLogin();
-//        LOGGER.info("Logged in with account: {}", currentLogin.getXmlLogIn().getAssociatedAccountId());
+    this(user, password, source, null);
   }
 
   /**
@@ -86,15 +74,57 @@ public class HttpTdaClient implements TdaClient {
    * @param password TDA user account password
    */
   public HttpTdaClient(String user, byte[] password) {
-    this(user, password, null);
+    this(user, password, null, null);
   }
 
-  protected HttpUrl baseUrl() {
-    return new HttpUrl.Builder()
-        .scheme(tdProperties.getProperty("tda.http.schema"))
-        .host(tdProperties.getProperty("tda.http.host"))
-        .addPathSegment(tdProperties.getProperty("tda.http.path"))
-        .build();
+  /**
+   * To use custom properties, you must define everything that is currently in {@code
+   * tda-api.properties} file. This includes:
+   * <ul>
+   *   <li>tda.version=2.0</li>
+   *   <li>tda.source=DEMO</li>
+   *   <li>tda.http.schema=https | http</li>
+   *   <li>tda.http.host=apis.tdameritrade.com</li>
+   *   <li>tda.http.path=apps</li>
+   *   <li>tda.debug.bytes.length=-1 (How many bytes of logging interceptor debug to print, -1 is unlimited)</li>
+   * </ul>
+   *
+   * @param user TDA user account name
+   * @param password TDA user account password
+   * @param properties properties
+   */
+  public HttpTdaClient(String user, byte[] password, Properties properties) {
+    this(user, password, null, properties);
+  }
+
+  private HttpTdaClient(String user, byte[] password, String source, Properties props) {
+    LOGGER.info("Initiating HttpTdaClient for user: ...", user);
+    if (StringUtils.isEmpty(user) || password == null || password.length == 0) {
+      throw new IllegalArgumentException("Constructor requires valid user and password");
+    }
+
+    Properties newProps = new Properties();
+    if (props == null) {
+      newProps = initTdaProps();
+    } else {
+      newProps.putAll(props);
+    }
+    this.tdProperties = newProps;
+
+    if (!StringUtils.isEmpty(source)) {
+      this.tdProperties.setProperty("tda.source", source);
+    }
+    this.user = user;
+    this.password = password;
+
+    this.httpClient = new OkHttpClient.Builder().
+        cookieJar(new CookieJarImpl(new MemoryCookieStore())).
+        addInterceptor(new TdaLoginInterceptor(this, tdProperties)).
+        addInterceptor(new LoggingInterceptor("TDA_HTTP",
+            Integer.parseInt(tdProperties.getProperty("tda.debug.bytes.length")))).
+        //connectTimeout(15, TimeUnit.SECONDS).
+        //readTimeout(15, TimeUnit.SECONDS).    // socket timeout
+            build();
   }
 
   @Override
@@ -151,6 +181,7 @@ public class HttpTdaClient implements TdaClient {
 
   @Override
   public CancelOrder cancelOrder(String orderId) {
+    LOGGER.debug("Cancelling order: {}", orderId);
     HttpUrl url = baseUrl().newBuilder().addPathSegments("100/OrderCancel")
         .addQueryParameter("source", tdProperties.getProperty("tda.source"))
         .addQueryParameter("orderid", orderId)
@@ -165,6 +196,7 @@ public class HttpTdaClient implements TdaClient {
 
   @Override
   public OrderStatus fetchOrderStatus(String... orderIds) {
+    LOGGER.debug("Fetching order status: {}", orderIds);
     final HttpUrl.Builder urlBuilder = baseUrl().newBuilder().addPathSegments("100/OrderStatus")
         .addQueryParameter("source", tdProperties.getProperty("tda.source"));
     for (String orderId : orderIds) {
@@ -182,6 +214,7 @@ public class HttpTdaClient implements TdaClient {
 
   @Override
   public OptionChain fetchOptionChain(String symbol) {
+    LOGGER.debug("Fetching optionChain: {}", symbol);
     HttpUrl url = baseUrl().newBuilder().addPathSegments("200/OptionChain")
         .addQueryParameter("source", tdProperties.getProperty("tda.source"))
         .addQueryParameter("symbol", symbol)
@@ -233,6 +266,20 @@ public class HttpTdaClient implements TdaClient {
   }
 
   @Override
+  public EquityTrade tradeEquity(EquityOrder equityOrder) {
+    Set<ConstraintViolation<EquityOrder>> violations = EquityOrderValidator.validate(equityOrder);
+    if (!violations.isEmpty()) {
+      printViolations(violations);
+      throw new ValidationException("EquityOrder has validation errors");
+    }
+
+    HttpUrl url = baseUrl().newBuilder().addPathSegments("100/EquityTrade")
+        .addQueryParameter("source", tdProperties.getProperty("tda.source"))
+        .build();
+    return null;
+  }
+
+  @Override
   public OrderStatus fetchAllOrderStatuses() {
     HttpUrl url = baseUrl().newBuilder().addPathSegments("100/OrderStatus")
         .addQueryParameter("source", tdProperties.getProperty("tda.source"))
@@ -272,6 +319,7 @@ public class HttpTdaClient implements TdaClient {
   }
 
   //if the currentLogin is null, let's just make a simple call to force a login.
+  @Override
   public Login getCurrentLogin() {
     if (this.currentLogin == null) {
       final String keepAlive = this.keepAlive();
@@ -393,14 +441,33 @@ public class HttpTdaClient implements TdaClient {
 //    }
 //  }
 
-  private void initTdaProps() {
-    try (InputStream in = getClass().getClassLoader()
+  protected HttpUrl baseUrl() {
+    return new HttpUrl.Builder()
+        .scheme(tdProperties.getProperty("tda.http.schema"))
+        .host(tdProperties.getProperty("tda.http.host"))
+        .addPathSegment(tdProperties.getProperty("tda.http.path"))
+        .build();
+  }
+
+  protected static Properties initTdaProps() {
+    try (InputStream in = HttpTdaClient.class.getClassLoader()
         .getResourceAsStream("com/studerw/tda/tda-api.properties")) {
-      tdProperties = new Properties();
+      Properties tdProperties = new Properties();
       tdProperties.load(in);
+      return tdProperties;
     } catch (IOException e) {
       throw new IllegalStateException(
           "Could not load default properties from com.studerw.tda.tda-api.properties in classpath");
     }
   }
+
+  private void printViolations(Set<ConstraintViolation<EquityOrder>> violations) {
+    Iterator<ConstraintViolation<EquityOrder>> iter = violations.iterator();
+    while (iter.hasNext()) {
+      ConstraintViolation<EquityOrder> next = iter.next();
+      LOGGER.error("EquityOrder error: {}", next.getMessage());
+    }
+  }
+
+
 }

@@ -11,7 +11,6 @@ import com.studerw.tda.model.history.IntervalType;
 import com.studerw.tda.model.history.PeriodType;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.io.FileUtils;

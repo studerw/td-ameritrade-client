@@ -59,7 +59,6 @@ public class PriceHistory {
       this.symbol = symbol;
     }
 
-
     public boolean isError() {
       return error;
     }
