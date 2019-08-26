@@ -1,10 +1,7 @@
 # TD Ameritrade Java Client
 Java rest client for TD Ameritrade Api. Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
 
-I'm happy to collaborate contractually or OSS with other devs. Some of the methods are hard to test simply because
-I do not wish to make actual trades during business hours and hope that they can be cancelled in time and with working code.
-Unfortunately, I have not found a way to use one of TDA's *ThinkOrSwim* simulation accounts
-with this API as TDA does not provide that route. 
+I'm happy to collaborate contractually or OSS with other devs. 
 
 ## 2018 Notes
 
@@ -134,23 +131,59 @@ response.getLastOrderStatus(0).getLast()
 ```
 ## Error Handling
 
-The TDA server returns 200 success responses **even if the call was bad**, for example you cannot login
-or some other issue. Instead of a bad response, their is always an `error` field filled in with something
+Before the call is even made, validator or other exceptions can be thrown. Usually you won't have to catch these in your program, they'll be helpful
+when testing, though.
+
+Once the call is made, the TDA server returns 200 success responses **even if the call was not successful**, for example you've sent an invalid request type 
+or some other issue. Instead of a bad response, there is always an `error` field filled in with something
 like `OK` for successful calls and `error` or otherwise, along with possibly an error message, when something
 has gone wrong. 
 
 The rules are this within the Client:
-* All non 200 HTTP responses throw unchecked `RuntimeExceptions` since there is no way to recover, usually. 
+
+* All non 200 HTTP responses throw unchecked `RuntimeExceptions` since there is no way to recover, usually.
+ 
 * The client (i.e. you) should always call the convenience method included on all responses: `response.isTdaError`
 
-The error check is important because no calls throw checked exceptions, but instead `RuntimeExceptions` which
-you may or may not check for. These are only called for errors we cannot recover from (bad internet connect, server is down, bad login, etc).
+* If the response returns an inner list of responses, you will usually need to check each one for a non-blank error. Often the top level status will be `OK`
+(i.e. `isTdaError=false`) but one or more of the inner response objects does have an error.
+
+The  error check is important because no calls throw checked exceptions, but instead `RuntimeExceptions` which
+you may or may not check for. These are only called for errors we cannot recover from (bad internet connect, server is down, etc).
 
 The only exception to this rule is if we cannot login - either due to bad credentials, locked account, or otherwise.
 When this occurs, an `IllegalStateException` is thrown. 
 
+To state again - be very careful with error checking. Many times a response will give an indication of OK except that one piece of the request
+has failed. For example, when making an equity trade, you might get a response of:
+```xml
+<amtd>
+  <result>OK</result>
+  <order-wrapper>
+    <orderstring>
+      accountid=xyz~routing=auto~symbol=MSFT~quantity=1~expire=gtc~ordtype=market~action=buy~spinstructions=none
+    </orderstring>
+    <error>For a market order, the expiration must be Day or MOC.</error>
+  </order-wrapper>
+</amtd>
+```
+
+If you check your response object's `response.isTdaError()` it will return false (as the main response code from TDA is `OK`) and no exception will be thrown. 
+However, the order did **NOT* go through successfully, and the error message explains why.
+
+So the correct way to error check is to do something like: 
+```java
+EquityTrade result = client.tradeEquity(....)
+if (result.isTdaError()){
+  //do something about the main error
+}
+if (StringUtils.isNotBlank(result.getOrderWrapper().getError()){
+  //do something about the inner error
+}
+```
+
 ## Integration Tests
-Integration tests do require a TDA user and password, though are not needed to just build.
+Integration tests do require a TDA user and password, though are not needed to build the jar.
 
 To run integration tests, you will need to rename this file *src/test/resources/com/studerw/tda/client/my-test.properties.changeme* to *my-test.properties* and add your own TDA user and pw.
 Then run the following command.
@@ -159,7 +192,7 @@ Then run the following command.
 mvn failsafe:integration-test
 ```
 
-Don't worry - no purchases or transfers (to @studerw's account) will be made :/. Basicallyl we just check login and quote methods only.
+Don't worry - no purchases or transfers (to @studerw's account) will be made :/. Basically we just check login and quote methods only.
 
 ## API Completed and TODO
 
@@ -174,9 +207,9 @@ Don't worry - no purchases or transfers (to @studerw's account) will be made :/.
 * ~~PriceHistory~~
 * ~~VolatilityHistory~~
 * OptionChain - PARTIAL
-* ~~BinaryOptionChain~~
+* BinaryOptionChain - TODO
 * ~~BalanceAndPosition~~
-* ~~OrderStatus
+* ~~OrderStatus~~
 * ~~LastOrderStatus~~
 * ~~PriceHistory~~
 
@@ -187,10 +220,10 @@ Don't worry - no purchases or transfers (to @studerw's account) will be made :/.
 * QuoteNews - TODO
 
 ### Trading
-* EquityTrade - TODO
+* ~~EquityTrade - TODO~~
 * OptionTrade - TODO
 * EditOrder - TODO
-* CancelOrder - TODO
+* ~~CancelOrder~~
 
 ### Conditional Trading
 * ConditionalEquityTrade - TODO

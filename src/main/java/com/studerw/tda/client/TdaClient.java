@@ -1,7 +1,7 @@
 package com.studerw.tda.client;
 
 import com.studerw.tda.model.BalancesAndPositions;
-import com.studerw.tda.model.CancelOrder;
+import com.studerw.tda.model.trade.CancelOrder;
 import com.studerw.tda.model.LastOrderStatus;
 import com.studerw.tda.model.Login;
 import com.studerw.tda.model.Logout;
@@ -23,6 +23,12 @@ import java.util.List;
  */
 public interface TdaClient {
 
+
+  /**
+   * @return the default Account ID associated with the account. Most users will only have a single account, and this is the same as the default.
+   */
+  String getDefaultAcctId();
+
   /**
    * This call will invalidate the user session. It is a security feature that should be called when
    * the user wants to stop their current session or close the client application.
@@ -31,6 +37,9 @@ public interface TdaClient {
 
   /**
    * <p> the {@link com.studerw.tda.model.Login} object which will contain your account information.
+   * Note that the {@code login.getXmlLogIn().getAssociatedAccountId()} will get your default account id, which
+   * if it's the case that you have only one account, is your main id you will use for most trading methods.
+   * There is also a convenience method of {@link #getDefaultAcctId()}
    * @return {@link com.studerw.tda.model.Login}
    */
   Login getCurrentLogin();
@@ -121,21 +130,44 @@ public interface TdaClient {
   BalancesAndPositions fetchBalancesAndPositions(String accountId);
 
   /**
-   * Cancel one or more open orders or the balance of partially filled orders.
-   * @param orderId - the id of the order
-   * @return {@link com.studerw.tda.model.CancelOrder}
+   * Cancel an open order or the balance of partially filled orders. The default accountId will
+   * be used.
+   * @param orderIds - one or more order ids
+   * @return {@link CancelOrder}
    */
-  CancelOrder cancelOrder(String orderId);
+  CancelOrder cancelTrade(List<String> orderIds);
 
   /**
-   *  detailed order status for an account, allowing filtering of orders by status, entry date,
+   * Cancel an open order or the balance of partially filled orders. The default accountId will
+   * be used.
+   * @param accountId the id of the account on which the trade was placed
+   * @param orderIds - one or more order ids
+   * @return {@link CancelOrder}
+   */
+  CancelOrder cancelTrade(String accountId, List<String> orderIds);
+
+  /**
+   * Partially complete
+   *  Detailed order status for an account, allowing filtering of orders by status, entry date,
    *  order id, and other criteria.  OrderStatus is a synchronous request.
    *  If you need an update, you need to issue the request again.
    *
-   * @param orderIds
+   * @param orderIds one or more order ids.
    * @return {@link com.studerw.tda.model.OrderStatus}
    */
-  OrderStatus fetchOrderStatus(String... orderIds);
+  OrderStatus fetchOrderStatus(List<String> orderIds);
+
+  /**
+   * Partially complete
+   *  Detailed order status for an account, allowing filtering of orders by status, entry date,
+   *  order id, and other criteria.  OrderStatus is a synchronous request.
+   *  If you need an update, you need to issue the request again.
+   *
+   * @param orderIds one or more order ids.
+   * @param accountId the account on which the orders were placed
+   * @return {@link com.studerw.tda.model.OrderStatus}
+   */
+  OrderStatus fetchOrderStatus(List<String> orderIds, String accountId);
 
   /**
    *
@@ -179,9 +211,10 @@ public interface TdaClient {
 
   /**
    *
-   * @param equityOrder note that this requires a {@link com.studerw.tda.model.trade.EquityOrder.EquityOrderBldr} to create.
+   * @param equityOrder note that this requires a {@link EquityOrder.EquityOrderBldr} to create.
    * @return an {@link EquityTrade}
    *
    */
   EquityTrade tradeEquity(EquityOrder equityOrder);
+
 }

@@ -1,11 +1,12 @@
 package com.studerw.tda.parse;
 
 import com.studerw.tda.model.BalancesAndPositions;
-import com.studerw.tda.model.CancelOrder;
+import com.studerw.tda.model.trade.CancelOrder;
 import com.studerw.tda.model.LastOrderStatus;
 import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.MarketSnapshot;
 import com.studerw.tda.model.OptionChain;
+import com.studerw.tda.model.trade.EquityTrade;
 import com.studerw.tda.model.trade.OptionTrade;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
@@ -28,6 +29,7 @@ import org.slf4j.LoggerFactory;
 public class TdaXmlParser {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TdaXmlParser.class);
+  private static final String FAIL = "FAIL";
 
   public TdaXmlParser() {
   }
@@ -52,7 +54,7 @@ public class TdaXmlParser {
       Unmarshaller um = context.createUnmarshaller();
       OrderStatus orderStatus = (OrderStatus) um.unmarshal(in);
       orderStatus.setOriginalXml(xml);
-      if (orderStatus.getResult().equalsIgnoreCase("FAIL")) {
+      if (orderStatus.getResult().equalsIgnoreCase(FAIL)) {
         orderStatus.setTdaError(true);
       }
       return orderStatus;
@@ -69,7 +71,7 @@ public class TdaXmlParser {
       Unmarshaller um = context.createUnmarshaller();
       BalancesAndPositions balances = (BalancesAndPositions) um.unmarshal(in);
       balances.setOriginalXml(xml);
-      if (balances.getResult().equalsIgnoreCase("FAIL")) {
+      if (balances.getResult().equalsIgnoreCase(FAIL)) {
         balances.setTdaError(true);
       }
       return balances;
@@ -85,7 +87,7 @@ public class TdaXmlParser {
       Unmarshaller um = context.createUnmarshaller();
       OptionTrade optionTrade = (OptionTrade) um.unmarshal(in);
       optionTrade.setOriginalXml(xml);
-      if (optionTrade.getResult().equalsIgnoreCase("FAIL")) {
+      if (optionTrade.getResult().equalsIgnoreCase(FAIL)) {
         optionTrade.setTdaError(true);
       }
       return optionTrade;
@@ -101,7 +103,7 @@ public class TdaXmlParser {
       Unmarshaller um = context.createUnmarshaller();
       OptionChain optionChain = (OptionChain) um.unmarshal(in);
       optionChain.setOriginalXml(xml);
-      if (optionChain.getResult().equalsIgnoreCase("FAIL")) {
+      if (optionChain.getResult().equalsIgnoreCase(FAIL)) {
         optionChain.setTdaError(true);
       }
       return optionChain;
@@ -129,7 +131,7 @@ public class TdaXmlParser {
       Unmarshaller um = context.createUnmarshaller();
       final SymbolLookup result = (SymbolLookup) um.unmarshal(in);
       result.setOriginalXml(xml);
-      if (result.getResultStr().equalsIgnoreCase("FAIL")) {
+      if (result.getResultStr().equalsIgnoreCase(FAIL)) {
         result.setTdaError(true);
       }
       return result;
@@ -145,7 +147,7 @@ public class TdaXmlParser {
       Unmarshaller um = context.createUnmarshaller();
       final CancelOrder result = (CancelOrder) um.unmarshal(in);
       result.setOriginalXml(xml);
-      if (result.getResult().equalsIgnoreCase("FAIL")) {
+      if (result.getResult().equalsIgnoreCase(FAIL)) {
         result.setTdaError(true);
       }
       return result;
@@ -161,7 +163,7 @@ public class TdaXmlParser {
       Unmarshaller um = context.createUnmarshaller();
       QuoteResponse quoteResponse = (QuoteResponse) um.unmarshal(in);
       quoteResponse.setOriginalXml(xml);
-      if (quoteResponse.getResultStr().equalsIgnoreCase("FAIL")) {
+      if (quoteResponse.getResultStr().equalsIgnoreCase(FAIL)) {
         quoteResponse.setTdaError(true);
       }
       return quoteResponse;
@@ -177,7 +179,7 @@ public class TdaXmlParser {
       Unmarshaller um = context.createUnmarshaller();
       LastOrderStatus lastOrderStatus = (LastOrderStatus) um.unmarshal(in);
       lastOrderStatus.setOriginalXml(xml);
-      if (lastOrderStatus.getResult().equalsIgnoreCase("FAIL")) {
+      if (lastOrderStatus.getResult().equalsIgnoreCase(FAIL)) {
         lastOrderStatus.setTdaError(true);
       }
       return lastOrderStatus;
@@ -193,10 +195,26 @@ public class TdaXmlParser {
       Unmarshaller um = context.createUnmarshaller();
       MarketSnapshot marketSnapshot = (MarketSnapshot) um.unmarshal(in);
       marketSnapshot.setOriginalXml(xml);
-      if (marketSnapshot.getResult().equalsIgnoreCase("FAIL")) {
+      if (marketSnapshot.getResult().equalsIgnoreCase(FAIL)) {
         marketSnapshot.setTdaError(true);
       }
       return marketSnapshot;
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new IllegalStateException("Error parsing QuoteResponse");
+    }
+  }
+
+  public EquityTrade parseEquityTrade(String xml) {
+    try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)) {
+      JAXBContext context = JAXBContext.newInstance(EquityTrade.class);
+      Unmarshaller um = context.createUnmarshaller();
+      EquityTrade equityTrade = (EquityTrade) um.unmarshal(in);
+      equityTrade.setOriginalXml(xml);
+      if (equityTrade.getResult().equalsIgnoreCase(FAIL)) {
+        equityTrade.setTdaError(true);
+      }
+      return equityTrade;
     } catch (Exception e) {
       e.printStackTrace();
       throw new IllegalStateException("Error parsing QuoteResponse");

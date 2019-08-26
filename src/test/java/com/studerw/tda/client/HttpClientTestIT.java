@@ -40,8 +40,8 @@ public class HttpClientTestIT {
     Login currentLogin = client.getCurrentLogin();
     assertThat(currentLogin).isNotNull();
     assertThat(currentLogin.isTdaError()).isFalse();
-    assertThat(currentLogin.getXmlLogIn().getAssociatedAccountId()).isNotBlank();
-    LOGGER.debug("Default acct id: {}", currentLogin.getXmlLogIn().getAssociatedAccountId());
+    assertThat(client.getDefaultAcctId()).isNotBlank();
+    LOGGER.debug("Default acct id: {}", client.getDefaultAcctId());
   }
 
   @Test
@@ -51,8 +51,8 @@ public class HttpClientTestIT {
     Login currentLogin = client.getCurrentLogin();
     assertThat(currentLogin).isNotNull();
     assertThat(currentLogin.isTdaError()).isFalse();
-    assertThat(currentLogin.getXmlLogIn().getAssociatedAccountId()).isNotBlank();
-    LOGGER.debug("Default acct id: {}", currentLogin.getXmlLogIn().getAssociatedAccountId());
+    assertThat(client.getDefaultAcctId()).isNotBlank();
+    LOGGER.debug("Default acct id: {}", client.getDefaultAcctId());
   }
 
   @Test
@@ -62,8 +62,8 @@ public class HttpClientTestIT {
     Login currentLogin = client.getCurrentLogin();
     assertThat(currentLogin).isNotNull();
     assertThat(currentLogin.isTdaError()).isFalse();
-    assertThat(currentLogin.getXmlLogIn().getAssociatedAccountId()).isNotBlank();
-    LOGGER.debug("Default acct id: {}", currentLogin.getXmlLogIn().getAssociatedAccountId());
+    assertThat(client.getDefaultAcctId()).isNotBlank();
+    LOGGER.debug("Default acct id: {}", client.getDefaultAcctId());
   }
 
   @Test

@@ -1,5 +1,7 @@
 package com.studerw.tda.model.trade;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.studerw.tda.model.trade.EquityOrder.EquityOrderBldr;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -11,20 +13,19 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class EquityOrderTest {
+
   private static final Logger LOGGER = LoggerFactory.getLogger(EquityOrderTest.class);
   private static ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
   private Validator validator = null;
 
   @Before
-  public void before(){
+  public void before() {
     this.validator = factory.getValidator();
   }
 
   @Test
-  public void testBasicConstraints(){
+  public void testBasicConstraints() {
     EquityOrder equityOrder = EquityOrderBldr.anEquityOrder().build();
     Set<ConstraintViolation<EquityOrder>> violations = validator.validate(equityOrder);
     assertThat(violations).isNotEmpty();
@@ -32,7 +33,7 @@ public class EquityOrderTest {
   }
 
   @Test
-  public void testMissingAction(){
+  public void testMissingAction() {
     EquityOrder equityOrder = this.validEquityOrder();
     equityOrder.setAction(null);
     Set<ConstraintViolation<EquityOrder>> violations = validator.validate(equityOrder);
@@ -41,7 +42,7 @@ public class EquityOrderTest {
   }
 
   @Test
-  public void testInvalidDisplaySize(){
+  public void testInvalidDisplaySize() {
     EquityOrder equityOrder = this.validEquityOrder();
     equityOrder.setDisplaySize(5);
     Set<ConstraintViolation<EquityOrder>> violations = validator.validate(equityOrder);
@@ -50,7 +51,7 @@ public class EquityOrderTest {
   }
 
   @Test
-  public void testEmptyExpire(){
+  public void testEmptyExpire() {
     EquityOrder equityOrder = this.validEquityOrder();
     equityOrder.setExpire(null);
     Set<ConstraintViolation<EquityOrder>> violations = validator.validate(equityOrder);
@@ -59,7 +60,7 @@ public class EquityOrderTest {
   }
 
   @Test
-  public void testBadQuantity(){
+  public void testBadQuantity() {
     EquityOrder equityOrder = this.validEquityOrder();
     equityOrder.setQuantity(-1);
     Set<ConstraintViolation<EquityOrder>> violations = validator.validate(equityOrder);
@@ -68,16 +69,36 @@ public class EquityOrderTest {
   }
 
   @Test
-  public void testValidEquityOrder(){
+  public void testBadOrderType() {
+    EquityOrder equityOrder = this.validEquityOrder();
+    equityOrder.setOrderType(null);
+    Set<ConstraintViolation<EquityOrder>> violations = validator.validate(equityOrder);
+    assertThat(violations.size()).isEqualTo(1);
+    LOGGER.debug(violations.toString());
+  }
+
+  @Test
+  public void testValidEquityOrder() {
     EquityOrder equityOrder = this.validEquityOrder();
     Set<ConstraintViolation<EquityOrder>> violations = validator.validate(equityOrder);
     assertThat(violations).isEmpty();
     LOGGER.debug(violations.toString());
   }
 
-  private EquityOrder validEquityOrder(){
+  @Test
+  public void testQueryParams() {
+    EquityOrder equityOrder = this.validEquityOrder();
+    Set<ConstraintViolation<EquityOrder>> violations = validator.validate(equityOrder);
+    assertThat(violations).isEmpty();
+    String queryStr = equityOrder.toQueryString("orderstring");
+    assertThat(queryStr).isNotBlank();
+    LOGGER.debug(queryStr);
+
+  }
+
+  private EquityOrder validEquityOrder() {
     EquityOrder equityOrder = EquityOrderBldr.anEquityOrder().
-        withAction(Action.buy).
+        withAction(EquityAction.buy).
         withDisplaySize(100).
         withExpire(Expire.am).
         withExpireDay(30).
@@ -85,6 +106,7 @@ public class EquityOrderTest {
         withExpireYear(24).
         withOrderType(OrderType.market).
         withQuantity(1).
+        withAccountId("1234").
         withSymbol("MSFT")
         .build();
 

@@ -505,7 +505,8 @@ public class Login extends BaseTda {
     }
 
     /**
-     * Gets the value of the associatedAccountId property.
+     * Gets the value of the associatedAccountId property. This is the same as the default
+     * Account ID.
      *
      * @return possible object is {@link String }
      */

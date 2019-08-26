@@ -1,120 +1,436 @@
-package com.studerw.tda.model.trade;
-
-import java.math.BigDecimal;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class OptionOrder {
-    private static final Logger LOGGER = LoggerFactory.getLogger(OptionOrder.class);
-
-    private String symbol;
-    private String year;
-    private String month;
-    private String day;
-    private String putOrCall;
-    private BigDecimal strike;
-    private BigDecimal limit;
-    private Integer quantity;
-
-    public BigDecimal getLimit() {
-        return limit;
-    }
-
-    public void setLimit(BigDecimal limit) {
-        this.limit = limit;
-    }
-
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
-
-    public String getYear() {
-        return year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
-    }
-
-    public String getMonth() {
-        return month;
-    }
-
-    public void setMonth(String month) {
-        this.month = month;
-    }
-
-    public String getDay() {
-        return day;
-    }
-
-    public void setDay(String day) {
-        this.day = day;
-    }
-
-    public String getPutOrCall() {
-        return putOrCall;
-    }
-
-    public void setPutOrCall(String putOrCall) {
-        this.putOrCall = putOrCall;
-    }
-
-    public BigDecimal getStrike() {
-        return strike;
-    }
-
-    public void setStrike(BigDecimal strike) {
-        this.strike = strike;
-    }
-
-    public boolean isCall(){
-        return "C".equalsIgnoreCase(this.getPutOrCall());
-    }
-
-    public boolean isPut(){
-        return "P".equalsIgnoreCase(this.getPutOrCall());
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-
-    //APC171117C00049000 -> APC_17111749
-    //APC171117C00049500 -> APC_17111749.5
-    public String getTdaTicker(){
-        StringBuilder temp= new StringBuilder();
-        temp.append(this.getSymbol().toUpperCase());
-        temp.append("_");
-        temp.append(this.getMonth());
-        temp.append(this.getDay());
-        temp.append(this.getYear());
-        temp.append(this.getPutOrCall().toUpperCase());
-        temp.append(this.getStrike().stripTrailingZeros().toPlainString());
-        return temp.toString();
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("OptionOrder{");
-        sb.append("symbol='").append(symbol).append('\'');
-        sb.append(", year='").append(year).append('\'');
-        sb.append(", month='").append(month).append('\'');
-        sb.append(", day='").append(day).append('\'');
-        sb.append(", putOrCall='").append(putOrCall).append('\'');
-        sb.append(", strike=").append(strike);
-        sb.append(", limit=").append(limit);
-        sb.append(", quantity=").append(quantity);
-        sb.append('}');
-        return sb.toString();
-    }
-}
+//package com.studerw.tda.model.trade;
+//
+//import java.math.BigDecimal;
+//import java.util.HashMap;
+//import java.util.Map;
+//import java.util.StringJoiner;
+//import java.util.stream.Collectors;
+//import javax.validation.constraints.Min;
+//import javax.validation.constraints.NotBlank;
+//import javax.validation.constraints.NotEmpty;
+//import javax.validation.constraints.NotNull;
+//import javax.validation.constraints.Positive;
+//import org.apache.commons.lang3.StringUtils;
+//
+///**
+// * Request class used to send an equity order {@link com.studerw.tda.client.TdaClient#tradeOption(OptionOrder)}.
+// * Use the {@link EquityOrderBldr} instead of constructor. There are no public setters as this class
+// * is intended to be immutable to users.
+// */
+//public class OptionOrder {
+//
+//  private String clientOrderId;
+//  @NotBlank(message = "The account id cannot be empty. To use the default use 'client.getCurrentLogin().getXmlLogIn().getAssociatedAccountId()'")
+//  private String accountId;
+//  @NotNull(message = "Action cannot be empty - must be either 'sell', 'buy', 'sellshort' or 'buytocover'")
+//  private OptionAction optionAction;
+//  private BigDecimal actPrice;
+//  @NotNull(message = "expire type is required, one of [day, moc, day_ext, gtc, gtc_ext, am, pm]")
+//  private OptionExpire expire;
+//  //@Digits(integer = 2, fraction = 0)
+//  private Integer expireDay;
+//  //@Digits(integer = 2, fraction = 0)
+//  private Integer expireMonth;
+//  //@Digits(integer = 2, fraction = 0)
+//  private Integer expireYear;
+//  @NotNull(message = "orderType required - must be one of [market, limit, stop_market, stop_limit, tstoppercent, tstopdollar]")
+//  private OrderType orderType;
+//  private BigDecimal price;
+//  @NotNull(message = "the quantity must be set to 1 or more")
+//  @Positive(message = "Must have 1 or more for quantity")
+//  private Integer quantity;
+//  private Routing routing;
+//  private SpecialInstruction specialInstruction;
+//  @NotEmpty(message = "the equity symbol in uppercase (e.g. MSFT) is missing.")
+//  private String symbol;
+//
+//
+//  private OptionOrder() {
+//  }
+//
+//  /**
+//   * Generated by the client software. It gets returned in the response for order matching. It is
+//   * optional, but a handy way to keep track of orders internally.
+//   *
+//   * @return id set by the client
+//   */
+//  public String getClientOrderId() {
+//    return clientOrderId;
+//  }
+//
+//  void setClientOrderId(String clientOrderId) {
+//    this.clientOrderId = clientOrderId;
+//  }
+//
+//  /**
+//   * The Account ID of the account in which the trade is being made. If this is not set initially,
+//   * the default account id of the account will be used.
+//   *
+//   * @return account id used for the order
+//   */
+//  public String getAccountId() {
+//    return accountId;
+//  }
+//
+//  void setAccountId(String accountId) {
+//    this.accountId = accountId;
+//  }
+//
+//  /**
+//   * Order action. It is required and there is no default.
+//   *
+//   * @return One of [sell, buy, sellshort, buytocover]
+//   */
+//  public OptionAction getOptionAction() {
+//    return optionAction;
+//  }
+//
+//  void setOptionAction(OptionAction optionAction) {
+//    this.optionAction = optionAction;
+//  }
+//
+//  /**
+//   * @return The stop price for stop market or stop limit orders.
+//   */
+//  public BigDecimal getActPrice() {
+//    return actPrice;
+//  }
+//
+//  void setActPrice(BigDecimal actPrice) {
+//    this.actPrice = actPrice;
+//  }
+//
+//  /**
+//   * @return One of [day, moc, day_ext, gtc, gtc_ext, am, pm]
+//   */
+//  public OptionExpire getExpire() {
+//    return expire;
+//  }
+//
+//  void setExpire(OptionExpire expire) {
+//    this.expire = expire;
+//  }
+//
+//  /**
+//   * @return Two digit expiration day, only specified if expire is set to gtc otherwise null
+//   */
+//  public Integer getExpireDay() {
+//    return expireDay;
+//  }
+//
+//  void setExpireDay(Integer expireDay) {
+//    this.expireDay = expireDay;
+//  }
+//
+//  /**
+//   * @return Two digit expiration month, only specified if expire is set to gtc otherwise null.
+//   */
+//  public Integer getExpireMonth() {
+//    return expireMonth;
+//  }
+//
+//  void setExpireMonth(Integer expireMonth) {
+//    this.expireMonth = expireMonth;
+//  }
+//
+//  /**
+//   * @return Two digit expiration year, only specified if expire is set to gtc otherwise null.
+//   */
+//  public Integer getExpireYear() {
+//    return expireYear;
+//  }
+//
+//  void setExpireYear(Integer expireYear) {
+//    this.expireYear = expireYear;
+//  }
+//
+//  /**
+//   * Case sensitive value for order type. It is required.
+//   *
+//   * @return one of [market, limit, stop_market, stop_limit, tstoppercent, tstopdollar]
+//   */
+//  public OrderType getOrderType() {
+//    return orderType;
+//  }
+//
+//  void setOrderType(OrderType orderType) {
+//    this.orderType = orderType;
+//  }
+//
+//  /**
+//   * @return Limit price for limit or stop limit orders otherwise null
+//   */
+//  public BigDecimal getPrice() {
+//    return price;
+//  }
+//
+//  void setPrice(BigDecimal price) {
+//    this.price = price;
+//  }
+//
+//  /**
+//   * @return The number of shares being bought or sold in the transaction
+//   */
+//  public Integer getQuantity() {
+//    return quantity;
+//  }
+//
+//  void setQuantity(Integer quantity) {
+//    this.quantity = quantity;
+//  }
+//
+//  /**
+//   * User specified order routing destination. Default is auto
+//   *
+//   * @return one of [auto, inet, ecn_arca]
+//   */
+//  public Routing getRouting() {
+//    return routing;
+//  }
+//
+//  void setRouting(Routing routing) {
+//    this.routing = routing;
+//  }
+//
+//  /**
+//   * Special Instructions for the order execution. Set to none if not specified
+//   *
+//   * @return one of [none, fok, aon, dnr, aon_dnr]
+//   */
+//  public SpecialInstruction getSpecialInstruction() {
+//    return specialInstruction;
+//  }
+//
+//  void setSpecialInstruction(SpecialInstruction specialInstruction) {
+//    this.specialInstruction = specialInstruction;
+//  }
+//
+//  /**
+//   * @return Equity symbol, should be uppercase, e.g. MSFT or VTSAX
+//   */
+//  public String getSymbol() {
+//    return StringUtils.upperCase(symbol);
+//  }
+//
+//  void setSymbol(String symbol) {
+//    this.symbol = symbol;
+//  }
+//
+//  /**
+//   * LOGGER.debug("Using orderString: {}", orderString);
+//   *
+//   * @return list of map of query params that aren't empty or null
+//   */
+//  public Map<String, String> toQueryStringMap() {
+//    Map<String, String> params = new HashMap<>();
+//
+//    if (StringUtils.isNotBlank(this.clientOrderId)) {
+//      params.put("clientorderid", this.clientOrderId);
+//    }
+//    if (StringUtils.isNotBlank(this.accountId)) {
+//      params.put("accountid", this.accountId);
+//    }
+//    if (this.optionAction != null) {
+//      params.put("action", this.optionAction.toString());
+//    }
+//    if (this.actPrice != null) {
+//      params.put("actprice", this.actPrice.toString());
+//    }
+//    if (this.expire != null) {
+//      params.put("expire", this.expire.toString());
+//    }
+//    if (this.expireDay != null) {
+//      params.put("exday", this.expireDay.toString());
+//    }
+//    if (this.expireMonth != null) {
+//      params.put("exmonth", this.expireMonth.toString());
+//    }
+//    if (this.expireYear != null) {
+//      params.put("exyear", this.expireYear.toString());
+//    }
+//    if (this.orderType != null) {
+//      params.put("ordtype", this.orderType.toString());
+//    }
+//    if (this.price != null) {
+//      params.put("price", this.price.toString());
+//    }
+//    if (this.quantity != null) {
+//      params.put("quantity", this.quantity.toString());
+//    }
+//    if (this.routing != null) {
+//      params.put("routing", this.routing.toString());
+//    }
+//    if (this.specialInstruction != null) {
+//      params.put("spinstructions", this.specialInstruction.toString());
+//    }
+//    if (StringUtils.isNotBlank(this.symbol)) {
+//      params.put("symbol", this.symbol.toUpperCase());
+//    }
+//    if (StringUtils.isNotBlank(this.tsParam)) {
+//      params.put("tsparam", this.tsParam);
+//    }
+//
+//    return params;
+//  }
+//
+//  /**
+//   * @param key query key (e.g. orderstring)
+//   * @return query string of parameters separated by '~' as per TDA API requirements
+//   */
+//  public String toQueryString(String key) {
+//    Map<String, String> equityOrderParams = this.toQueryStringMap();
+//    String orderString = equityOrderParams.keySet().stream()
+//        .map(k -> k + "=" + equityOrderParams.get(k)).collect(Collectors.joining("~"));
+//    return orderString;
+//  }
+//
+//  @Override
+//  public String toString() {
+//    return new StringJoiner(", ", OptionOrder.class.getSimpleName() + "[", "]")
+//        .add("clientOrderId='" + clientOrderId + "'")
+//        .add("accountId='" + accountId + "'")
+//        .add("action=" + action)
+//        .add("actPrice=" + actPrice)
+//        .add("displaySize=" + displaySize)
+//        .add("expire=" + expire)
+//        .add("expireDay=" + expireDay)
+//        .add("expireMonth=" + expireMonth)
+//        .add("expireYear=" + expireYear)
+//        .add("orderType=" + orderType)
+//        .add("price=" + price)
+//        .add("quantity=" + quantity)
+//        .add("routing=" + routing)
+//        .add("specialInstruction=" + specialInstruction)
+//        .add("symbol='" + symbol + "'")
+//        .add("tsParam='" + tsParam + "'")
+//        .toString();
+//  }
+//
+//  public static final class EquityOrderBldr {
+//
+//    private String clientOrderId;
+//    private String accountId;
+//    private OptionAction action;
+//    private BigDecimal actPrice;
+//    private Integer displaySize;
+//    private Expire expire;
+//    private Integer expireDay;
+//    private Integer expireMonth;
+//    private Integer expireYear;
+//    private OrderType orderType;
+//    private BigDecimal price;
+//    private Integer quantity;
+//    private Routing routing = Routing.auto;
+//    private SpecialInstruction specialInstruction = SpecialInstruction.none;
+//    private String symbol;
+//    private String tsParam;
+//
+//    private EquityOrderBldr() {
+//    }
+//
+//    public static EquityOrderBldr anEquityOrder() {
+//      return new EquityOrderBldr();
+//    }
+//
+//    public EquityOrderBldr withClientOrderId(String clientOrderId) {
+//      this.clientOrderId = clientOrderId;
+//      return this;
+//    }
+//
+//    public EquityOrderBldr withAccountId(String accountId) {
+//      this.accountId = accountId;
+//      return this;
+//    }
+//
+//    public EquityOrderBldr withAction(OptionAction action) {
+//      this.equityAction = equityAction;
+//      return this;
+//    }
+//
+//    public EquityOrderBldr withActPrice(BigDecimal actPrice) {
+//      this.actPrice = actPrice;
+//      return this;
+//    }
+//
+//    public EquityOrderBldr withDisplaySize(Integer displaySize) {
+//      this.displaySize = displaySize;
+//      return this;
+//    }
+//
+//    public EquityOrderBldr withExpire(Expire expire) {
+//      this.expire = expire;
+//      return this;
+//    }
+//
+//    public EquityOrderBldr withExpireDay(Integer expireDay) {
+//      this.expireDay = expireDay;
+//      return this;
+//    }
+//
+//    public EquityOrderBldr withExpireMonth(Integer expireMonth) {
+//      this.expireMonth = expireMonth;
+//      return this;
+//    }
+//
+//    public EquityOrderBldr withExpireYear(Integer expireYear) {
+//      this.expireYear = expireYear;
+//      return this;
+//    }
+//
+//    public EquityOrderBldr withOrderType(OrderType orderType) {
+//      this.orderType = orderType;
+//      return this;
+//    }
+//
+//    public EquityOrderBldr withPrice(BigDecimal price) {
+//      this.price = price;
+//      return this;
+//    }
+//
+//    public EquityOrderBldr withQuantity(Integer quantity) {
+//      this.quantity = quantity;
+//      return this;
+//    }
+//
+//    public EquityOrderBldr withRouting(Routing routing) {
+//      this.routing = routing;
+//      return this;
+//    }
+//
+//    public EquityOrderBldr withSpecialInstruction(SpecialInstruction specialInstruction) {
+//      this.specialInstruction = specialInstruction;
+//      return this;
+//    }
+//
+//    public EquityOrderBldr withSymbol(String symbol) {
+//      this.symbol = StringUtils.upperCase(symbol);
+//      return this;
+//    }
+//
+//    public EquityOrderBldr withTsParam(String tsParam) {
+//      this.tsParam = tsParam;
+//      return this;
+//    }
+//
+//    public OptionOrder build() {
+//      OptionOrder equityOrder = new OptionOrder();
+//      equityOrder.actPrice = this.actPrice;
+//      equityOrder.specialInstruction = this.specialInstruction;
+//      equityOrder.price = this.price;
+//      equityOrder.clientOrderId = this.clientOrderId;
+//      equityOrder.symbol = this.symbol;
+//      equityOrder.expireDay = this.expireDay;
+//      equityOrder.orderType = this.orderType;
+//      equityOrder.routing = this.routing;
+//      equityOrder.accountId = this.accountId;
+//      equityOrder.action = this.action;
+//      equityOrder.quantity = this.quantity;
+//      equityOrder.expireYear = this.expireYear;
+//      equityOrder.expire = this.expire;
+//      equityOrder.expireMonth = this.expireMonth;
+//      equityOrder.tsParam = this.tsParam;
+//      return equityOrder;
+//    }
+//  }
+//}
+//

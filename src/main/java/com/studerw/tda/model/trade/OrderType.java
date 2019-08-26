@@ -1,6 +1,6 @@
 package com.studerw.tda.model.trade;
 
-enum OrderType {
+public enum OrderType {
   market,
   limit,
   stop_market,

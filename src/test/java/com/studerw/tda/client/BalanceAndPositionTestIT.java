@@ -28,7 +28,7 @@ public class BalanceAndPositionTestIT extends BaseTestIT {
 
   @Test
   public void testBalanceAndPositionsGoodAccount() {
-    String defaultAcct = httpTdaClient.getCurrentLogin().getXmlLogIn().getAssociatedAccountId();
+    String defaultAcct = httpTdaClient.getDefaultAcctId();
     assertThat(defaultAcct).isNotBlank();
     LOGGER.debug("defaultAcct: {}", defaultAcct);
     BalancesAndPositions response = httpTdaClient.fetchBalancesAndPositions(defaultAcct);

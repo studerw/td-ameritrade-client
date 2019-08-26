@@ -14,7 +14,7 @@ public class LoginTestIT extends BaseTestIT{
   public void testLogin() {
     final Login currentLogin = httpTdaClient.getCurrentLogin();
     assertThat(currentLogin).isNotNull();
-    String mainAcct = currentLogin.getXmlLogIn().getAssociatedAccountId();
+    String mainAcct = httpTdaClient.getDefaultAcctId();
     final Login.XmlLogIn.Accounts accounts = currentLogin.getXmlLogIn().getAccounts();
     assertThat(accounts).isNotNull();
     assertThat(currentLogin.isTdaError()).isFalse();

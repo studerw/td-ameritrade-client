@@ -4,7 +4,6 @@ import com.studerw.tda.http.LoggingInterceptor;
 import com.studerw.tda.http.cookie.CookieJarImpl;
 import com.studerw.tda.http.cookie.store.MemoryCookieStore;
 import com.studerw.tda.model.BalancesAndPositions;
-import com.studerw.tda.model.CancelOrder;
 import com.studerw.tda.model.LastOrderStatus;
 import com.studerw.tda.model.Login;
 import com.studerw.tda.model.Logout;
@@ -16,6 +15,7 @@ import com.studerw.tda.model.QuoteResponse;
 import com.studerw.tda.model.SymbolLookup;
 import com.studerw.tda.model.history.IntervalType;
 import com.studerw.tda.model.history.PeriodType;
+import com.studerw.tda.model.trade.CancelOrder;
 import com.studerw.tda.model.trade.EquityOrder;
 import com.studerw.tda.model.trade.EquityOrderValidator;
 import com.studerw.tda.model.trade.EquityTrade;
@@ -41,7 +41,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This is a thread safe class. But only one client should be instantiated for each session.
+ * HTTP implementation of {@link TdaClient}. Uses OKHttp3. This is a thread safe class.
+ *
+ * @See <a href="https://square.github.io/okhttp/3.x/okhttp/">OKHttp3 from Square</a>
  */
 public class HttpTdaClient implements TdaClient {
 
@@ -61,7 +63,8 @@ public class HttpTdaClient implements TdaClient {
    *
    * @param user TDA user account name
    * @param password TDA user account password
-   * @param source given out by TDA. If null the 'tda.source' property from <em>tda-api.properties</em> file will used.
+   * @param source given out by TDA. If null the 'tda.source' property from
+   * <em>tda-api.properties</em> file will used.
    */
   public HttpTdaClient(String user, byte[] password, String source) {
     this(user, password, source, null);
@@ -127,6 +130,18 @@ public class HttpTdaClient implements TdaClient {
             build();
   }
 
+  protected static Properties initTdaProps() {
+    try (InputStream in = HttpTdaClient.class.getClassLoader()
+        .getResourceAsStream("com/studerw/tda/tda-api.properties")) {
+      Properties tdProperties = new Properties();
+      tdProperties.load(in);
+      return tdProperties;
+    } catch (IOException e) {
+      throw new IllegalStateException(
+          "Could not load default properties from com.studerw.tda.tda-api.properties in classpath");
+    }
+  }
+
   @Override
   public QuoteResponse fetchQuotes(List<String> symbols) {
     LOGGER.debug("Fetching quotes: {}", symbols);
@@ -141,6 +156,11 @@ public class HttpTdaClient implements TdaClient {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  @Override
+  public String getDefaultAcctId() {
+    return getCurrentLogin().getXmlLogIn().getAssociatedAccountId();
   }
 
   @Override
@@ -159,8 +179,7 @@ public class HttpTdaClient implements TdaClient {
 
   @Override
   public BalancesAndPositions fetchBalancesAndPositions() {
-    final String id = this.getCurrentLogin().getXmlLogIn().getAssociatedAccountId();
-    return this.fetchBalancesAndPositions(id);
+    return this.fetchBalancesAndPositions(getDefaultAcctId());
   }
 
   @Override
@@ -180,12 +199,22 @@ public class HttpTdaClient implements TdaClient {
   }
 
   @Override
-  public CancelOrder cancelOrder(String orderId) {
-    LOGGER.debug("Cancelling order: {}", orderId);
-    HttpUrl url = baseUrl().newBuilder().addPathSegments("100/OrderCancel")
-        .addQueryParameter("source", tdProperties.getProperty("tda.source"))
-        .addQueryParameter("orderid", orderId)
-        .build();
+  public CancelOrder cancelTrade(List<String> orderIds) {
+    return this.cancelTrade(null, orderIds);
+  }
+
+  @Override
+  public CancelOrder cancelTrade(String accountId, List<String> orderIds) {
+    LOGGER.debug("Cancelling orderId(s): {} with account: {}", orderIds, accountId);
+    Builder builder = baseUrl().newBuilder().addPathSegments("100/OrderCancel")
+        .addQueryParameter("source", tdProperties.getProperty("tda.source"));
+
+    if (StringUtils.isNotBlank(accountId)) {
+      builder.addQueryParameter("accountid", accountId);
+    }
+    orderIds.stream().forEach(id -> builder.addQueryParameter("orderid", id));
+
+    HttpUrl url = builder.build();
     Request request = new Request.Builder().url(url).build();
     try (Response response = this.httpClient.newCall(request).execute()) {
       return tdaXmlParser.parseCancelOrder(response.body().string());
@@ -195,10 +224,20 @@ public class HttpTdaClient implements TdaClient {
   }
 
   @Override
-  public OrderStatus fetchOrderStatus(String... orderIds) {
+  public OrderStatus fetchOrderStatus(List<String> orderIds) {
+    return this.fetchOrderStatus(orderIds, null);
+  }
+
+  @Override
+  public OrderStatus fetchOrderStatus(List<String> orderIds, String accountId) {
     LOGGER.debug("Fetching order status: {}", orderIds);
     final HttpUrl.Builder urlBuilder = baseUrl().newBuilder().addPathSegments("100/OrderStatus")
         .addQueryParameter("source", tdProperties.getProperty("tda.source"));
+
+    if (StringUtils.isNotBlank(accountId)) {
+      urlBuilder.addQueryParameter("accountid", accountId);
+    }
+
     for (String orderId : orderIds) {
       urlBuilder.addQueryParameter("orderid", orderId);
     }
@@ -210,7 +249,6 @@ public class HttpTdaClient implements TdaClient {
       throw new RuntimeException(e);
     }
   }
-
 
   @Override
   public OptionChain fetchOptionChain(String symbol) {
@@ -272,11 +310,17 @@ public class HttpTdaClient implements TdaClient {
       printViolations(violations);
       throw new ValidationException("EquityOrder has validation errors");
     }
-
+    final String ORDER_STRING = "orderstring";
     HttpUrl url = baseUrl().newBuilder().addPathSegments("100/EquityTrade")
         .addQueryParameter("source", tdProperties.getProperty("tda.source"))
+        .addQueryParameter(ORDER_STRING, equityOrder.toQueryString(ORDER_STRING))
         .build();
-    return null;
+    Request request = new Request.Builder().url(url).build();
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      return tdaXmlParser.parseEquityTrade(response.body().string());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
@@ -369,6 +413,40 @@ public class HttpTdaClient implements TdaClient {
     }
   }
 
+//  @Override
+//  public OptionTradeResponse buyOption(OptionOrder optionOrder, String accountId) {
+//    LOGGER.debug("Buying option[accountId={}]: {}", accountId, optionOrder.toString());
+//
+//    List<String> orderParams = new ArrayList<>();
+//    orderParams.add("accountid=" + accountId);
+//    orderParams.add("action=buytoopen");
+//    orderParams.add("expire=day");
+//    orderParams.add("quantity=" + optionOrder.getQuantity());
+//    orderParams.add("symbol=" + optionOrder.getTdaTicker());
+//    orderParams.add("ordtype=" + (optionOrder.getLimit() != null ? "limit" : "market"));
+//    if (optionOrder.getLimit() != null) {
+//      orderParams.add("price=" + optionOrder.getLimit().toString());
+//    }
+//
+//    HttpUrl url = baseUrl().newBuilder().addPathSegments("100/OptionTrade")
+//        .addQueryParameter("source", env.getRequiredProperty("ameritrade.source"))
+//        .addQueryParameter("orderstring", StringUtils.join(orderParams, "~"))
+//        .build();
+//
+//    Request request = new Request.Builder().url(url).build();
+//    if (isMockProfile(env)) {
+//      LOGGER.warn("'mock' profile is on - not making actual buy order)");
+//      return getMockTradeResponse(request);
+//    }
+//    try (Response response = this.httpClient.newCall(request).execute()) {
+//      final String xml = response.body().string();
+//      final OptionTradeResponse optionTradeResponse= parseOptionTradeResponse(xml);
+//      return optionTradeResponse;
+//    } catch (IOException e) {
+//      throw new RuntimeException(e);
+//    }
+//  }
+
   @Override
   public byte[] priceHistoryBytes(List<String> symbols, IntervalType intervalType,
       Integer intervalDuration, PeriodType periodType, Integer period, LocalDate startDate,
@@ -407,58 +485,12 @@ public class HttpTdaClient implements TdaClient {
 
   }
 
-//  @Override
-//  public OptionTradeResponse buyOption(OptionOrder optionOrder, String accountId) {
-//    LOGGER.debug("Buying option[accountId={}]: {}", accountId, optionOrder.toString());
-//
-//    List<String> orderParams = new ArrayList<>();
-//    orderParams.add("accountid=" + accountId);
-//    orderParams.add("action=buytoopen");
-//    orderParams.add("expire=day");
-//    orderParams.add("quantity=" + optionOrder.getQuantity());
-//    orderParams.add("symbol=" + optionOrder.getTdaTicker());
-//    orderParams.add("ordtype=" + (optionOrder.getLimit() != null ? "limit" : "market"));
-//    if (optionOrder.getLimit() != null) {
-//      orderParams.add("price=" + optionOrder.getLimit().toString());
-//    }
-//
-//    HttpUrl url = baseUrl().newBuilder().addPathSegments("100/OptionTrade")
-//        .addQueryParameter("source", env.getRequiredProperty("ameritrade.source"))
-//        .addQueryParameter("orderstring", StringUtils.join(orderParams, "~"))
-//        .build();
-//
-//    Request request = new Request.Builder().url(url).build();
-//    if (isMockProfile(env)) {
-//      LOGGER.warn("'mock' profile is on - not making actual buy order)");
-//      return getMockTradeResponse(request);
-//    }
-//    try (Response response = this.httpClient.newCall(request).execute()) {
-//      final String xml = response.body().string();
-//      final OptionTradeResponse optionTradeResponse= parseOptionTradeResponse(xml);
-//      return optionTradeResponse;
-//    } catch (IOException e) {
-//      throw new RuntimeException(e);
-//    }
-//  }
-
   protected HttpUrl baseUrl() {
     return new HttpUrl.Builder()
         .scheme(tdProperties.getProperty("tda.http.schema"))
         .host(tdProperties.getProperty("tda.http.host"))
         .addPathSegment(tdProperties.getProperty("tda.http.path"))
         .build();
-  }
-
-  protected static Properties initTdaProps() {
-    try (InputStream in = HttpTdaClient.class.getClassLoader()
-        .getResourceAsStream("com/studerw/tda/tda-api.properties")) {
-      Properties tdProperties = new Properties();
-      tdProperties.load(in);
-      return tdProperties;
-    } catch (IOException e) {
-      throw new IllegalStateException(
-          "Could not load default properties from com.studerw.tda.tda-api.properties in classpath");
-    }
   }
 
   private void printViolations(Set<ConstraintViolation<EquityOrder>> violations) {

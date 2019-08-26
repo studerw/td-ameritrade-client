@@ -1,8 +1,12 @@
 package com.studerw.tda.model.trade;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -16,9 +20,10 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class EquityOrder {
   private String clientOrderId;
+  @NotBlank(message="The account id cannot be empty. To use the default use 'client.getCurrentLogin().getXmlLogIn().getAssociatedAccountId()'")
   private String accountId;
   @NotNull(message = "Action cannot be empty - must be either 'sell', 'buy', 'sellshort' or 'buytocover'")
-  private Action action;
+  private EquityAction action;
   private BigDecimal actPrice;
   @Min(value = 100,  message="display size needs to be integer value 100 or higher, in increments of 100")
   private Integer displaySize;
@@ -30,14 +35,14 @@ public class EquityOrder {
   private Integer expireMonth;
   //@Digits(integer = 2, fraction = 0)
   private Integer expireYear;
-  //@NotNull(message = "required - must be one of [market, limit, stop_market, stop_limit, tstoppercent, tstopdolla]")
+  @NotNull(message = "orderType required - must be one of [market, limit, stop_market, stop_limit, tstoppercent, tstopdollar]")
   private OrderType orderType;
   private BigDecimal price;
   @NotNull(message="the quantity must be set to 1 or more")
   @Positive(message="Must have 1 or more for quantity")
   private Integer quantity;
-  private Routing routing = Routing.auto;
-  private SpecialInstruction specialInstruction = SpecialInstruction.none;
+  private Routing routing;
+  private SpecialInstruction specialInstruction;
   @NotEmpty(message = "the equity symbol in uppercase (e.g. MSFT) is missing.")
   private String symbol;
   private String tsParam;
@@ -68,7 +73,7 @@ public class EquityOrder {
    * It is required and there is no default.
    * @return One of [sell, buy, sellshort, buytocover]
    */
-  public Action getAction() {
+  public EquityAction getAction() {
     return action;
   }
 
@@ -180,7 +185,7 @@ public class EquityOrder {
     this.accountId = accountId;
   }
 
-  void setAction(Action action) {
+  void setAction(EquityAction action) {
     this.action = action;
   }
 
@@ -236,6 +241,77 @@ public class EquityOrder {
     this.tsParam = tsParam;
   }
 
+  /**
+   *LOGGER.debug("Using orderString: {}", orderString);
+   * @return list of map of query params that aren't empty or null
+   */
+  public Map<String, String> toQueryStringMap(){
+    Map<String, String> params = new HashMap<>();
+
+    if (StringUtils.isNotBlank(this.clientOrderId)) {
+      params.put("clientorderid", this.clientOrderId);
+    }
+    if (StringUtils.isNotBlank(this.accountId)) {
+      params.put("accountid", this.accountId);
+    }
+    if (this.action != null) {
+      params.put("action", this.action.toString());
+    }
+    if (this.actPrice != null) {
+      params.put("actprice", this.actPrice.toString());
+    }
+    if (this.displaySize != null) {
+      params.put("displaysize", this.displaySize.toString());
+    }
+    if (this.expire != null){
+      params.put("expire", this.expire.toString());
+    }
+    if (this.expireDay != null) {
+      params.put("exday", this.expireDay.toString());
+    }
+    if (this.expireMonth != null) {
+      params.put("exmonth", this.expireMonth.toString());
+    }
+    if (this.expireYear != null) {
+      params.put("exyear", this.expireYear.toString());
+    }
+    if (this.orderType != null) {
+      params.put("ordtype", this.orderType.toString());
+    }
+    if (this.price != null) {
+      params.put("price", this.price.toString());
+    }
+    if (this.quantity != null) {
+      params.put("quantity", this.quantity.toString());
+    }
+    if (this.routing != null) {
+      params.put("routing", this.routing.toString());
+    }
+    if (this.specialInstruction != null) {
+      params.put("spinstructions", this.specialInstruction.toString());
+    }
+    if (StringUtils.isNotBlank(this.symbol)) {
+      params.put("symbol", this.symbol.toUpperCase());
+    }
+    if (StringUtils.isNotBlank(this.tsParam)) {
+      params.put("tsparam", this.tsParam);
+    }
+
+    return params;
+  }
+
+  /**
+   *
+   * @param key query key (e.g. orderstring)
+   * @return query string of parameters separated by '~' as per TDA API requirements
+   */
+  public String toQueryString(String key) {
+    Map<String, String> equityOrderParams = this.toQueryStringMap();
+    String orderString = equityOrderParams.keySet().stream()
+        .map(k -> k + "=" + equityOrderParams.get(k)).collect(Collectors.joining("~"));
+    return orderString;
+  }
+
   @Override
   public String toString() {
     return new StringJoiner(", ", EquityOrder.class.getSimpleName() + "[", "]")
@@ -262,7 +338,7 @@ public class EquityOrder {
 
     private String clientOrderId;
     private String accountId;
-    private Action action;
+    private EquityAction action;
     private BigDecimal actPrice;
     private Integer displaySize;
     private Expire expire;
@@ -294,7 +370,7 @@ public class EquityOrder {
       return this;
     }
 
-    public EquityOrderBldr withAction(Action action) {
+    public EquityOrderBldr withAction(EquityAction action) {
       this.action = action;
       return this;
     }
@@ -355,7 +431,7 @@ public class EquityOrder {
     }
 
     public EquityOrderBldr withSymbol(String symbol) {
-      this.symbol = symbol;
+      this.symbol = StringUtils.upperCase(symbol);
       return this;
     }
 
