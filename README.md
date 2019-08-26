@@ -1,4 +1,6 @@
 # TD Ameritrade Java Client
+![TDA_LOGO](https://github.com/studerw/td-ameritrade-client/blob/master/td_logo.png)
+
 Java rest client for TD Ameritrade Api. Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
 
 I'm happy to collaborate contractually or OSS with other devs. 
