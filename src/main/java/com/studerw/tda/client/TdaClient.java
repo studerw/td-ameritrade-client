@@ -15,6 +15,8 @@ import com.studerw.tda.model.history.IntervalType;
 import com.studerw.tda.model.history.PeriodType;
 import com.studerw.tda.model.trade.EquityOrder;
 import com.studerw.tda.model.trade.EquityTrade;
+import com.studerw.tda.model.trade.OptionOrder;
+import com.studerw.tda.model.trade.OptionTrade;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -170,13 +172,13 @@ public interface TdaClient {
   OrderStatus fetchOrderStatus(List<String> orderIds, String accountId);
 
   /**
-   *
+   * Fetch a list of all order statuses
    * @return {@link com.studerw.tda.model.OrderStatus}
    */
   OrderStatus fetchAllOrderStatuses();
 
   /**
-   *  returns the date and time of the last order status activity for the primary account associated with the login userID, or the explicitly specified account.
+   *  Get the date and time of the last order status activity for the primary account associated with the login userID, or the explicitly specified account.
    * @return  {@link com.studerw.tda.model.LastOrderStatus}
    */
   LastOrderStatus fetchLastOrderStatus();
@@ -192,7 +194,7 @@ public interface TdaClient {
    * Provides the ability to lookup symbols for stocks and ETFs.
    *f
    * @param matchStr The string being searched for. Partial name of the company for example <em>Bank
-   * of Amer</em>
+   * of Amer</em> would return <em>Bank of America</em>. Used, perhaps, for auto select fields.
    * @return a LookupResponse
    */
   SymbolLookup symbolLookup(String matchStr);
@@ -210,11 +212,19 @@ public interface TdaClient {
   MarketSnapshot fetchMarketOverview();
 
   /**
-   *
-   * @param equityOrder note that this requires a {@link EquityOrder.EquityOrderBldr} to create.
+   * Trade an equity
+   * @param equityOrder, note that this requires a {@link com.studerw.tda.model.trade.EquityOrder.EquityOrderBldr} to create.
    * @return an {@link EquityTrade}
    *
    */
   EquityTrade tradeEquity(EquityOrder equityOrder);
+
+  /**
+   * Trade an option. You must be explicitly approved by TDA for option trading.
+   * @param optionOrder, note that this requires a {@link com.studerw.tda.model.trade.OptionOrder.OptionOrderBldr} to create.
+   * @return an {@link OptionTrade}
+   *
+   */
+  OptionTrade tradeOption(OptionOrder optionOrder);
 
 }

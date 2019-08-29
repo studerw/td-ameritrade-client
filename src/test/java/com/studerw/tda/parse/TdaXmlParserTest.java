@@ -1,8 +1,6 @@
 package com.studerw.tda.parse;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.studerw.tda.model.QuoteResponse;
 import com.studerw.tda.model.SymbolLookup;
@@ -15,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TdaXmlParserTest {
+
   private static final Logger LOGGER = LoggerFactory.getLogger(TdaXmlParserTest.class);
   private TdaXmlParser xmlParser = new TdaXmlParser();
 
@@ -26,11 +25,28 @@ public class TdaXmlParserTest {
       String xml = IOUtils.toString(in, Charset.forName("UTF-8"));
       QuoteResponse qr = xmlParser.parseQuoteResponse(xml);
 
-      assertEquals("result should be ok", qr.getResultStr(), "OK");
-      assertFalse("Should be tdaError", qr.isTdaError());
-      assertTrue("should have list of 7", qr.getResult().getQuotes().size() == 7);
+      assertThat(qr.getResultStr().equals( "OK"));
+      assertThat(qr.isTdaError()).isFalse();
+      assertThat(qr.getResult().getQuotes().size()).isEqualTo(7);
       qr.getResult().getQuotes().stream().forEach(q -> {
-        assertFalse("should not be empty", StringUtils.isBlank(q.getSymbol()));
+        assertThat(StringUtils.isBlank(q.getSymbol())).isFalse();
+        LOGGER.debug("{} -> {}", q.getSymbol(), q.getAssetType());
+      });
+    }
+  }
+
+  @Test
+  public void testParseQuoteResponseGeneric() throws Exception {
+    try (InputStream in = TdaXmlParserTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/model/quote_response.xml")) {
+      String xml = IOUtils.toString(in, Charset.forName("UTF-8"));
+      QuoteResponse qr = xmlParser.parseXml(QuoteResponse.class, xml);
+
+      assertThat(qr.getResultStr().equals("OK"));
+      assertThat(qr.isTdaError());
+      assertThat(qr.getResult().getQuotes().size()).isEqualTo(7);
+      qr.getResult().getQuotes().stream().forEach(q -> {
+        assertThat(StringUtils.isBlank(q.getSymbol())).isFalse();
         LOGGER.debug("{} -> {}", q.getSymbol(), q.getAssetType());
       });
     }
@@ -42,7 +58,19 @@ public class TdaXmlParserTest {
         getResourceAsStream("com/studerw/tda/model/quote_response_error.xml")) {
       String xml = IOUtils.toString(in, Charset.forName("UTF-8"));
       QuoteResponse qr = xmlParser.parseQuoteResponse(xml);
-      assertTrue("Should be tdaError", qr.isTdaError());
+      assertThat(qr.isTdaError()).isTrue();
+      LOGGER.debug("Error: {}", qr.getError());
+    }
+  }
+
+  @Test
+  public void testQuoteResponseErrorGeneric() throws Exception {
+    try (InputStream in = TdaXmlParserTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/model/quote_response_error.xml")) {
+      String xml = IOUtils.toString(in, Charset.forName("UTF-8"));
+      QuoteResponse qr = xmlParser.parseXml(QuoteResponse.class, xml);
+      PrettyXmlPrinter.prettyFormat(qr.getOriginalXml());
+      assertThat(qr.isTdaError()).isFalse();
       LOGGER.debug("Error: {}", qr.getError());
     }
   }
@@ -53,7 +81,7 @@ public class TdaXmlParserTest {
         getResourceAsStream("com/studerw/tda/model/symbol-lookup-response-error.xml")) {
       String xml = IOUtils.toString(in, Charset.forName("UTF-8"));
       SymbolLookup sl = xmlParser.parseSymbolLookup(xml);
-      assertTrue("Should be tdaError", sl.isTdaError());
+      assertThat(sl.isTdaError()).isTrue();
     }
   }
 
@@ -64,12 +92,11 @@ public class TdaXmlParserTest {
       String xml = IOUtils.toString(in, Charset.forName("UTF-8"));
       SymbolLookup sl = xmlParser.parseSymbolLookup(xml);
 
-      assertEquals("result should be ok", sl.getResultStr(), "OK");
-      assertFalse("Should be tdaError", sl.isTdaError());
-      assertTrue("should have list of 3",
-          sl.getResult().getSymbolResults().size() == 3);
+      assertThat(sl.getResultStr().equals("OK"));
+      assertThat(sl.isTdaError()).isFalse();
+      assertThat(sl.getResult().getSymbolResults().size()).isEqualTo(3);
       sl.getResult().getSymbolResults().stream().forEach(s -> {
-        assertFalse("should not be empty", StringUtils.isBlank(s.getSymbol()));
+        assertThat(StringUtils.isBlank(s.getSymbol())).isFalse();
         LOGGER.debug("{} -> {}", s.getSymbol(), s.getDescription());
       });
     }
@@ -83,12 +110,11 @@ public class TdaXmlParserTest {
       String xml = IOUtils.toString(in, Charset.forName("UTF-8"));
       SymbolLookup sl = xmlParser.parseSymbolLookup(xml);
       LOGGER.debug("Got {} results", sl.getResult().getSymbolResults().size());
-      assertEquals("result should be ok", sl.getResultStr(), "OK");
-      assertFalse("Should be tdaError", sl.isTdaError());
-      assertTrue("should have list of 51",
-          sl.getResult().getSymbolResults().size() == 51);
+      assertThat(sl.getResultStr().equals("OK"));
+      assertThat(sl.isTdaError()).isFalse();
+      assertThat(sl.getResult().getSymbolResults().size()).isEqualTo(51);
       sl.getResult().getSymbolResults().stream().forEach(s -> {
-        assertFalse("should not be empty", StringUtils.isBlank(s.getSymbol()));
+        assertThat(StringUtils.isBlank(s.getSymbol())).isFalse();
         LOGGER.debug("{} -> {}", s.getSymbol(), s.getDescription());
       });
     }

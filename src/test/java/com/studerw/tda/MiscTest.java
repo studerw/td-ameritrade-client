@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Just to make sure Maven is building correctly and other random scratch tests
  */
-public class SomeTest {
+public class MiscTest {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SomeTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(MiscTest.class);
 
   @Test
   public void testUnicodeByteToStr(){
@@ -31,6 +31,9 @@ public class SomeTest {
     BigDecimal b2 = new BigDecimal("+23.52");
     assertThat(b2.longValue()).isGreaterThan(0);
     LOGGER.debug(b2.toString());
+
+    BigDecimal b3 = new BigDecimal("0.234");
+    LOGGER.debug(b3.toString());
 
   }
 }

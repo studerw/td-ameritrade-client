@@ -6,12 +6,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.studerw.tda</groupId>
-  <artifactId>tdameritrade-api</artifactId>
+  <artifactId>td-ameritrade-client</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>tdameritrade-api</name>
-  <description>TD Ameritrade API in Java</description>
+  <name>td-ameritrade-client</name>
+  <description>TD Ameritrade Java Client</description>
 
   <developers>
     <developer>
@@ -19,6 +19,25 @@
       <email>bill.studer@sent.com</email>
     </developer>
   </developers>
+
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/studerw/td-ameritrade-client/issues</url>
+  </issueManagement>
+
+  <inceptionYear>2017</inceptionYear>
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <connection>git@github.com:studerw/td-ameritrade-client.git</connection>
+    <developerConnection>git@github.com:studerw/td-ameritrade-client.git</developerConnection>
+    <url>https://github.com/studerw/td-ameritrade-client</url>
+  </scm>
 
   <properties>
     <version.junit>4.12</version.junit>
@@ -57,11 +76,11 @@
       <version>2.6</version>
     </dependency>
 
-<!--    <dependency>-->
-<!--      <groupId>com.google.code.findbugs</groupId>-->
-<!--      <artifactId>jsr305</artifactId>-->
-<!--      <version>3.0.2</version>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>com.google.code.findbugs</groupId>-->
+    <!--      <artifactId>jsr305</artifactId>-->
+    <!--      <version>3.0.2</version>-->
+    <!--    </dependency>-->
 
     <!-- Validation -->
     <dependency>
@@ -96,12 +115,6 @@
       <artifactId>slf4j-api</artifactId>
       <version>1.7.26</version>
     </dependency>
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>1.2.3</version>
-      <scope>test</scope>
-    </dependency>
 
     <!-- test scope -->
     <dependency>
@@ -114,6 +127,12 @@
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <version>3.11.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.2.3</version>
       <scope>test</scope>
     </dependency>
 
@@ -129,37 +148,7 @@
           <skipTests>${skipUTs}</skipTests>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <version>2.4</version>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>jar-no-fork</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.10.3</version>
-        <executions>
-          <execution>
-            <id>attach-javadocs</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <configuration>
-              <additionalparam>-Xdoclint:none</additionalparam>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
@@ -181,4 +170,73 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>sonatype-oss-release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>2.1.2</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.10.3</version>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <configuration>
+                  <additionalparam>-Xdoclint:none</additionalparam>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+  <distributionManagement>
+    <snapshotRepository>
+      <id>sonatype-nexus-snapshots</id>
+      <name>Sonatype Nexus Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </snapshotRepository>
+    <repository>
+      <id>sonatype-nexus-staging</id>
+      <name>Nexus Release Repository</name>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+    <site>
+      <id>guava-site</id>
+      <name>Documentation Site</name>
+      <url>scp://dummy.server/dontinstall/usestaging</url>
+    </site>
+  </distributionManagement>
 </project>

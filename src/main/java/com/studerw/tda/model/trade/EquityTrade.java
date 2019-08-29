@@ -2,6 +2,7 @@
 package com.studerw.tda.model.trade;
 
 import com.studerw.tda.model.BaseTda;
+import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -428,9 +429,9 @@ public class EquityTrade extends BaseTda {
             @XmlElement(name = "order-type", required = true)
             protected String orderType;
             @XmlElement(name = "limit-price", required = true)
-            protected Double limitPrice;
+            protected BigDecimal limitPrice;
             @XmlElement(name = "stop-price", required = true)
-            protected Double stopPrice;
+            protected BigDecimal stopPrice;
             @XmlElement(name = "time-in-force", required = true)
             protected EquityTrade.OrderWrapper.Order.TimeInForce timeInForce;
 
@@ -658,7 +659,7 @@ public class EquityTrade extends BaseTda {
              *     {@link String }
              *     
              */
-            public Double getLimitPrice() {
+            public BigDecimal getLimitPrice() {
                 return limitPrice;
             }
 
@@ -670,7 +671,7 @@ public class EquityTrade extends BaseTda {
              *     {@link String }
              *     
              */
-            public void setLimitPrice(Double value) {
+            public void setLimitPrice(BigDecimal value) {
                 this.limitPrice = value;
             }
 
@@ -682,7 +683,7 @@ public class EquityTrade extends BaseTda {
              *     {@link String }
              *     
              */
-            public Double getStopPrice() {
+            public BigDecimal getStopPrice() {
                 return stopPrice;
             }
 
@@ -694,7 +695,7 @@ public class EquityTrade extends BaseTda {
              *     {@link String }
              *     
              */
-            public void setStopPrice(Double value) {
+            public void setStopPrice(BigDecimal value) {
                 this.stopPrice = value;
             }
 

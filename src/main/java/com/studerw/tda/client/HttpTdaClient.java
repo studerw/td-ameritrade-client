@@ -19,6 +19,9 @@ import com.studerw.tda.model.trade.CancelOrder;
 import com.studerw.tda.model.trade.EquityOrder;
 import com.studerw.tda.model.trade.EquityOrderValidator;
 import com.studerw.tda.model.trade.EquityTrade;
+import com.studerw.tda.model.trade.OptionOrder;
+import com.studerw.tda.model.trade.OptionOrderValidator;
+import com.studerw.tda.model.trade.OptionTrade;
 import com.studerw.tda.parse.TdaBinaryParser;
 import com.studerw.tda.parse.TdaXmlParser;
 import java.io.IOException;
@@ -41,13 +44,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * HTTP implementation of {@link TdaClient}. Uses OKHttp3. This is a thread safe class.
+ * HTTP implementation of {@link com.studerw.tda.client.TdaClient} which uses OKHttp3 under the hood.
+ * <strong>This is a thread safe class.</strong>
  *
- * @See <a href="https://square.github.io/okhttp/3.x/okhttp/">OKHttp3 from Square</a>
+ * @see <a href="https://square.github.io/okhttp/3.x/okhttp/">OKHttp3 from Square</a>
  */
 public class HttpTdaClient implements TdaClient {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpTdaClient.class);
+  protected static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE;
 
   protected final OkHttpClient httpClient;
   protected final String user;
@@ -200,7 +205,7 @@ public class HttpTdaClient implements TdaClient {
 
   @Override
   public CancelOrder cancelTrade(List<String> orderIds) {
-    return this.cancelTrade(null, orderIds);
+    return this.cancelTrade(null,orderIds);
   }
 
   @Override
@@ -307,7 +312,7 @@ public class HttpTdaClient implements TdaClient {
   public EquityTrade tradeEquity(EquityOrder equityOrder) {
     Set<ConstraintViolation<EquityOrder>> violations = EquityOrderValidator.validate(equityOrder);
     if (!violations.isEmpty()) {
-      printViolations(violations);
+      printEqViolations(violations);
       throw new ValidationException("EquityOrder has validation errors");
     }
     final String ORDER_STRING = "orderstring";
@@ -318,6 +323,26 @@ public class HttpTdaClient implements TdaClient {
     Request request = new Request.Builder().url(url).build();
     try (Response response = this.httpClient.newCall(request).execute()) {
       return tdaXmlParser.parseEquityTrade(response.body().string());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public OptionTrade tradeOption(OptionOrder optionOrder) {
+    Set<ConstraintViolation<OptionOrder>> violations = OptionOrderValidator.validate(optionOrder);
+    if (!violations.isEmpty()) {
+      printOpViolations(violations);
+      throw new ValidationException("OptionOrder has validation errors");
+    }
+    final String ORDER_STRING = "orderstring";
+    HttpUrl url = baseUrl().newBuilder().addPathSegments("100/OptionTrade")
+        .addQueryParameter("source", tdProperties.getProperty("tda.source"))
+        .addQueryParameter(ORDER_STRING, optionOrder.toQueryString(ORDER_STRING))
+        .build();
+    Request request = new Request.Builder().url(url).build();
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      return tdaXmlParser.parseOptionTrade(response.body().string());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -377,7 +402,6 @@ public class HttpTdaClient implements TdaClient {
       Integer intervalDuration, PeriodType periodType, Integer period, LocalDate startDate,
       LocalDate endDate, Boolean extended) {
     LOGGER.debug("Fetching priceHistory: {}", symbols);
-    DateTimeFormatter fmt = DateTimeFormatter.BASIC_ISO_DATE;
     Builder builder = baseUrl().newBuilder().addPathSegments("100/PriceHistory")
         .addQueryParameter("source", tdProperties.getProperty("tda.source"))
         .addQueryParameter("requestidentifiertype", "SYMBOL")
@@ -394,10 +418,10 @@ public class HttpTdaClient implements TdaClient {
       builder.addQueryParameter("periodtype", periodType.name());
     }
     if (startDate != null) {
-      builder.addQueryParameter("startdate", startDate.format(fmt));
+      builder.addQueryParameter("startdate", startDate.format(ISO_FORMATTER));
     }
     if (endDate != null) {
-      builder.addQueryParameter("enddate", endDate.format(fmt));
+      builder.addQueryParameter("enddate", endDate.format(ISO_FORMATTER));
     }
 
     HttpUrl url = builder.build();
@@ -413,46 +437,11 @@ public class HttpTdaClient implements TdaClient {
     }
   }
 
-//  @Override
-//  public OptionTradeResponse buyOption(OptionOrder optionOrder, String accountId) {
-//    LOGGER.debug("Buying option[accountId={}]: {}", accountId, optionOrder.toString());
-//
-//    List<String> orderParams = new ArrayList<>();
-//    orderParams.add("accountid=" + accountId);
-//    orderParams.add("action=buytoopen");
-//    orderParams.add("expire=day");
-//    orderParams.add("quantity=" + optionOrder.getQuantity());
-//    orderParams.add("symbol=" + optionOrder.getTdaTicker());
-//    orderParams.add("ordtype=" + (optionOrder.getLimit() != null ? "limit" : "market"));
-//    if (optionOrder.getLimit() != null) {
-//      orderParams.add("price=" + optionOrder.getLimit().toString());
-//    }
-//
-//    HttpUrl url = baseUrl().newBuilder().addPathSegments("100/OptionTrade")
-//        .addQueryParameter("source", env.getRequiredProperty("ameritrade.source"))
-//        .addQueryParameter("orderstring", StringUtils.join(orderParams, "~"))
-//        .build();
-//
-//    Request request = new Request.Builder().url(url).build();
-//    if (isMockProfile(env)) {
-//      LOGGER.warn("'mock' profile is on - not making actual buy order)");
-//      return getMockTradeResponse(request);
-//    }
-//    try (Response response = this.httpClient.newCall(request).execute()) {
-//      final String xml = response.body().string();
-//      final OptionTradeResponse optionTradeResponse= parseOptionTradeResponse(xml);
-//      return optionTradeResponse;
-//    } catch (IOException e) {
-//      throw new RuntimeException(e);
-//    }
-//  }
-
   @Override
   public byte[] priceHistoryBytes(List<String> symbols, IntervalType intervalType,
       Integer intervalDuration, PeriodType periodType, Integer period, LocalDate startDate,
       LocalDate endDate, Boolean extended) {
     LOGGER.debug("Fetching priceHistoryBytes: {}", symbols);
-    DateTimeFormatter fmt = DateTimeFormatter.BASIC_ISO_DATE;
     Builder builder = baseUrl().newBuilder().addPathSegments("100/PriceHistory")
         .addQueryParameter("source", tdProperties.getProperty("tda.source"))
         .addQueryParameter("requestidentifiertype", "SYMBOL")
@@ -469,10 +458,10 @@ public class HttpTdaClient implements TdaClient {
       builder.addQueryParameter("periodtype", periodType.name());
     }
     if (startDate != null) {
-      builder.addQueryParameter("startdate", startDate.format(fmt));
+      builder.addQueryParameter("startdate", startDate.format(ISO_FORMATTER));
     }
     if (endDate != null) {
-      builder.addQueryParameter("enddate", endDate.format(fmt));
+      builder.addQueryParameter("enddate", endDate.format(ISO_FORMATTER));
     }
 
     HttpUrl url = builder.build();
@@ -493,13 +482,19 @@ public class HttpTdaClient implements TdaClient {
         .build();
   }
 
-  private void printViolations(Set<ConstraintViolation<EquityOrder>> violations) {
+  private void printEqViolations(Set<ConstraintViolation<EquityOrder>> violations) {
     Iterator<ConstraintViolation<EquityOrder>> iter = violations.iterator();
     while (iter.hasNext()) {
-      ConstraintViolation<EquityOrder> next = iter.next();
-      LOGGER.error("EquityOrder error: {}", next.getMessage());
+      ConstraintViolation next = iter.next();
+      LOGGER.error("Order error: {}", next.getMessage());
     }
   }
 
-
+  private void printOpViolations(Set<ConstraintViolation<OptionOrder>> violations) {
+    Iterator<ConstraintViolation<OptionOrder>> iter = violations.iterator();
+    while (iter.hasNext()) {
+      ConstraintViolation next = iter.next();
+      LOGGER.error("Order error: {}", next.getMessage());
+    }
+  }
 }

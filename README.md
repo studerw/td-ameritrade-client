@@ -35,7 +35,7 @@ Add the following to your Maven build file:
 
 ```
   <dependency>
-    <groupId>com.studerw</groupId>
+    <groupId>com.studerw.tda</groupId>
     <artifactId>tdameritrade-api</artifactId>
     <version>1.0-SNAPSHOT</version>
   </dependency>
@@ -306,3 +306,5 @@ file. You can change these there if needed, and rebuild as they are included in 
 * Add a section here in README to describe how TDA expects certain strings for Option and equity orders, etc.
   - link to the new API docs where appropriate
   - Clean and post javadoc, import to Sonatype first.
+
+* Add full validation for OptionOrder, EquityOrder, etc.

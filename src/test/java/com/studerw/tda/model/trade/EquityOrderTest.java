@@ -86,6 +86,36 @@ public class EquityOrderTest {
   }
 
   @Test
+  public void testBadExpireDay() {
+    EquityOrder equityOrder = this.validEquityOrder();
+    equityOrder.setExpireDay("023");
+    Set<ConstraintViolation<EquityOrder>> violations = validator.validate(equityOrder);
+    assertThat(violations.size()).isEqualTo(1);
+    assertThat(violations.toString()).contains("propertyPath=expireDay");
+    LOGGER.debug(violations.toString());
+  }
+
+  @Test
+  public void testBadExpireMonth() {
+    EquityOrder equityOrder = this.validEquityOrder();
+    equityOrder.setExpireMonth("011");
+    Set<ConstraintViolation<EquityOrder>> violations = validator.validate(equityOrder);
+    assertThat(violations.size()).isEqualTo(1);
+    assertThat(violations.toString()).contains("propertyPath=expireMonth");
+    LOGGER.debug(violations.toString());
+  }
+
+  @Test
+  public void testBadExpireYear() {
+    EquityOrder equityOrder = this.validEquityOrder();
+    equityOrder.setExpireYear("011");
+    Set<ConstraintViolation<EquityOrder>> violations = validator.validate(equityOrder);
+    assertThat(violations.size()).isEqualTo(1);
+    assertThat(violations.toString()).contains("propertyPath=expireYear");
+    LOGGER.debug(violations.toString());
+  }
+
+  @Test
   public void testQueryParams() {
     EquityOrder equityOrder = this.validEquityOrder();
     Set<ConstraintViolation<EquityOrder>> violations = validator.validate(equityOrder);
@@ -93,7 +123,6 @@ public class EquityOrderTest {
     String queryStr = equityOrder.toQueryString("orderstring");
     assertThat(queryStr).isNotBlank();
     LOGGER.debug(queryStr);
-
   }
 
   private EquityOrder validEquityOrder() {
@@ -101,9 +130,9 @@ public class EquityOrderTest {
         withAction(EquityAction.buy).
         withDisplaySize(100).
         withExpire(Expire.am).
-        withExpireDay(30).
-        withExpireMonth(10).
-        withExpireYear(24).
+        withExpireDay("30").
+        withExpireMonth("10").
+        withExpireYear("20").
         withOrderType(OrderType.market).
         withQuantity(1).
         withAccountId("1234").

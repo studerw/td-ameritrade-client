@@ -9,8 +9,8 @@ import org.junit.BeforeClass;
 
 public abstract class BaseTestIT {
 
-  static HttpTdaClient httpTdaClient;
-  static Properties props = null;
+  static protected HttpTdaClient httpTdaClient;
+  static protected Properties props = null;
 
   @BeforeClass
   public static void beforeClass() {

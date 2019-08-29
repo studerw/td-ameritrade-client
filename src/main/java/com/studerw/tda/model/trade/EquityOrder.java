@@ -9,6 +9,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 import org.apache.commons.lang3.StringUtils;
 
@@ -29,12 +30,12 @@ public class EquityOrder {
   private Integer displaySize;
   @NotNull(message="expire type is required, one of [day, moc, day_ext, gtc, gtc_ext, am, pm]")
   private Expire expire;
-  //@Digits(integer = 2, fraction = 0)
-  private Integer expireDay;
-  //@Digits(integer = 2, fraction = 0)
-  private Integer expireMonth;
-  //@Digits(integer = 2, fraction = 0)
-  private Integer expireYear;
+  @Pattern(message="The expiration day must be a two digit day (e.g. 08 or 15)", regexp="\\d{2}|null")
+  private String expireDay;
+  @Pattern(message="The expiration month must be a two digit month (e.g. 08 or 11)", regexp="\\d{2}|null")
+  private String expireMonth;
+  @Pattern(message="The expiration year must be a two digit year (e.g. 20 for 2020)", regexp="\\d{2}|null")
+  private String expireYear;
   @NotNull(message = "orderType required - must be one of [market, limit, stop_market, stop_limit, tstoppercent, tstopdollar]")
   private OrderType orderType;
   private BigDecimal price;
@@ -104,7 +105,7 @@ public class EquityOrder {
    *
    * @return Two digit expiration day, only specified if expire is set to gtc otherwise null
    */
-  public Integer getExpireDay() {
+  public String getExpireDay() {
     return expireDay;
   }
 
@@ -112,7 +113,7 @@ public class EquityOrder {
    *
    * @return Two digit expiration month, only specified if expire is set to gtc otherwise null.
    */
-  public Integer getExpireMonth() {
+  public String getExpireMonth() {
     return expireMonth;
   }
 
@@ -120,7 +121,7 @@ public class EquityOrder {
    *
    * @return Two digit expiration year, only specified if expire is set to gtc otherwise null.
    */
-  public Integer getExpireYear() {
+  public String getExpireYear() {
     return expireYear;
   }
 
@@ -201,15 +202,15 @@ public class EquityOrder {
     this.expire = expire;
   }
 
-  void setExpireDay(Integer expireDay) {
+  void setExpireDay(String expireDay) {
     this.expireDay = expireDay;
   }
 
-  void setExpireMonth(Integer expireMonth) {
+  void setExpireMonth(String expireMonth) {
     this.expireMonth = expireMonth;
   }
 
-  void setExpireYear(Integer expireYear) {
+  void setExpireYear(String expireYear) {
     this.expireYear = expireYear;
   }
 
@@ -234,7 +235,7 @@ public class EquityOrder {
   }
 
   void setSymbol(String symbol) {
-    this.symbol = symbol;
+    this.symbol = StringUtils.upperCase(symbol);
   }
 
   void setTsParam(String tsParam) {
@@ -266,13 +267,13 @@ public class EquityOrder {
     if (this.expire != null){
       params.put("expire", this.expire.toString());
     }
-    if (this.expireDay != null) {
+    if (StringUtils.isNotBlank(this.expireDay)){
       params.put("exday", this.expireDay.toString());
     }
-    if (this.expireMonth != null) {
+    if (StringUtils.isNotBlank(this.expireMonth)){
       params.put("exmonth", this.expireMonth.toString());
     }
-    if (this.expireYear != null) {
+    if (StringUtils.isNotBlank(this.expireYear)){
       params.put("exyear", this.expireYear.toString());
     }
     if (this.orderType != null) {
@@ -342,9 +343,9 @@ public class EquityOrder {
     private BigDecimal actPrice;
     private Integer displaySize;
     private Expire expire;
-    private Integer expireDay;
-    private Integer expireMonth;
-    private Integer expireYear;
+    private String expireDay;
+    private String expireMonth;
+    private String expireYear;
     private OrderType orderType;
     private BigDecimal price;
     private Integer quantity;
@@ -390,17 +391,17 @@ public class EquityOrder {
       return this;
     }
 
-    public EquityOrderBldr withExpireDay(Integer expireDay) {
+    public EquityOrderBldr withExpireDay(String expireDay) {
       this.expireDay = expireDay;
       return this;
     }
 
-    public EquityOrderBldr withExpireMonth(Integer expireMonth) {
+    public EquityOrderBldr withExpireMonth(String expireMonth) {
       this.expireMonth = expireMonth;
       return this;
     }
 
-    public EquityOrderBldr withExpireYear(Integer expireYear) {
+    public EquityOrderBldr withExpireYear(String expireYear) {
       this.expireYear = expireYear;
       return this;
     }

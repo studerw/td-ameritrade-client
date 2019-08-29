@@ -1,15 +1,11 @@
-package com.studerw.tda.client;
+package com.studerw.tda.model.trade;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+import com.studerw.tda.client.BaseTestIT;
 import com.studerw.tda.model.LastOrderStatus;
-import com.studerw.tda.model.trade.EquityAction;
-import com.studerw.tda.model.trade.EquityOrder;
 import com.studerw.tda.model.trade.EquityOrder.EquityOrderBldr;
-import com.studerw.tda.model.trade.EquityTrade;
-import com.studerw.tda.model.trade.Expire;
-import com.studerw.tda.model.trade.OrderType;
 import com.studerw.tda.parse.PrettyXmlPrinter;
 import javax.validation.ValidationException;
 import org.junit.Ignore;

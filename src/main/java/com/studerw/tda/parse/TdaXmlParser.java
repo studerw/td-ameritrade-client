@@ -1,16 +1,17 @@
 package com.studerw.tda.parse;
 
 import com.studerw.tda.model.BalancesAndPositions;
-import com.studerw.tda.model.trade.CancelOrder;
+import com.studerw.tda.model.BaseTda;
 import com.studerw.tda.model.LastOrderStatus;
 import com.studerw.tda.model.Logout;
 import com.studerw.tda.model.MarketSnapshot;
 import com.studerw.tda.model.OptionChain;
-import com.studerw.tda.model.trade.EquityTrade;
-import com.studerw.tda.model.trade.OptionTrade;
 import com.studerw.tda.model.OrderStatus;
 import com.studerw.tda.model.QuoteResponse;
 import com.studerw.tda.model.SymbolLookup;
+import com.studerw.tda.model.trade.CancelOrder;
+import com.studerw.tda.model.trade.EquityTrade;
+import com.studerw.tda.model.trade.OptionTrade;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import javax.xml.bind.JAXBContext;
@@ -34,18 +35,19 @@ public class TdaXmlParser {
   public TdaXmlParser() {
   }
 
-//    protected <T> parseXml(T type, String xml){
-//        try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)){
-//            LOGGER.debug("unmarshalling xml to pojo of type: {}", type.getClass().getName());
-//            JAXBContext context = JAXBContext.newInstance(type.getClass());
-//            Unmarshaller um = context.createUnmarshaller();
-//            final T obj = (T)um.unmarshal(in);
-//            login.setOriginalXml(xml);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            throw new IllegalStateException("Error parsing login");
-//        }
-//    }
+    protected <T extends BaseTda> T parseXml(Class<T> type, String xml){
+        try (InputStream in = IOUtils.toInputStream(xml, StandardCharsets.UTF_8)){
+            LOGGER.debug("unmarshalling xml to pojo of type: {}", type.getName());
+            JAXBContext context = JAXBContext.newInstance(type);
+            Unmarshaller um = context.createUnmarshaller();
+            final T obj = (T)um.unmarshal(in);
+            obj.setOriginalXml(xml);
+            return type.cast(obj);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalStateException("Error parsing login");
+        }
+    }
 
 
   public OrderStatus parseOrderStatus(String xml) {
