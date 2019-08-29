@@ -38,7 +38,7 @@ Add the following to your Maven build file:
 ```
   <dependency>
     <groupId>com.studerw.tda</groupId>
-    <artifactId>tdameritrade-api</artifactId>
+    <artifactId>td-ameritrade-client</artifactId>
     <version>1.0-SNAPSHOT</version>
   </dependency>
 ```
@@ -276,26 +276,8 @@ Don't worry - no purchases or transfers (to @studerw's account) will be made :/.
 * Need a validator for PriceHistory
 * converting floats to BigDecimal causes loss of precision
 * javadoc check and see if working correctly with package html
-
-## How to Implement an API Call
-
-* I have a copy of the API. I cannot post it here for copyright reasons, but it can be requested via email
-or found via TDA dev support possibly. Most of the return types are almost exact copies 
-of the new API here: [Restful API](https://developer.tdameritrade.com/).
-
-* Each call in the API guide gives an example XML response and a table of the XML
-schema type (e.g. what each field refers to and its general type).
-
-* Take the example return XML and generate JAXB Pojo with the correct annotations.
-
-* Modify the Pojo which means
-  - rename from `amtd` to actual response name, delete the ObjectFactory and any other xml or xsd files not needed
-  - extend from `BaseTda` class, determine the error code, check `responseStr` needed
-  - modify String types to Java *Integer*, *BigDecimal*, *Double*, *Boolean* and *ZonedDateTime* if it makes sense.
-
-* Create the call within `TdaHttpClient` using the required parameters at a minimum
-and write an accompanying integration test to ensure the call is successful with at least my
-individual account.  
+* remove xml from generated models, add better javadoc, possibly convenience methods
+* Add full validation for OptionOrder, EquityOrder, etc.
 
 ## Login Parameters
 The client only requires a username and password. The actual call to TDA, though, also
@@ -303,10 +285,6 @@ requires a `source` and `version`. Because I have not seen these change, they ar
 hardcoded, as are all other properties, in the `src/main/resources/com/studerw/tda/tda-api.properties`
 file. You can change these there if needed, and rebuild as they are included in the output jar.
 
-## TODO
 
-* Add a section here in README to describe how TDA expects certain strings for Option and equity orders, etc.
-  - link to the new API docs where appropriate
-  - Clean and post javadoc, import to Sonatype first.
 
-* Add full validation for OptionOrder, EquityOrder, etc.
+
