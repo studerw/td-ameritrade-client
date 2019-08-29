@@ -5,6 +5,8 @@
 
 Java rest client for TD Ameritrade Api. Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
 
+[API Documentation](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/)
+
 I'm happy to collaborate contractually or OSS with other devs. 
 
 ## 2018 Notes
