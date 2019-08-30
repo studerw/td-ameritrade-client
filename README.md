@@ -3,13 +3,15 @@
 ----
 ![TDA_LOGO](https://github.com/studerw/td-ameritrade-client/blob/master/td_logo.png)
 
+[API Documentation](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/)
+
 ## Deprecated in 2019
 
 Java rest client for TD Ameritrade Api. Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
 
 See the new TDA OAuth2 Rest based [API](https://developer.tdameritrade.com/).
 __
-[API Documentation](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/)
+
 
 I'm happy to collaborate contractually or OSS with other devs. 
 
