@@ -3,21 +3,22 @@
 ----
 ![TDA_LOGO](https://github.com/studerw/td-ameritrade-client/blob/master/td_logo.png)
 
+## Deprecated in 2019**
+
 Java rest client for TD Ameritrade Api. Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
 
+See the new TDA OAuth2 Rest based [API](https://developer.tdameritrade.com/).
+__
 [API Documentation](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/)
 
 I'm happy to collaborate contractually or OSS with other devs. 
 
-## 2018 Notes
+## 2019 Deprecation Notes
 
 Sometime in-between the beginning of this project (based on TDA's older XML API) and now, TDA released a restful [API](https://developer.tdameritrade.com/). 
-TDA's server backend is still similar, as far as I can tell. IOW, from the various 
-APIs TDA has released over the years, I estimate that their internal backend is accessed using old-school XML 
-auto-generated methods and POJOs in Java. Both the old XML API which this project uses and the new rest API have almost
-identical return data, the only difference being one is XML and the other JSON (generated from the XML).  
-
-Also, this API requires only the user name and password (same as the site itself) while the new API uses OAuth.
+TDA's server backend is still similar, as far as I can tell. Unfortunately the old API is being deprecated in 2020 and so this
+project is being archived. Perhaps a new repo using the JSON API will be created as the models and calls are very
+similar (and probably come from the same backend Java XML system).
 
 ## Build
 
