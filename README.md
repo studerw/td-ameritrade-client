@@ -213,7 +213,7 @@ Don't worry - no purchases or transfers (to @studerw's account) will be made :/.
 * ~~SymbolLookup~~
 * ~~PriceHistory~~
 * ~~VolatilityHistory~~
-* OptionChain - PARTIAL
+* ~~OptionChain~~ - PARTIAL
 * BinaryOptionChain - TODO
 * ~~BalanceAndPosition~~
 * ~~OrderStatus~~
@@ -227,8 +227,8 @@ Don't worry - no purchases or transfers (to @studerw's account) will be made :/.
 * QuoteNews - TODO
 
 ### Trading
-* ~~EquityTrade - TODO~~
-* OptionTrade - TODO
+* ~~EquityTrade~~
+* ~~OptionTrade~~
 * EditOrder - TODO
 * ~~CancelOrder~~
 
