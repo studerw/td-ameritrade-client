@@ -3,7 +3,7 @@
 ----
 ![TDA_LOGO](https://github.com/studerw/td-ameritrade-client/blob/master/td_logo.png)
 
-## Deprecated in 2019**
+## Deprecated in 2019
 
 Java rest client for TD Ameritrade Api. Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
 
