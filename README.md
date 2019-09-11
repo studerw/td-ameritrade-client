@@ -2,9 +2,11 @@
 ![TDA_LOGO](https://github.com/studerw/td-ameritrade-client/blob/master/td_logo.png)
 
 ![travisci-passing](https://api.travis-ci.org/studerw/td-ameritrade-client.svg?branch=old-xml-api)
+[![APL v2](https://img.shields.io/badge/license-Apache%202-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+
 ----
 
-[API Documentation](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/)
+[Javadoc API Documentation](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/)
 
 Java rest client for TD Ameritrade Api. Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
 
@@ -18,8 +20,8 @@ See the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-x
 Old [API Documentation](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/).
 
 Sometime in-between the beginning of this project (based on TDA's older XML API) and now, TDA released a restful [API](https://developer.tdameritrade.com/). 
-TDA's server backend is still similar, as far as I can tell. Unfortunately the old API is being deprecated in 2020 and so the
-main XML API has been moved to the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-xml-api). 
+Unfortunately the old API is being [deprecated in 2020](https://apiforums.tdameritrade.com/tda-board/ubbthreads.php) and so the
+original source code for this project has been moved to the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-xml-api) branch.
 
 ## Build
 
@@ -44,8 +46,8 @@ Add the following to your Maven build file:
     <version>2.0-SNAPSHOT</version>
   </dependency>
 ```
-
-You need to obtain a valid TDA Developer *refresh token* every 90 days. See TDA's [Simple Auth for Local Apps](https://developer.tdameritrade.com/content/simple-auth-local-apps)
+----
+You need to obtain a valid TDA Developer *refresh token* every 90 days. See TDA's [Simple Auth for Local Apps](https://developer.tdameritrade.com/content/simple-auth-local-apps).
 
 ```
   TdaClient tdaClient = new HttpTdaClient();
@@ -85,8 +87,6 @@ Then run the following command.
 ```
 mvn failsafe:integration-test
 ```
-
-Don't worry - no purchases or transfers (to @studerw's account) will be made :/. Basically we just check login and quote methods only.
 
 ## Login Parameters
 The client only requires a Client ID and Refresh Token. The refresh token expires every 90 days.
