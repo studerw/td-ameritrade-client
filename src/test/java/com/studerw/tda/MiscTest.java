@@ -3,7 +3,9 @@ package com.studerw.tda;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,15 @@ public class MiscTest {
 
     BigDecimal b3 = new BigDecimal("0.234");
     LOGGER.debug(b3.toString());
+  }
+
+  @Test(expected = IndexOutOfBoundsException.class)
+  public void testGetList() {
+    List<String> stuff = new ArrayList<>();
+    String s = stuff.get(0);
+    assertThat(s).isNull();
 
   }
+
+
 }

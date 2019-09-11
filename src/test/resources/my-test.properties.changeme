@@ -1,0 +1,11 @@
+#To run integration tests, run mvn:verify
+#You will need to rename this file to 'my-test.properties' and add the TDA client_id and refresh_token
+
+tda.token.refresh=<ADD a refresh_token>
+tda.client_id=<ADD Your App / Client ID>
+
+tda.http.schema=https
+tda.http.host=api.tdameritrade.com
+tda.http.path=v1
+#how many bytes in the logging interceptor to actually print out. -1 is unlimited
+tda.debug.bytes.length=-1

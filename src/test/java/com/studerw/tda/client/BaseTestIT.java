@@ -2,7 +2,6 @@ package com.studerw.tda.client;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -14,8 +13,8 @@ public abstract class BaseTestIT {
 
   @BeforeClass
   public static void beforeClass() {
-    try (InputStream in = LoginTestIT.class.getClassLoader().
-        getResourceAsStream("com/studerw/tda/client/my-test.properties")) {
+    try (InputStream in = BaseTestIT.class.getClassLoader().
+        getResourceAsStream("my-test.properties")) {
       props = new Properties();
       props.load(in);
     } catch (IOException e) {
@@ -23,14 +22,12 @@ public abstract class BaseTestIT {
           "Could not load default properties from classpath at com.studerw.my-test.properties");
     }
 
-    String user = props.getProperty("user");
-    byte[] pw = props.getProperty("pw").getBytes(StandardCharsets.UTF_8);
-    httpTdaClient = new HttpTdaClient(user, pw);
+    httpTdaClient = new HttpTdaClient(props);
   }
 
   @AfterClass
   public static void afterClass () {
-    httpTdaClient.logout();
+//    httpTdaClient.logout();
     httpTdaClient = null;
   }
 

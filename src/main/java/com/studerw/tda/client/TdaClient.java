@@ -1,23 +1,8 @@
 package com.studerw.tda.client;
 
-import com.studerw.tda.model.BalancesAndPositions;
-import com.studerw.tda.model.trade.CancelOrder;
-import com.studerw.tda.model.LastOrderStatus;
-import com.studerw.tda.model.Login;
-import com.studerw.tda.model.Logout;
-import com.studerw.tda.model.MarketSnapshot;
-import com.studerw.tda.model.OptionChain;
-import com.studerw.tda.model.OrderStatus;
-import com.studerw.tda.model.PriceHistory;
-import com.studerw.tda.model.QuoteResponse;
-import com.studerw.tda.model.SymbolLookup;
+import com.studerw.tda.model.quote.EquityQuote;
 import com.studerw.tda.model.history.IntervalType;
-import com.studerw.tda.model.history.PeriodType;
-import com.studerw.tda.model.trade.EquityOrder;
-import com.studerw.tda.model.trade.EquityTrade;
-import com.studerw.tda.model.trade.OptionOrder;
-import com.studerw.tda.model.trade.OptionTrade;
-import java.time.LocalDate;
+import com.studerw.tda.model.quote.Quote;
 import java.util.List;
 
 /**
@@ -29,13 +14,13 @@ public interface TdaClient {
   /**
    * @return the default Account ID associated with the account. Most users will only have a single account, and this is the same as the default.
    */
-  String getDefaultAcctId();
+//  String getDefaultAcctId();
 
   /**
    * This call will invalidate the user session. It is a security feature that should be called when
    * the user wants to stop their current session or close the client application.
    */
-  Logout logout();
+//  Logout logout();
 
   /**
    * <p> the {@link com.studerw.tda.model.Login} object which will contain your account information.
@@ -44,7 +29,7 @@ public interface TdaClient {
    * There is also a convenience method of {@link #getDefaultAcctId()}
    * @return {@link com.studerw.tda.model.Login}
    */
-  Login getCurrentLogin();
+//  Login getCurrentLogin();
 
 
   /**
@@ -65,8 +50,8 @@ public interface TdaClient {
    * @param extended Indicates if extended hours data is to be included in the response. FALSE if null. NOTE: Only valid for intraday data requests.
    * @return priceHistory with a result for each symbol
    */
-  PriceHistory priceHistory(List<String> symbols, IntervalType intervalType, Integer intervalDuration,
-      PeriodType periodType, Integer period, LocalDate startDate, LocalDate endDate, Boolean extended);
+//  PriceHistory priceHistory(List<String> symbols, IntervalType intervalType, Integer intervalDuration,
+//      PeriodType periodType, Integer period, LocalDate startDate, LocalDate endDate, Boolean extended);
 
   /**
    * @see com.studerw.tda.model.history for full validation rules.
@@ -86,8 +71,8 @@ public interface TdaClient {
    * @param extended Indicates if extended hours data is to be included in the response. FALSE if null. NOTE: Only valid for intraday data requests.
    * @return priceHistory with a result for each symbol
    */
-  byte[] priceHistoryBytes(List<String> symbols, IntervalType intervalType, Integer intervalDuration,
-      PeriodType periodType, Integer period, LocalDate startDate, LocalDate endDate, Boolean extended);
+//  byte[] priceHistoryBytes(List<String> symbols, IntervalType intervalType, Integer intervalDuration,
+//      PeriodType periodType, Integer period, LocalDate startDate, LocalDate endDate, Boolean extended);
 
   /**
    * If the login user is inactive for more than the timeout period, the session will expire and the
@@ -101,19 +86,72 @@ public interface TdaClient {
    * @return The response to the KeepAlive request will be a one world reply. Either "LoggedOn" or
    * "InvalidSession" without html or xml formatting.  The content type is text/plain.
    */
-  String keepAlive();
+//  String keepAlive();
 
   /**
    * Fetch Detailed quote information for one or more symbols. Currently the API allows symbol types
-   * of Stocks, Options, Mutual Funds and Indexes. Quotes are real-time for accounts subscribed to
-   * this service; otherwise, quotes are delayed according to exchange rules.
+   * of Stocks, Options, Mutual Funds and Indexes, and ETFs. Quotes are real-time for accounts subscribed to
+   * this service; otherwise, quotes are delayed according to exchange and TDA rules.
    *
    * @param symbols list of valid symbols. Max of 300 based on TDA docs. Index symbols need to be
-   * prefixed with a <em>$</em>, e.g. $inx. Options are in a format like the following:
-   * <em>MNST_061518P60</em> for a put, or <em>MNST_061518C60</em> for a call.
-   * @return QuoteResponse
+   * prefixed with a <em>$</em>, e.g. <em>$INX</em> or <em>$SPX.X</em>. Options are in a format like the following:
+   * <em>MSFT_061518P60</em> for a put, or <em>MSFT_061518C60</em> for a call. This is the
+   * Microsoft June 6, 2018 Put/Call at $60.
+   *
+   * @return list of quotes. The {@link Quote} is the base class, but all objects in the
+   * list can be cast to their actual types by looking at the {@code com.studerw.tda.model.quote.Quote.assetType}
+   * field.
+   * <ul>
+   *   <li>{@link com.studerw.tda.model.quote.EquityQuote}</li>
+   *   <li>{@link com.studerw.tda.model.quote.EtfQuote}</li>
+   *   <li>{@link com.studerw.tda.model.quote.OptionQuote}</li>
+   *   <li>{@link com.studerw.tda.model.quote.IndexQuote}</li>
+   *   <li>{@link com.studerw.tda.model.quote.MutualFundQuote}</li>
+   *   <li>{@link com.studerw.tda.model.quote.ForexQuote}</li>
+   * </ul>
+   * <p>
+   *   <pre>
+   *   </code>
+   *    Quote quote = client.fetchQuote("ATD");
+   *    EquityQuote equityQuote = (EquityQuote)quote;
+   *    </code>
+   *    </pre>
+   * </p>
    */
-  QuoteResponse fetchQuotes(List<String> symbols);
+  List<Quote> fetchQuotes(List<String> symbols);
+
+
+  /**
+   * Fetch Detailed quote information for one or more symbols. Currently the API allows symbol types
+   * of Stocks, Options, Mutual Funds and Indexes, and ETFs. Quotes are real-time for accounts subscribed to
+   * this service; otherwise, quotes are delayed according to exchange and TDA rules.
+   *
+   * @param symbol list of valid symbols. Max of 300 based on TDA docs. Index symbols need to be
+   * prefixed with a <em>$</em>, e.g. <em>$INX</em> or <em>$SPX.X</em>. Options are in a format like the following:
+   * <em>MSFT_061518P60</em> for a put, or <em>MSFT_061518C60</em> for a call. This is the
+   * Microsoft June 6, 2018 Put/Call at $60.
+   *
+   * @return list of quotes. The {@link Quote} is the base class, but all objects in the
+   * list can be cast to their actual types by looking at the {@code com.studerw.tda.model.quote.Quote.assetType}
+   * field.
+   * <p>
+   *   <pre>
+   *   </code>
+   *    Quote quote = client.fetchQuote("ATD");
+   *    EquityQuote equityQuote = (EquityQuote)quote;
+   *    </code>
+   *    </pre>
+   * </p>
+   * <ul>
+   *   <li>{@link com.studerw.tda.model.quote.EquityQuote}</li>
+   *   <li>{@link com.studerw.tda.model.quote.EtfQuote}</li>
+   *   <li>{@link com.studerw.tda.model.quote.OptionQuote}</li>
+   *   <li>{@link com.studerw.tda.model.quote.IndexQuote}</li>
+   *   <li>{@link com.studerw.tda.model.quote.MutualFundQuote}</li>
+   *   <li>{@link com.studerw.tda.model.quote.ForexQuote}</li>
+   * </ul>
+   */
+  Quote fetchQuote(String symbol);
 
   /**
    * Provides detailed information on positions and balances in the account.
@@ -121,7 +159,7 @@ public interface TdaClient {
    * quotes will not be suppressed, and balances will not be returned in 'alternative format'.
    * @return {@link com.studerw.tda.model.BalancesAndPositions}
    */
-  BalancesAndPositions fetchBalancesAndPositions();
+//  BalancesAndPositions fetchBalancesAndPositions();
 
   /**
    * Provides detailed information on positions and balances in the account.
@@ -129,7 +167,7 @@ public interface TdaClient {
    * All other parameters are set as default.
    * @return {@link com.studerw.tda.model.BalancesAndPositions}
    */
-  BalancesAndPositions fetchBalancesAndPositions(String accountId);
+//  BalancesAndPositions fetchBalancesAndPositions(String accountId);
 
   /**
    * Cancel an open order or the balance of partially filled orders. The default accountId will
@@ -137,7 +175,7 @@ public interface TdaClient {
    * @param orderIds - one or more order ids
    * @return {@link CancelOrder}
    */
-  CancelOrder cancelTrade(List<String> orderIds);
+//  CancelOrder cancelTrade(List<String> orderIds);
 
   /**
    * Cancel an open order or the balance of partially filled orders. The default accountId will
@@ -146,7 +184,7 @@ public interface TdaClient {
    * @param orderIds - one or more order ids
    * @return {@link CancelOrder}
    */
-  CancelOrder cancelTrade(String accountId, List<String> orderIds);
+//  CancelOrder cancelTrade(String accountId, List<String> orderIds);
 
   /**
    * Partially complete
@@ -157,7 +195,7 @@ public interface TdaClient {
    * @param orderIds one or more order ids.
    * @return {@link com.studerw.tda.model.OrderStatus}
    */
-  OrderStatus fetchOrderStatus(List<String> orderIds);
+//  OrderStatus fetchOrderStatus(List<String> orderIds);
 
   /**
    * Partially complete
@@ -169,26 +207,26 @@ public interface TdaClient {
    * @param accountId the account on which the orders were placed
    * @return {@link com.studerw.tda.model.OrderStatus}
    */
-  OrderStatus fetchOrderStatus(List<String> orderIds, String accountId);
+//  OrderStatus fetchOrderStatus(List<String> orderIds, String accountId);
 
   /**
    * Fetch a list of all order statuses
    * @return {@link com.studerw.tda.model.OrderStatus}
    */
-  OrderStatus fetchAllOrderStatuses();
+//  OrderStatus fetchAllOrderStatuses();
 
   /**
    *  Get the date and time of the last order status activity for the primary account associated with the login userID, or the explicitly specified account.
    * @return  {@link com.studerw.tda.model.LastOrderStatus}
    */
-  LastOrderStatus fetchLastOrderStatus();
+//  LastOrderStatus fetchLastOrderStatus();
 
   /**
    * Partially complete....
    * @param symbol in TDA format (e.g. {@code MSFT_061821C120} which denotes MSFT for June 18, 2021 Call@$20
    * @return {@link com.studerw.tda.model.OptionChain}
    */
-  OptionChain fetchOptionChain(String symbol);
+//  OptionChain fetchOptionChain(String symbol);
 
   /**
    * Provides the ability to lookup symbols for stocks and ETFs.
@@ -197,19 +235,19 @@ public interface TdaClient {
    * of Amer</em> would return <em>Bank of America</em>. Used, perhaps, for auto select fields.
    * @return a LookupResponse
    */
-  SymbolLookup symbolLookup(String matchStr);
+//  SymbolLookup symbolLookup(String matchStr);
 
   /**
    *  A snapshot of the five main indices.
    * @return {@link MarketSnapshot} MarketSnapshot
    */
-  MarketSnapshot fetchMarketSnapshot();
+//  MarketSnapshot fetchMarketSnapshot();
 
   /**
    * This is just an alias method for {@link TdaClient#fetchMarketOverview()}  due to the way TDA names their services.
    * @return {@link MarketSnapshot} MarketSnapshot
    */
-  MarketSnapshot fetchMarketOverview();
+//  MarketSnapshot fetchMarketOverview();
 
   /**
    * Trade an equity
@@ -217,7 +255,7 @@ public interface TdaClient {
    * @return an {@link EquityTrade}
    *
    */
-  EquityTrade tradeEquity(EquityOrder equityOrder);
+//  EquityTrade tradeEquity(EquityOrder equityOrder);
 
   /**
    * Trade an option. You must be explicitly approved by TDA for option trading.
@@ -225,6 +263,6 @@ public interface TdaClient {
    * @return an {@link OptionTrade}
    *
    */
-  OptionTrade tradeOption(OptionOrder optionOrder);
+//  OptionTrade tradeOption(OptionOrder optionOrder);
 
 }

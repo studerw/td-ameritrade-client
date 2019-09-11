@@ -22,3 +22,5 @@ debug.log
 test-debug.log
 **/my-test.properties
 *chm
+**/tda-api.properties
+tda_json/

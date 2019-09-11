@@ -1,5 +1,0 @@
-#To run integration tests, run mvn:verify
-#You will need to rename this file to 'my-test.properties' and add the TDA user and pw below
-
-user=
-pw=
