@@ -6,8 +6,6 @@
 
 ----
 
-[Javadoc API Documentation](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/)
-
 Java rest client for TD Ameritrade Api. Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
 
 Uses the new [TDA OAuth2 API](https://developer.tdameritrade.com/).
@@ -17,6 +15,7 @@ I'm happy to collaborate contractually or OSS with other devs.
 ## 2019 
 
 See the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-xml-api) branch for the previous project based on the soon-to-be-deprecated TDA XML API.
+
 Old [API Documentation](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/).
 
 Sometime in-between the beginning of this project (based on TDA's older XML API) and now, TDA released a restful [API](https://developer.tdameritrade.com/). 
@@ -30,8 +29,6 @@ To build the jar, checkout the source and run:
 ```bash
 mvn clean install
 ```
-Note that beginning with JDK 11, the JAXB classes are [no longer included by default](https://openjdk.java.net/jeps/320) in the standard JDK.
-So you will need to build with a JDK under 11. The *pom.xml* file states that JDK 8 should be used, and that is what has so far been tested.   
 
 ## Usage
 Until the project is finished, you will need to have built this locally in order to put the necessary jars in your local Maven repo.
@@ -67,9 +64,10 @@ An easy way to convert them to Java's new DateTime is via the following:
 long someDateTime = ...
 ZonedDateTime dateTime = Instant.ofEpochMilli(someDateTime).atZone(ZoneId.systemDefault());
 ```
-Or you could use the deprecated _java.util.Date_ or Calendar
+Or you could use the deprecated _java.util.Date_.
 
 ```java
+long someDateTime = ...
 Date date = new Date(someDateTime);
 ```
 
@@ -77,6 +75,7 @@ To convert a long to human readable ISO 8601 String, use the following:
 ```java
 long currentTime = System.currentTimeMillis();
 String formattedDate = FormatUtils.epochToStr(currentTime);
+System.out.println(formattedDate) //   2019-09-13T19:59-04:00[America/New_York]
 ```
 
 ## Error Handling
@@ -89,11 +88,13 @@ or some other issue. Often this means the body is an empty JSON string.
 
 The rules are this within the Client:
 
+* Most validation exception before the call was made will throw unchecked `IllegalArgumentException`.
+
 * All non 200 HTTP responses throw unchecked `RuntimeExceptions` since there is no way to recover, usually.
 
-* Responses that are completely empty but should have returned a full json body throw a `RunTimeException` also.
+*  Responses that are completely empty but should have returned a full json body throw a `RunTimeException` also.
 
-* If there is an error parsing the JSON into a Java pojo, the exception will be passed through the calling method.
+* If there is an error parsing the JSON into a Java pojo, the `RuntimeException` wrapping the `IOException` from Jackson will be thrown.
  
 The only exception to this rule is if we cannot login - either due to bad credentials, locked account, or otherwise.
 When this occurs, an `IllegalStateException` is thrown. This is explicitly signalled by a 401 response code.  
