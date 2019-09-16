@@ -2,10 +2,12 @@ package com.studerw.tda;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.studerw.tda.parse.FormatUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,5 +48,37 @@ public class MiscTest {
 
   }
 
+  @Test
+  public void testPrettyDate(){
+    Long epoch = System.currentTimeMillis();
+    String pretty = FormatUtils.epochToStr(epoch);
+    LOGGER.debug("epoch: {} -> {}", epoch, pretty);
+  }
 
+  @Test
+  public void testCopyVsRef(){
+    String someStr = "abcde";
+    String copy = doesCopy(someStr);
+    LOGGER.debug("after the method: {}", someStr);
+    assertThat(someStr).isEqualTo("abcde");
+    assertThat(copy == someStr).isFalse();
+
+  }
+
+  private String doesCopy(String param) {
+    param = StringUtils.upperCase(param);
+    return param;
+  }
+
+  @Test
+  public void getWeek(){
+    long now = System.currentTimeMillis();
+    LOGGER.debug("now: {}", String.valueOf(now));
+    LOGGER.debug("now: {}", FormatUtils.epochToStr(now));
+
+    long weekAgo = now - (1_000 * 60 * 60 * 24 * 7);
+    LOGGER.debug("Week ago: {}", String.valueOf(weekAgo));
+    LOGGER.debug("Week ago: {}", FormatUtils.epochToStr(weekAgo));
+
+  }
 }

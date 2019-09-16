@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.studerw.tda.model.AssetType;
 import com.studerw.tda.model.ParseQuotesTest;
+import com.studerw.tda.model.history.Candle;
+import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.quote.EquityQuote;
 import com.studerw.tda.model.quote.EtfQuote;
 import com.studerw.tda.model.quote.ForexQuote;
@@ -60,4 +62,27 @@ public class TdaJsonParserTest {
       assertThat(quotes.get(5)).isInstanceOf(EtfQuote.class);
     }
   }
+
+  @Test
+  public void parsePriceHistoryTest() throws Exception {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader()
+        .getResourceAsStream("com/studerw/tda/parse/price_history_resp.json")) {
+      PriceHistory priceHistory = tdaJsonParser.parsePriceHistory(in);
+      assertThat(priceHistory).isNotNull();
+      assertThat(priceHistory.getCandles().size()).isEqualTo(5418);
+      assertThat(priceHistory.getSymbol()).isEqualTo("MSFT");
+      assertThat(priceHistory.isEmpty()).isFalse();
+      LOGGER.debug(priceHistory.toString());
+      Candle candle = priceHistory.getCandles().get(5416);
+      LOGGER.debug(candle.toString());
+      assertThat(candle.getOpen()).isEqualTo(new BigDecimal("137.15"));
+      assertThat(candle.getHigh()).isEqualTo(new BigDecimal("137.15"));
+      assertThat(candle.getLow()).isEqualTo(new BigDecimal("137.15"));
+      assertThat(candle.getClose()).isEqualTo(new BigDecimal("137.15"));
+      assertThat(candle.getVolume()).isEqualTo(530);
+      assertThat(candle.getDatetime()).isEqualTo(1568417880000L);
+
+    }
+  }
+
 }

@@ -52,47 +52,53 @@ public class FetchQuotesTestIT extends BaseTestIT {
   }
 
   @Test
-  public void testStockQuoteBad() {
-//    final Quote quote = httpTdaClient.fetchQuote("asdfadsfaff");
-//    LOGGER.debug("finish this");
-//    assertThat(quote).size().isEqualTo(1);
-//    EquityQuote equityQuote = (EquityQuote) quotes.get(0);
-//    assertThat(equityQuote).isNotNull();
-//    assertThat(equityQuote.getAssetType()).isEqualTo(AssetType.EQUITY);
-//    assertThat(equityQuote.getSymbol()).isNotEqualToIgnoringCase("msft");
-//    LOGGER.debug(equityQuote.toString());
+  public void testMutualFundQuotes() {
+    List<String> mfs = Arrays.asList("VFIAX", "VTSAX");
+    final List<Quote> quotes = httpTdaClient.fetchQuotes(mfs);
+    assertThat(quotes.size()).isEqualTo(2);
+
+    MutualFundQuote mfq1 = (MutualFundQuote) quotes.get(0);
+    assertThat(mfq1.getAssetType()).isEqualTo(AssetType.MUTUAL_FUND);
+    assertThat(mfq1.getSymbol()).isEqualTo("VFIAX");
+    LOGGER.debug(mfq1.toString());
+
+    MutualFundQuote mfq2 = (MutualFundQuote) quotes.get(1);
+    assertThat(mfq2.getAssetType()).isEqualTo(AssetType.MUTUAL_FUND);
+    assertThat(mfq2.getSymbol()).isEqualTo("VTSAX");
+    LOGGER.debug(mfq2.toString());
   }
 
+  @Test
+  public void testIndexQuotes() {
+    Quote quote = httpTdaClient.fetchQuote("$SPX.X");
+    assertThat(quote instanceof IndexQuote);
+    IndexQuote indexQuote = (IndexQuote) quote;
+    assertThat(indexQuote.getSymbol()).isEqualTo("$SPX.X");
+    assertThat(indexQuote.getAssetType()).isEqualTo(AssetType.INDEX);
+    LOGGER.debug(indexQuote.toString());
+  }
 
-//  @Test
-//  public void testMutualFundQuotes() {
-//    List<String> mfs = Arrays.asList("VFIAX", "VTSAX");
-//    final QuoteResponse response = httpTdaClient.fetchQuotes(mfs);
-//    LOGGER.debug(response.toString());
-//    assertThat(response.isTdaError()).isFalse();
-//    assertThat(response.getResult().getQuotes().get(0).getAssetType()).isEqualTo("F");
-//    assertThat(response.getResult().getQuotes().get(1).getAssetType()).isEqualTo("F");
-//  }
-//
-//  @Test
-//  public void testIndexQuotes() {
-//    List<String> indexes = Arrays.asList("$inx");
-//    final QuoteResponse response = httpTdaClient.fetchQuotes(indexes);
-//    LOGGER.debug(response.toString());
-//    assertThat(response.isTdaError()).isFalse();
-//    assertThat(response.getResult().getQuotes().get(0).getAssetType()).isEqualTo("I");
-//  }
-//
-//  //These will eventually expire and be invalid
-//  @Test
-//  public void testOptionQuote() {
-//    List<String> options = Arrays.asList("MSFT_061821C120", "MNST_011521P45");
-//    final QuoteResponse response = httpTdaClient.fetchQuotes(options);
-//    LOGGER.debug(response.toString());
-//    assertThat(response.isTdaError()).isFalse();
-//    assertThat(response.getResult().getQuotes().get(0).getAssetType()).isEqualTo("O");
-//    assertThat(response.getResult().getQuotes().get(1).getAssetType()).isEqualTo("O");
-//  }
+  //These will eventually expire and be invalid
+  @Test
+  public void testOptionQuote() {
+    final Quote quote = httpTdaClient.fetchQuote("MSFT_061821C120");
+    assertThat(quote instanceof OptionQuote);
+    OptionQuote optionQuote = (OptionQuote) quote;
+    assertThat(optionQuote.getSymbol()).isEqualTo("MSFT_061821C120");
+    assertThat(optionQuote.getAssetType()).isEqualTo(AssetType.OPTION);
+    LOGGER.debug(optionQuote.toString());
+  }
+
+  @Test
+  public void testEtfQuote() {
+    final Quote quote = httpTdaClient.fetchQuote("SPY");
+    assertThat(quote instanceof EtfQuote);
+    EtfQuote etfQuote= (EtfQuote) quote;
+    assertThat(etfQuote.getSymbol()).isEqualTo("SPY");
+    assertThat(etfQuote.getAssetType()).isEqualTo(AssetType.ETF);
+    LOGGER.debug(etfQuote.toString());
+  }
+
 //
 //  //Not sure what a valid bond ticker symbol is.
 //  @Ignore
@@ -104,19 +110,5 @@ public class FetchQuotesTestIT extends BaseTestIT {
 //    assertThat(response.isTdaError()).isFalse();
 //  }
 //
-//  @Test
-//  @Ignore
-//  public void testAllQuotes() {
-//    List<String> bonds = Arrays
-//        .asList("XOM", "MNST_061518C60", "MNST_061518P60", "VFIAX", "VTSAX", "MSFT");
-//    final QuoteResponse response = httpTdaClient.fetchQuotes(bonds);
-//    LOGGER.debug(response.toString());
-//    response.getResult().getQuotes().forEach(q -> {
-//      LOGGER.debug(q.toString());
-//    });
-//    assertThat(response.isTdaError()).isFalse();
-//    final Optional<Quote> first = response.getResult().getQuotes().stream()
-//        .filter(t -> StringUtils.isNotBlank(t.getError())).findFirst();
-//    assertThat(!first.isPresent()).isTrue();
-//  }
+
 }

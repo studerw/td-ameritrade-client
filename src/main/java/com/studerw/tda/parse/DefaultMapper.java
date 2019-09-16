@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import org.apache.commons.io.IOUtils;
 
 /**
  * Convert between Java pojos and JSON. This class is thread safe.
@@ -16,7 +15,7 @@ public class DefaultMapper {
 
   /**
    * Convert object to JSON string.
-   * Use {@link PrettyJsonPrinter#prettyFormat(String)} to pretty format the returned JSON string.
+   * Use {@link FormatUtils#prettyFormat(String)} to pretty format the returned JSON string.
    * @param object Java POJO to serialize into JSON
    * @return JSON representation of the object
    */

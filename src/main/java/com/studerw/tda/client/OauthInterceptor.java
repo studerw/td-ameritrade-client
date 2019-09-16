@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Any response of <em>401 Unauthorized</em> needs to take the refresh token and generate a new auth
- * token. If an access token
+ * token.
  */
 class OauthInterceptor implements Interceptor {
 
@@ -30,7 +30,7 @@ class OauthInterceptor implements Interceptor {
 
   //This gets updated using the refresh code - the first call will always fail, forcing a
   //new access_token to be set.
-  private String accessToken = "BAD";
+  private String accessToken = "UNSET";
 
   public OauthInterceptor(HttpTdaClient client, Properties properties) {
     this.client = client;
@@ -39,31 +39,38 @@ class OauthInterceptor implements Interceptor {
 
   @Override
   public Response intercept(Chain chain) throws IOException {
+
     Request authorizedRequest = chain.request().newBuilder()
         .addHeader("Authorization", "Bearer " + this.accessToken)
         .build();
     Response origResponse = chain.proceed(authorizedRequest);
 
-    //if we need a new auth token
-    if (origResponse.code() == UNAUTHORIZED) {
-      String bodyStr = origResponse.peekBody(500).string();
-      LOGGER.debug("TDA Not Logged In: {}", bodyStr);
-      boolean isAuthenticated = setAuthToken(chain);
-      if (isAuthenticated) {
-        //reset the auth token
-        authorizedRequest = authorizedRequest.newBuilder().removeHeader("Authorization")
-            .addHeader("Authorization", "Bearer " + this.accessToken)
-            .build();
-        final Response retryResponse = chain.proceed(authorizedRequest);
-        if (retryResponse.isSuccessful()) {
-          return retryResponse;
-        }
-      } else {
-        throw new IllegalStateException("Cannot obtain new auth_token with current refresh token");
-      }
+    //no token needed, just return original response
+    if (origResponse.code() != UNAUTHORIZED) {
+      LOGGER.trace("no auth token needed: {}", authorizedRequest.url());
+      return origResponse;
     }
-    //no no token needed, just return original response
-    return origResponse;
+
+    // we do need a new auth token.
+    String bodyStr = origResponse.peekBody(500).string();
+    LOGGER.debug("TDA Not Logged In: {}", bodyStr);
+
+    boolean isAuthenticated = setAuthToken(chain);
+    if (!isAuthenticated) {
+      throw new IllegalStateException("Failed to get auth token using current refresh token");
+    }
+
+    authorizedRequest = authorizedRequest.newBuilder().removeHeader("Authorization")
+        .addHeader("Authorization", "Bearer " + this.accessToken)
+        .build();
+    final Response retryResponse = chain.proceed(authorizedRequest);
+    //even though we got a new auth token, it still doesn't work.
+    if (retryResponse.code() == UNAUTHORIZED) {
+      throw new IllegalStateException(
+          "New auth token is still not working. This is strange is you're seeing this...");
+    }
+    //success and any other error codes pass back to the caller to deal with
+    return retryResponse;
   }
 
   /**
@@ -103,7 +110,7 @@ class OauthInterceptor implements Interceptor {
       }
       InputStream in = authResponse.body().byteStream();
       AuthToken authToken = DefaultMapper.fromJson(in, AuthToken.class);
-      LOGGER.info("authToken: {}", authToken);
+      LOGGER.info("new authToken received: {}", authToken);
       String _accessToken = authToken.getAccessToken();
       if (StringUtils.isBlank(_accessToken)) {
         LOGGER.warn("Got successful OAuth response, but access token is missing");

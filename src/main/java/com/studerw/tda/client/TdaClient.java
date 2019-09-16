@@ -1,7 +1,7 @@
 package com.studerw.tda.client;
 
-import com.studerw.tda.model.quote.EquityQuote;
-import com.studerw.tda.model.history.IntervalType;
+import com.studerw.tda.model.history.PriceHistReq;
+import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.quote.Quote;
 import java.util.List;
 
@@ -10,83 +10,33 @@ import java.util.List;
  */
 public interface TdaClient {
 
-
   /**
-   * @return the default Account ID associated with the account. Most users will only have a single account, and this is the same as the default.
+   * Retrieve historical intraday and end of day quote data for an equity, index, mutual fund, forex, option chain, etc. See {@link com.studerw.tda.model.AssetType}
+   * for possibly types, though your account must explicitly have access for some of these. TDA has not implemented all the API calls either (Sep 2019)
+   * @param symbol uppercase symbol
+   * @return PriceHistory using all other TDA default request parameters. This appears to be a quote every minute for 10 days.
+   * <ul>
+   *   <li>periodType: day</li>
+   *   <li>period: 10</li>
+   *   <li>frequencyType: minute</li>
+   *   <li>frequency: 1</li>
+   * </ul>
    */
-//  String getDefaultAcctId();
-
-  /**
-   * This call will invalidate the user session. It is a security feature that should be called when
-   * the user wants to stop their current session or close the client application.
-   */
-//  Logout logout();
-
-  /**
-   * <p> the {@link com.studerw.tda.model.Login} object which will contain your account information.
-   * Note that the {@code login.getXmlLogIn().getAssociatedAccountId()} will get your default account id, which
-   * if it's the case that you have only one account, is your main id you will use for most trading methods.
-   * There is also a convenience method of {@link #getDefaultAcctId()}
-   * @return {@link com.studerw.tda.model.Login}
-   */
-//  Login getCurrentLogin();
-
+    PriceHistory priceHistory(String symbol);
 
   /**
    * @see com.studerw.tda.model.history for full validation rules.
    *
-   * Retrieve historical intraday and end of day quote data consolidated in OHLC format. This is the
-   * most basic form of the method. Default parameters are based on the <em>intervalType</em> and
-   * <em>intervalDuration</em> arguments. Note that some of these parameters may be null, and then
+   * Retrieve historical intraday and end of day quote data for an equity, index, mutual fund, forex, option chain, etc. See {@link com.studerw.tda.model.AssetType}
+   * for possibly types, though your account must explicitly have access for some of these. TDA has not implemented all the API calls either (Sep 2019)
+   * Note that some of the parameters within the {@link com.studerw.tda.model.history.PriceHistReq} param be null, and then
    * some of the other arguments will be assumed by the non null parameters.
    *
-   * @param symbols list of symbols such as <em>INTC, MSFT</em>
-   * @param intervalType
-   * @param intervalDuration depending on the {@link IntervalType} parameter. See its docs.
-   * @param periodType
-   * @param period The number of periods for which the data is returned. For example, if <em>periodtype=DAY</em> and <em>period=10</em>, then the request is for 10 days of data
-   * @param startDate The start date of the data being requested (Inclusive). If the <em>startDate</em> is not specified, then it will be (<em>endDate - period</em>) excluding weekends and holidays.  If specified, then <em>period</em> and <em>periodType</em> CANNOT be specified.
-   * @param endDate The end date of the data being requested (Inclusive). If NULL, then the default is the previous business day.
-   * @param extended Indicates if extended hours data is to be included in the response. FALSE if null. NOTE: Only valid for intraday data requests.
-   * @return priceHistory with a result for each symbol
+   *  @param priceHistReq
+   * @return PriceHistory with a list of {@link com.studerw.tda.model.history.Candle} based on the frequency and period / date length.
    */
-//  PriceHistory priceHistory(List<String> symbols, IntervalType intervalType, Integer intervalDuration,
-//      PeriodType periodType, Integer period, LocalDate startDate, LocalDate endDate, Boolean extended);
+  PriceHistory priceHistory(PriceHistReq priceHistReq);
 
-  /**
-   * @see com.studerw.tda.model.history for full validation rules.
-   *
-   * Retrieve historical intraday and end of day quote data consolidated in OHLC format. This is the
-   * most basic form of the method. Default parameters are based on the <em>intervalType</em> and
-   * <em>intervalDuration</em> arguments. Note that some of these parameters may be null, and then
-   * some of the other arguments will be assumed by the non null parameters.
-   *
-   * @param symbols list of symbols such as <em>INTC, MSFT</em>
-   * @param intervalType
-   * @param intervalDuration depending on the {@link IntervalType} parameter. See its docs.
-   * @param periodType
-   * @param period The number of periods for which the data is returned. For example, if <em>periodtype=DAY</em> and <em>period=10</em>, then the request is for 10 days of data
-   * @param startDate The start date of the data being requested (Inclusive). If the <em>startDate</em> is not specified, then it will be (<em>endDate - period</em>) excluding weekends and holidays.  If specified, then <em>period</em> and <em>periodType</em> CANNOT be specified.
-   * @param endDate The end date of the data being requested (Inclusive). If NULL, then the default is the previous business day.
-   * @param extended Indicates if extended hours data is to be included in the response. FALSE if null. NOTE: Only valid for intraday data requests.
-   * @return priceHistory with a result for each symbol
-   */
-//  byte[] priceHistoryBytes(List<String> symbols, IntervalType intervalType, Integer intervalDuration,
-//      PeriodType periodType, Integer period, LocalDate startDate, LocalDate endDate, Boolean extended);
-
-  /**
-   * If the login user is inactive for more than the timeout period, the session will expire and the
-   * client will need to login again. This call is designed to refresh the login user session so
-   * that it does not expire.
-   *
-   * NOTE: The client can set their timeout to different times (i.e. 55-minutues or 2, 4, or 8
-   * hours) from the TDA web site "My Profile" page. Therefore, be sure to make a KeepAlive request
-   * before the client's timeout elapses."
-   *
-   * @return The response to the KeepAlive request will be a one world reply. Either "LoggedOn" or
-   * "InvalidSession" without html or xml formatting.  The content type is text/plain.
-   */
-//  String keepAlive();
 
   /**
    * Fetch Detailed quote information for one or more symbols. Currently the API allows symbol types

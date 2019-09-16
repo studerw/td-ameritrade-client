@@ -1,6 +1,7 @@
 package com.studerw.tda.parse;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.quote.Quote;
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -16,20 +17,37 @@ public class TdaJsonParser {
   private static final Logger LOGGER = LoggerFactory.getLogger(TdaJsonParser.class);
 
   /**
-   * @param in inputstream of JSON from rest call to TDA. The stream will is to be closed upon
-   * return.
+   * @param in inputstream of JSON from rest call to TDA. The stream will be closed upon return.
    * @return list of objects that extend Quote.
    */
   public List<Quote> parseQuotes(InputStream in) {
     LOGGER.trace("parsing quotes...");
     try (BufferedInputStream bIn = new BufferedInputStream(in)) {
       LinkedHashMap<String, Quote> quotesMap = new LinkedHashMap<>();
-      quotesMap = DefaultMapper.fromJson(in, new TypeReference<LinkedHashMap<String,Quote>>(){});
+      quotesMap = DefaultMapper.fromJson(in, new TypeReference<LinkedHashMap<String, Quote>>() {
+      });
       LOGGER.debug("returned a map of size: {}", quotesMap.size());
 
       List<Quote> quotes = new ArrayList<>();
       quotesMap.forEach((k, v) -> quotes.add(v));
       return quotes;
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+  }
+
+  /**
+   *
+   * @param in inputstream of JSON from TDA; the stream will be closed upon return.
+   * @return
+   */
+  public PriceHistory parsePriceHistory(InputStream in) {
+    LOGGER.trace("parsing quotes...");
+    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
+      PriceHistory priceHistory = DefaultMapper.fromJson(in, PriceHistory.class);
+      LOGGER.debug("returned a price history for {} of size: {}", priceHistory.getSymbol(), priceHistory.getCandles().size());
+      return priceHistory;
     } catch (IOException e) {
       e.printStackTrace();
       throw new RuntimeException(e);

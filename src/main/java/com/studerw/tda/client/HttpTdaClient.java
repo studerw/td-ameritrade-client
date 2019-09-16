@@ -3,10 +3,16 @@ package com.studerw.tda.client;
 import com.studerw.tda.http.LoggingInterceptor;
 import com.studerw.tda.http.cookie.CookieJarImpl;
 import com.studerw.tda.http.cookie.store.MemoryCookieStore;
+import com.studerw.tda.model.history.PriceHistReq;
+import com.studerw.tda.model.history.PriceHistReqValidator;
+import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.quote.Quote;
 import com.studerw.tda.parse.TdaJsonParser;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,6 +25,7 @@ import okhttp3.HttpUrl.Builder;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +38,8 @@ import org.slf4j.LoggerFactory;
  */
 public class HttpTdaClient implements TdaClient {
 
+  protected static final String DEFAULT_PATH = "https://apis.tdameritrade.com/v1";
+  protected static final int LOGGING_BYTES = -1;
   protected static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE;
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpTdaClient.class);
   protected final TdaJsonParser tdaJsonParser = new TdaJsonParser();
@@ -56,8 +65,11 @@ public class HttpTdaClient implements TdaClient {
    * </ul>
    */
   public HttpTdaClient(Properties props) {
-    LOGGER.info("Initiating OauthTdaClient...");
+    LOGGER.info("Initiating HttpTdaClient with props passed in...");
+
     this.tdaProps = (props == null) ? initTdaProps() : props;
+    validateProps(this.tdaProps);
+
     this.httpClient = new OkHttpClient.Builder().
         cookieJar(new CookieJarImpl(new MemoryCookieStore())).
         addInterceptor(new OauthInterceptor(this, tdaProps)).
@@ -71,13 +83,108 @@ public class HttpTdaClient implements TdaClient {
         .getResourceAsStream("tda-api.properties")) {
       Properties tdProperties = new Properties();
       tdProperties.load(in);
+
+      String clientId = tdProperties.getProperty("tda.client_id");
+      if (StringUtils.isBlank(clientId)) {
+        throw new IllegalArgumentException(
+            "Missing tda.client_id property. This is obtained from TDA developer API when registering an app");
+      }
       return tdProperties;
     } catch (IOException e) {
-      throw new IllegalStateException(
+      throw new IllegalArgumentException(
           "Could not load default properties from com.studerw.tda.tda-api.properties in classpath");
     }
   }
 
+  /**
+   * validates the necessary props like refresh token and client id. If others are missing, just use
+   * friendly defaults.
+   */
+  protected static void validateProps(Properties tdaProps) {
+    LOGGER.trace("Validating props: {}", tdaProps.toString());
+    String clientId = tdaProps.getProperty("tda.client_id");
+    if (StringUtils.isBlank(clientId)) {
+      throw new IllegalArgumentException(
+          "Missing tda.client_id property. This is obtained from TDA developer API when registering an app");
+    }
+
+    String refreshToken = tdaProps.getProperty("tda.token.refresh");
+    if (StringUtils.isBlank(refreshToken)) {
+      throw new IllegalArgumentException(
+          "Missing tda.token.refresh property. This is obtained from the TDA developer API page when creating a temporary authentication token");
+    }
+
+    String path = tdaProps.getProperty("tda.http.path");
+    if (StringUtils.isBlank(refreshToken)) {
+      tdaProps.setProperty("tda.http.path", DEFAULT_PATH);
+    }
+
+    if (tdaProps.get("tda.debug.bytes.length") == null) {
+      tdaProps.setProperty("tda.debug.bytes.length", "-1");
+    }
+  }
+
+  @Override
+  public PriceHistory priceHistory(String symbol) {
+    symbol = StringUtils.upperCase(symbol);
+    LOGGER.debug("price history for symbol: {}", symbol);
+    if (StringUtils.isBlank(symbol)) {
+      throw new IllegalArgumentException("symbol cannot be empty");
+    }
+
+    HttpUrl url = baseUrl("marketdata", symbol, "pricehistory").build();
+    Request request = new Request.Builder().url(url).headers(defaultHeaders()).build();
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response);
+      return tdaJsonParser.parsePriceHistory(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public PriceHistory priceHistory(PriceHistReq priceHistReq) {
+    LOGGER.debug("PriceHistory: {}", priceHistReq);
+    List<String> violations = PriceHistReqValidator.validate(priceHistReq);
+    if (violations.size() > 0) {
+      throw new IllegalArgumentException(violations.toString());
+    }
+
+    Builder urlBuilder = baseUrl("marketdata", priceHistReq.getSymbol(), "pricehistory")
+        .addQueryParameter("apikey", this.tdaProps.getProperty("tda.client_id"));
+    if (priceHistReq.getStartDate() != null) {
+      urlBuilder.addQueryParameter("startDate", String.valueOf(priceHistReq.getStartDate()));
+    }
+    if (priceHistReq.getEndDate() != null) {
+      urlBuilder.addQueryParameter("endDate", String.valueOf(priceHistReq.getEndDate()));
+    }
+    if (priceHistReq.getPeriod() != null) {
+      urlBuilder.addQueryParameter("period", String.valueOf(priceHistReq.getPeriod()));
+    }
+    if (priceHistReq.getFrequency() != null) {
+      urlBuilder.addQueryParameter("frequency", String.valueOf(priceHistReq.getFrequency()));
+    }
+    if (priceHistReq.getFrequencyType() != null) {
+      urlBuilder.addQueryParameter("frequencyType", priceHistReq.getFrequencyType().name());
+    }
+    if (priceHistReq.getPeriodType() != null) {
+      urlBuilder.addQueryParameter("periodType", priceHistReq.getFrequencyType().name());
+    }
+    if (priceHistReq.getExtendedHours() != null) {
+      urlBuilder.addQueryParameter("needExtendedHoursData",
+          String.valueOf(priceHistReq.getExtendedHours()));
+    }
+
+    Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response);
+      return tdaJsonParser.parsePriceHistory(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
 
   @Override
   public List<Quote> fetchQuotes(List<String> symbols) {
@@ -86,8 +193,10 @@ public class HttpTdaClient implements TdaClient {
         .addQueryParameter("symbol", String.join(",", symbols))
         .addQueryParameter("apikey", this.tdaProps.getProperty("tda.client_id"))
         .build();
+
     Request request = new Request.Builder().url(url).headers(defaultHeaders())
         .build();
+
     try (Response response = this.httpClient.newCall(request).execute()) {
       checkResponse(response);
       return tdaJsonParser.parseQuotes(response.body().byteStream());
@@ -102,13 +211,29 @@ public class HttpTdaClient implements TdaClient {
     return quotes.get(0);
   }
 
-  private boolean checkResponse(Response response) {
+  /**
+   * @param response the tda response
+   * @return if it's a 200 response with a valid looking body, the method returns okay. Otherwise an
+   * unchecked exception is thrown.
+   */
+  private void checkResponse(Response response) {
     if (!response.isSuccessful()) {
-      StringBuilder bldr = new StringBuilder(response.code()).append(" ")
-          .append(response.message());
-      throw new RuntimeException(bldr.toString());
+      String msg = String
+          .format("Non 200 response:  [%d - %s] - %s", response.code(), response.message(),
+              response.request().url());
+      throw new RuntimeException(msg);
     }
-    return true;
+    try {
+      String json = response.peekBody(20).string();
+      if ("{}".equals(json)) {
+        String msg = String
+            .format("Empty json body:  [%d - %s] - %s", response.code(), response.message(),
+                response.request().url());
+        throw new RuntimeException(msg);
+      }
+    } catch (IOException e) {
+      throw new RuntimeException("Error checking for JSON empty body on response");
+    }
   }
 
   private Headers defaultHeaders() {
@@ -130,19 +255,9 @@ public class HttpTdaClient implements TdaClient {
     return builder;
   }
 
-//  private void printEqViolations(Set<ConstraintViolation<EquityOrder>> violations) {
-//    Iterator<ConstraintViolation<EquityOrder>> iter = violations.iterator();
-//    while (iter.hasNext()) {
-//      ConstraintViolation next = iter.next();
-//      LOGGER.error("Order error: {}", next.getMessage());
-//    }
-//  }
-//
-//  private void printOpViolations(Set<ConstraintViolation<OptionOrder>> violations) {
-//    Iterator<ConstraintViolation<OptionOrder>> iter = violations.iterator();
-//    while (iter.hasNext()) {
-//      ConstraintViolation next = iter.next();
-//      LOGGER.error("Order error: {}", next.getMessage());
-//    }
-//  }
+  protected String longToTimeStr(Long epoch) {
+    ZonedDateTime zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(epoch),
+        ZoneId.systemDefault());
+    return zdt.toString();
+  }
 }
