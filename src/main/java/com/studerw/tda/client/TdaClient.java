@@ -25,15 +25,14 @@ public interface TdaClient {
     PriceHistory priceHistory(String symbol);
 
   /**
-   * @see com.studerw.tda.model.history for full validation rules.
    *
    * Retrieve historical intraday and end of day quote data for an equity, index, mutual fund, forex, option chain, etc. See {@link com.studerw.tda.model.AssetType}
    * for possibly types, though your account must explicitly have access for some of these. TDA has not implemented all the API calls either (Sep 2019)
    * Note that some of the parameters within the {@link com.studerw.tda.model.history.PriceHistReq} param be null, and then
    * some of the other arguments will be assumed by the non null parameters.
    *
-   *  @param priceHistReq
-   * @return PriceHistory with a list of {@link com.studerw.tda.model.history.Candle} based on the frequency and period / date length.
+   * @param priceHistReq validated object of request parameters
+   * @return PriceHistory with a list of {@link com.studerw.tda.model.history.Candle} Candles based on the frequency and period / date length.
    */
   PriceHistory priceHistory(PriceHistReq priceHistReq);
 

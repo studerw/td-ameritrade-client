@@ -39,13 +39,13 @@ public class TdaJsonParser {
 
   /**
    *
-   * @param in inputstream of JSON from TDA; the stream will be closed upon return.
-   * @return
+   * @param in {@link InputStream} of JSON from TDA; the stream will be closed upon return.
+   * @return PriceHistory
    */
   public PriceHistory parsePriceHistory(InputStream in) {
     LOGGER.trace("parsing quotes...");
     try (BufferedInputStream bIn = new BufferedInputStream(in)) {
-      PriceHistory priceHistory = DefaultMapper.fromJson(in, PriceHistory.class);
+      final PriceHistory priceHistory = DefaultMapper.fromJson(in, PriceHistory.class);
       LOGGER.debug("returned a price history for {} of size: {}", priceHistory.getSymbol(), priceHistory.getCandles().size());
       return priceHistory;
     } catch (IOException e) {
@@ -53,4 +53,15 @@ public class TdaJsonParser {
       throw new RuntimeException(e);
     }
   }
+
+//  public <T> T parseTdaJson(InputStream in, Class<T> type){
+//    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
+//      LOGGER.debug("parsing JSON input to type: {}", type.getName());
+//      final T tdaPojo = DefaultMapper.fromJson(in, new TypeReference<T>(){});
+//      return tdaPojo;
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//      throw new RuntimeException(e);
+//    }
+//  }
 }

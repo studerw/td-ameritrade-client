@@ -5,6 +5,7 @@
 [![APL v2](https://img.shields.io/badge/license-Apache%202-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 ----
+[API Documentation](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/).
 
 Java rest client for TD Ameritrade Api. Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
 
@@ -15,8 +16,6 @@ I'm happy to collaborate contractually or OSS with other devs.
 ## 2019 
 
 See the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-xml-api) branch for the previous project based on the soon-to-be-deprecated TDA XML API.
-
-Old [API Documentation](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/).
 
 Sometime in-between the beginning of this project (based on TDA's older XML API) and now, TDA released a restful [API](https://developer.tdameritrade.com/). 
 Unfortunately the old API is being [deprecated in 2020](https://apiforums.tdameritrade.com/tda-board/ubbthreads.php) and so the

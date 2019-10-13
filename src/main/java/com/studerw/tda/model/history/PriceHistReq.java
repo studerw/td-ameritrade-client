@@ -5,8 +5,21 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * Encapsulates and the necessary parameters for a {@link com.studerw.tda.client.TdaClient#priceHistory}.
- * call. Use the {@link PriceHistReqBuilder} to create an instance.
+ * Encapsulates the necessary parameters for a {@link com.studerw.tda.client.TdaClient#priceHistory(PriceHistReq)}
+ * call. Use the {@link Builder} to create an instance.
+ * <p>
+ *   <pre>
+ *     <code>
+ *       //Price history for AMTD for the last week by the minute
+ *       PriceHistReq request = PriceHistReqBuilder.priceHistReq()
+ *         .withSymbol("AMTD")
+ *         .withStartDate(System.currentTimeMillis() - (1000 * 60 * 60 * 24 * 7))
+ *         .withFrequencyType(FrequencyType.minute)
+ *         .withFrequency(1)
+ *         .build();
+ *     </code>
+ *   </pre>
+ * </p>
  *
  */
 public class PriceHistReq {
@@ -102,7 +115,7 @@ public class PriceHistReq {
         .toString();
   }
 
-  public static final class PriceHistReqBuilder {
+  public static final class Builder {
 
     private String symbol;
     private PeriodType periodType;
@@ -113,49 +126,49 @@ public class PriceHistReq {
     private Long endDate;
     private Boolean extendedHours = Boolean.TRUE;
 
-    private PriceHistReqBuilder() {
+    private Builder() {
     }
 
-    public static PriceHistReqBuilder priceHistReq() {
-      return new PriceHistReqBuilder();
+    public static Builder priceHistReq() {
+      return new Builder();
     }
 
-    public PriceHistReqBuilder withSymbol(String symbol) {
+    public Builder withSymbol(String symbol) {
       this.symbol = symbol;
       return this;
     }
 
-    public PriceHistReqBuilder withPeriodType(PeriodType periodType) {
+    public Builder withPeriodType(PeriodType periodType) {
       this.periodType = periodType;
       return this;
     }
 
-    public PriceHistReqBuilder withPeriod(Integer period) {
+    public Builder withPeriod(Integer period) {
       this.period = period;
       return this;
     }
 
-    public PriceHistReqBuilder withFrequencyType(FrequencyType frequencyType) {
+    public Builder withFrequencyType(FrequencyType frequencyType) {
       this.frequencyType = frequencyType;
       return this;
     }
 
-    public PriceHistReqBuilder withFrequency(Integer frequency) {
+    public Builder withFrequency(Integer frequency) {
       this.frequency = frequency;
       return this;
     }
 
-    public PriceHistReqBuilder withStartDate(Long startDate) {
+    public Builder withStartDate(Long startDate) {
       this.startDate = startDate;
       return this;
     }
 
-    public PriceHistReqBuilder withEndDate(Long endDate) {
+    public Builder withEndDate(Long endDate) {
       this.endDate = endDate;
       return this;
     }
 
-    public PriceHistReqBuilder withExtendedHours(Boolean extendedHours) {
+    public Builder withExtendedHours(Boolean extendedHours) {
       this.extendedHours = extendedHours;
       return this;
     }

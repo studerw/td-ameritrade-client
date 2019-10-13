@@ -6,7 +6,7 @@ import static org.assertj.core.api.Fail.fail;
 import com.studerw.tda.model.history.Candle;
 import com.studerw.tda.model.history.FrequencyType;
 import com.studerw.tda.model.history.PriceHistReq;
-import com.studerw.tda.model.history.PriceHistReq.PriceHistReqBuilder;
+import com.studerw.tda.model.history.PriceHistReq.Builder;
 import com.studerw.tda.model.history.PriceHistory;
 import java.math.BigDecimal;
 import org.junit.Ignore;
@@ -141,7 +141,7 @@ public class PriceHistoryTestIT extends BaseTestIT {
   @Test
   public void testValidPriceHistory() {
     long now = System.currentTimeMillis();
-    PriceHistReq request = PriceHistReqBuilder.priceHistReq().withSymbol("MSFT").build();
+    PriceHistReq request = Builder.priceHistReq().withSymbol("MSFT").build();
     PriceHistory priceHistory = httpTdaClient.priceHistory(request);
     assertThat(priceHistory).isNotNull();
     assertThat(priceHistory.getCandles().size()).isGreaterThan(1000);
@@ -163,7 +163,7 @@ public class PriceHistoryTestIT extends BaseTestIT {
   @Test
   public void testValidPriceHistory2() {
     long now = System.currentTimeMillis();
-    PriceHistReq request = PriceHistReqBuilder.priceHistReq()
+    PriceHistReq request = Builder.priceHistReq()
         .withSymbol("VGIAX")
         .withStartDate(System.currentTimeMillis() - (1000 * 60 * 60 * 24 * 7))
         .withFrequencyType(FrequencyType.minute)
