@@ -11,25 +11,31 @@ import java.util.List;
 public interface TdaClient {
 
   /**
+   * <p>
    * Retrieve historical intraday and end of day quote data for an equity, index, mutual fund, forex, option chain, etc. See {@link com.studerw.tda.model.AssetType}
-   * for possibly types, though your account must explicitly have access for some of these. TDA has not implemented all the API calls either (Sep 2019)
-   * @param symbol uppercase symbol
-   * @return PriceHistory using all other TDA default request parameters. This appears to be a quote every minute for 10 days.
+   * for possible types, though your account must explicitly have access for some of these. TDA has not implemented all the API calls either (Sep 2019).
+   * </p>
+   *
    * <ul>
    *   <li>periodType: day</li>
    *   <li>period: 10</li>
    *   <li>frequencyType: minute</li>
    *   <li>frequency: 1</li>
    * </ul>
-   */
+   *
+   * @param symbol uppercase symbol
+   * @return PriceHistory using all other TDA default request parameters. This appears to be a quote every minute for 10 days.
+   **/
     PriceHistory priceHistory(String symbol);
 
   /**
    *
+   * <p>
    * Retrieve historical intraday and end of day quote data for an equity, index, mutual fund, forex, option chain, etc. See {@link com.studerw.tda.model.AssetType}
-   * for possibly types, though your account must explicitly have access for some of these. TDA has not implemented all the API calls either (Sep 2019)
+   * for possibly types, though your account must explicitly have access for some of these. TDA has not implemented all the API calls either (Sep 2019).
    * Note that some of the parameters within the {@link com.studerw.tda.model.history.PriceHistReq} param be null, and then
    * some of the other arguments will be assumed by the non null parameters.
+   * </p>
    *
    * @param priceHistReq validated object of request parameters
    * @return PriceHistory with a list of {@link com.studerw.tda.model.history.Candle} Candles based on the frequency and period / date length.
@@ -40,16 +46,9 @@ public interface TdaClient {
   /**
    * Fetch Detailed quote information for one or more symbols. Currently the API allows symbol types
    * of Stocks, Options, Mutual Funds and Indexes, and ETFs. Quotes are real-time for accounts subscribed to
-   * this service; otherwise, quotes are delayed according to exchange and TDA rules.
+   * this service; otherwise, quotes are delayed according to exchange and TDA rules. The following
+   * types of <em>Quote</em> are actually returned and can be casted:
    *
-   * @param symbols list of valid symbols. Max of 300 based on TDA docs. Index symbols need to be
-   * prefixed with a <em>$</em>, e.g. <em>$INX</em> or <em>$SPX.X</em>. Options are in a format like the following:
-   * <em>MSFT_061518P60</em> for a put, or <em>MSFT_061518C60</em> for a call. This is the
-   * Microsoft June 6, 2018 Put/Call at $60.
-   *
-   * @return list of quotes. The {@link Quote} is the base class, but all objects in the
-   * list can be cast to their actual types by looking at the {@code com.studerw.tda.model.quote.Quote.assetType}
-   * field.
    * <ul>
    *   <li>{@link com.studerw.tda.model.quote.EquityQuote}</li>
    *   <li>{@link com.studerw.tda.model.quote.EtfQuote}</li>
@@ -58,14 +57,19 @@ public interface TdaClient {
    *   <li>{@link com.studerw.tda.model.quote.MutualFundQuote}</li>
    *   <li>{@link com.studerw.tda.model.quote.ForexQuote}</li>
    * </ul>
-   * <p>
-   *   <pre>
-   *   </code>
-   *    Quote quote = client.fetchQuote("ATD");
-   *    EquityQuote equityQuote = (EquityQuote)quote;
-   *    </code>
-   *    </pre>
-   * </p>
+   *
+   * <pre class="code">
+   *  Quote quote = client.fetchQuote("ATD");
+   *  EquityQuote equityQuote = (EquityQuote)quote;
+   * </pre>
+   *
+   * @param symbols list of valid symbols. Max of 300 based on TDA docs. Index symbols need to be
+   * prefixed with a <em>$</em>, e.g. <em>$INX</em> or <em>$SPX.X</em>. Options are in a format like the following:
+   * <em>MSFT_061518P60</em> for a put, or <em>MSFT_061518C60</em> for a call. This is the
+   * Microsoft June 6, 2018 Put/Call at $60.
+   * @return list of quotes. The {@link Quote} is the base class, but all objects in the
+   * list can be cast to their actual types by looking at the {@link com.studerw.tda.model.AssetType} attribute.
+   * field.
    */
   List<Quote> fetchQuotes(List<String> symbols);
 
@@ -80,25 +84,22 @@ public interface TdaClient {
    * <em>MSFT_061518P60</em> for a put, or <em>MSFT_061518C60</em> for a call. This is the
    * Microsoft June 6, 2018 Put/Call at $60.
    *
-   * @return list of quotes. The {@link Quote} is the base class, but all objects in the
-   * list can be cast to their actual types by looking at the {@code com.studerw.tda.model.quote.Quote.assetType}
-   * field.
-   * <p>
-   *   <pre>
-   *   </code>
-   *    Quote quote = client.fetchQuote("ATD");
-   *    EquityQuote equityQuote = (EquityQuote)quote;
-   *    </code>
-   *    </pre>
-   * </p>
-   * <ul>
-   *   <li>{@link com.studerw.tda.model.quote.EquityQuote}</li>
-   *   <li>{@link com.studerw.tda.model.quote.EtfQuote}</li>
-   *   <li>{@link com.studerw.tda.model.quote.OptionQuote}</li>
-   *   <li>{@link com.studerw.tda.model.quote.IndexQuote}</li>
-   *   <li>{@link com.studerw.tda.model.quote.MutualFundQuote}</li>
-   *   <li>{@link com.studerw.tda.model.quote.ForexQuote}</li>
-   * </ul>
+   * @return a quote. The {@link Quote} is the base class, but all quotes can be cast to their
+   * actual types by looking at the {@code com.studerw.tda.model.quote.Quote.assetType} field.
+   *
+   * <pre class="code">
+   *  Quote quote = client.fetchQuote("ATD");
+   *  EquityQuote equityQuote = (EquityQuote)quote;
+   * </pre>
+   *
+   *<ul>
+   *  <li>{@link com.studerw.tda.model.quote.EquityQuote}</li>
+   *  <li>{@link com.studerw.tda.model.quote.EtfQuote}</li>
+   *  <li>{@link com.studerw.tda.model.quote.OptionQuote}</li>
+   *  <li>{@link com.studerw.tda.model.quote.IndexQuote}</li>
+   *  <li>{@link com.studerw.tda.model.quote.MutualFundQuote}</li>
+   *  <li>{@link com.studerw.tda.model.quote.ForexQuote}</li>
+   *</ul>
    */
   Quote fetchQuote(String symbol);
 
@@ -172,7 +173,7 @@ public interface TdaClient {
 
   /**
    * Partially complete....
-   * @param symbol in TDA format (e.g. {@code MSFT_061821C120} which denotes MSFT for June 18, 2021 Call@$20
+   * @param symbol in TDA format (e.g. {@code MSFT_061821C120} which denotes MSFT for June 18, 2021 Call at $20.
    * @return {@link com.studerw.tda.model.OptionChain}
    */
 //  OptionChain fetchOptionChain(String symbol);

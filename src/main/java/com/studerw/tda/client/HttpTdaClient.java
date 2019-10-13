@@ -55,8 +55,11 @@ public class HttpTdaClient implements TdaClient {
   }
 
   /**
+   * @param props required properties
+   * <p>
    * To override the default properties file, you must define everything that is currently in {@code
    * tda-api.properties} file. This includes:
+   * </p>
    * <ul>
    *   <li>tda.token.refresh</li>
    *   <li>tda.client_id</li>
@@ -99,6 +102,7 @@ public class HttpTdaClient implements TdaClient {
   /**
    * validates the necessary props like refresh token and client id. If others are missing, just use
    * friendly defaults.
+   * @param tdaProps the required props to validate
    */
   protected static void validateProps(Properties tdaProps) {
     LOGGER.trace("Validating props: {}", tdaProps.toString());

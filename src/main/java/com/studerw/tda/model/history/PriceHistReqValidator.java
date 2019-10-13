@@ -21,6 +21,7 @@ public class PriceHistReqValidator {
   private static final Validator validator = factory.getValidator();
 
   /**
+   * @param priceHistReq the request to validate
    * @return a list of error messages or empty list if there are none.
    */
   public static List<String> validate(PriceHistReq priceHistReq) {
@@ -55,6 +56,7 @@ public class PriceHistReqValidator {
   }
 
   /**
+   * @param priceHistReq the request to validate
    * @return list of string error messages or empty set if none
    */
   private static List<String> checkDateAndPeriod(PriceHistReq priceHistReq) {
@@ -81,6 +83,7 @@ public class PriceHistReqValidator {
   }
 
   /**
+   * @param priceHistReq the request to validate
    * @return list of strings of errors messages or empty list if none
    */
   private static List<String> useJavaValidator(PriceHistReq priceHistReq) {
@@ -89,16 +92,16 @@ public class PriceHistReqValidator {
   }
 
   /**
-   * Check that period follows TDA rules:
    * <p>
-   *   <ul>
-   *     <li>day: 1, 2, 3, 4, 5, 10*</li>
-   *     <li>month: 1*, 2, 3, 6</li>
-   *     <li>year - 1, 2, 3, 5 10, 15, 20</li>
-   *     <li>ytd - 1</li>
-   *   </ul>
+   * Check that period follows TDA rules:
    * </p>
-   *
+   *<ul>
+   *  <li>day: 1, 2, 3, 4, 5, 10*</li>
+   *  <li>month: 1*, 2, 3, 6</li>
+   *  <li>year - 1, 2, 3, 5 10, 15, 20</li>
+   *  <li>ytd - 1</li>
+   *</ul>
+   * @param priceHistReq the request to validate
    * @return list of string error messages or empty set if none
    */
   private static List<String> checkPeriod(PriceHistReq priceHistReq) {
@@ -168,7 +171,7 @@ public class PriceHistReqValidator {
 
   /**
    * Check the FrequencyType vs PeriodType
-   *
+   * @param priceHistReq the request to validate
    * @return list of strings with errors or empty list if none
    */
   private static List<String> checkFrequencyAndPeriod(PriceHistReq priceHistReq) {
@@ -230,7 +233,7 @@ public class PriceHistReqValidator {
 
   /**
    * Check the Frequency vs FrequencyType
-   *
+   * @param priceHistReq the request to validate   *
    * @return list of strings with errors or empty list if none
    */
   private static List<String> checkFrequency(PriceHistReq priceHistReq) {

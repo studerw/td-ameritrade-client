@@ -64,7 +64,7 @@ public class DefaultMapper {
    *
    * Convert object from JSON to POJO.
    * @param in InputStream of json, guaranteed to be closed upon return.
-   * @param typeReference
+   * @param typeReference Jackson {@link TypeReference} of the pojo to map
    * @param <T> the type to marshall
    * @return a deserialzed java POJO
    */

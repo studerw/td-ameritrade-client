@@ -1,3 +1,5 @@
+package com.studerw.tda.model.history;
+
 /**
  Validation Rules for Price History
 
@@ -45,5 +47,4 @@
  </p>
 
  */
-package com.studerw.tda.model.history;
 

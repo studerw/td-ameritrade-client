@@ -5,21 +5,20 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
+ * <p>
  * Encapsulates the necessary parameters for a {@link com.studerw.tda.client.TdaClient#priceHistory(PriceHistReq)}
  * call. Use the {@link Builder} to create an instance.
- * <p>
- *   <pre>
- *     <code>
- *       //Price history for AMTD for the last week by the minute
- *       PriceHistReq request = PriceHistReqBuilder.priceHistReq()
- *         .withSymbol("AMTD")
- *         .withStartDate(System.currentTimeMillis() - (1000 * 60 * 60 * 24 * 7))
- *         .withFrequencyType(FrequencyType.minute)
- *         .withFrequency(1)
- *         .build();
- *     </code>
- *   </pre>
  * </p>
+
+ * <pre class="code">
+ *     //Price history for AMTD for the last week by the minute
+ *     PriceHistReq request = PriceHistReqBuilder.priceHistReq()
+ *       .withSymbol("AMTD")
+ *       .withStartDate(System.currentTimeMillis() - (1000 * 60 * 60 * 24 * 7))
+ *       .withFrequencyType(FrequencyType.minute)
+ *       .withFrequency(1)
+ *       .build();
+ * </pre>
  *
  */
 public class PriceHistReq {

@@ -1,13 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML>
-<HEAD>
+<html>
+<head>
   <TITLE>API Overview</TITLE>
-</HEAD>
-<BODY>
-The <em>TdaClient</em> is your main interface into the API.
-<code>
+</head>
+<body>
+The <strong>TdaClient</strong> is your main interface into the API.
+
+<pre class="code">
   TdaClient tdaClient = new HttpTdaClient();
-  Quote quote = tdaClient.fetchQuotes(Arrays.asList("AMTD"));
-</code>
-</BODY>
-</HTML>
+  Quote quote = tdaClient.fetchQuote("AMTD");
+</pre>
+
+</body>
+</html>
