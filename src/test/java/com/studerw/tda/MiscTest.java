@@ -2,7 +2,7 @@ package com.studerw.tda;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.studerw.tda.parse.FormatUtils;
+import com.studerw.tda.parse.Utils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,7 +51,7 @@ public class MiscTest {
   @Test
   public void testPrettyDate(){
     Long epoch = System.currentTimeMillis();
-    String pretty = FormatUtils.epochToStr(epoch);
+    String pretty = Utils.epochToStr(epoch);
     LOGGER.debug("epoch: {} -> {}", epoch, pretty);
   }
 
@@ -74,11 +74,11 @@ public class MiscTest {
   public void getWeek(){
     long now = System.currentTimeMillis();
     LOGGER.debug("now: {}", String.valueOf(now));
-    LOGGER.debug("now: {}", FormatUtils.epochToStr(now));
+    LOGGER.debug("now: {}", Utils.epochToStr(now));
 
     long weekAgo = now - (1_000 * 60 * 60 * 24 * 7);
     LOGGER.debug("Week ago: {}", String.valueOf(weekAgo));
-    LOGGER.debug("Week ago: {}", FormatUtils.epochToStr(weekAgo));
+    LOGGER.debug("Week ago: {}", Utils.epochToStr(weekAgo));
 
   }
 }

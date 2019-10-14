@@ -1,41 +1,40 @@
-package com.studerw.tda.model.quote;
+package com.studerw.tda.model.account;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
-import com.studerw.tda.model.AssetType;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonTypeInfo(
     use = Id.NAME,
     property = "assetType",
     visible = true
 )
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = EquityQuote.class, name = "EQUITY"),
-    @JsonSubTypes.Type(value = MutualFundQuote.class, name = "MUTUAL_FUND"),
-    @JsonSubTypes.Type(value = IndexQuote.class, name = "INDEX"),
-    @JsonSubTypes.Type(value = EtfQuote.class, name = "ETF"),
-    @JsonSubTypes.Type(value = ForexQuote.class, name = "FOREX"),
-    @JsonSubTypes.Type(value = OptionQuote.class, name = "OPTION"),
-    @JsonSubTypes.Type(value = FutureQuote.class, name = "FUTURE"),
-    @JsonSubTypes.Type(value = FutureOptionQuote.class, name = "FUTURE_OPTION")
+    @JsonSubTypes.Type(value = EquityInstrument.class, name = "EQUITY"),
+    @JsonSubTypes.Type(value = MutualFundInstrument.class, name = "MUTUAL_FUND"),
+    @JsonSubTypes.Type(value = CurrencyInstrument.class, name = "CURRENCY"),
+    @JsonSubTypes.Type(value = OptionInstrument.class, name = "OPTION"),
+    @JsonSubTypes.Type(value = IndexInstrument.class, name = "INDEX"),
+    @JsonSubTypes.Type(value = CashEquivalentInstrument.class, name = "CASH_EQUIVALENT"),
+    @JsonSubTypes.Type(value = FixedIncomeInstrument.class, name = "FIXED_INCOME")
 })
-public class Quote implements Serializable {
+public class Instrument implements Serializable {
 
-  private static final long serialVersionUID = 53583270219251608L;
+  private final static long serialVersionUID = -3284598815785216905L;
 
   @JsonProperty("assetType")
   private AssetType assetType;
-  @JsonProperty("delayed")
-  private Boolean delayed;
+  @JsonProperty("cusip")
+  private String cusip;
   @JsonProperty("symbol")
   private String symbol;
   @JsonProperty("description")
@@ -43,12 +42,12 @@ public class Quote implements Serializable {
   @JsonAnySetter
   private Map<String, Object> otherFields = new HashMap<>();
 
-  public Boolean getDelayed() {
-    return delayed;
-  }
-
   public AssetType getAssetType() {
     return assetType;
+  }
+
+  public String getCusip() {
+    return cusip;
   }
 
   public String getSymbol() {
@@ -66,12 +65,21 @@ public class Quote implements Serializable {
   @Override
   public String toString() {
     return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-        .appendSuper(super.toString())
         .append("assetType", assetType)
-        .append("delayed", delayed)
+        .append("cusip", cusip)
         .append("symbol", symbol)
         .append("description", description)
         .append("otherFields", otherFields)
         .toString();
+  }
+
+  public enum AssetType {
+    EQUITY,
+    OPTION,
+    INDEX,
+    MUTUAL_FUND,
+    CASH_EQUIVALENT,
+    FIXED_INCOME,
+    CURRENCY
   }
 }

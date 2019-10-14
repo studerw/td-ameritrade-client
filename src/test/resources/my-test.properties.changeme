@@ -3,6 +3,7 @@
 
 tda.token.refresh=<ADD a refresh_token>
 tda.client_id=<ADD Your App / Client ID>
+tda.account.id=<Your account ID>
 
 tda.http.schema=https
 tda.http.host=api.tdameritrade.com

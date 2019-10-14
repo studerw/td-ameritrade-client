@@ -25,9 +25,12 @@ public abstract class BaseTestIT {
     httpTdaClient = new HttpTdaClient(props);
   }
 
+  String getAccountId(){
+    return props.getProperty("tda.account.id");
+  }
+
   @AfterClass
   public static void afterClass () {
-//    httpTdaClient.logout();
     httpTdaClient = null;
   }
 

@@ -1,6 +1,6 @@
 package com.studerw.tda.http;
 
-import com.studerw.tda.parse.FormatUtils;
+import com.studerw.tda.parse.Utils;
 import java.io.IOException;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -71,7 +71,7 @@ public class LoggingInterceptor implements Interceptor {
         } else {
           String bodyStr = response.peekBody(byteCount).string();
           if (byteCount == -1 && response.header("content-type").contains("json")) {
-            bodyStr = FormatUtils.prettyFormat(bodyStr);
+            bodyStr = Utils.prettyFormat(bodyStr);
           }
           LOGGER.debug("RESPONSE Body: \n{}", bodyStr);
         }

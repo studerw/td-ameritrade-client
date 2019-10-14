@@ -5,11 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Helper class mainly for tests to pretty print JSON, dates, etc.
  */
-public class FormatUtils {
+public class Utils {
 
   final private static ObjectMapper mapper = new ObjectMapper();
 
@@ -35,5 +37,24 @@ public class FormatUtils {
     ZonedDateTime dateTime = Instant.ofEpochMilli(epoch).atZone(ZoneId.systemDefault());
     return dateTime.toString();
   }
+
+  /**
+   *
+   * @param c collection to check if null or empty
+   * @return true if null or empty, otherwise false
+   */
+  public static boolean isNullOrEmpty( final Collection< ? > c ) {
+    return c == null || c.isEmpty();
+  }
+
+  /**
+   *
+   * @param m map to check if null or empty
+   * @return true if null or empty, otherwise false
+   */
+  public static boolean isNullOrEmpty( final Map< ?, ? > m ) {
+    return m == null || m.isEmpty();
+  }
+
 
 }

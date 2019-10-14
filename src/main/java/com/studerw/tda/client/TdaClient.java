@@ -1,5 +1,6 @@
 package com.studerw.tda.client;
 
+import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.history.PriceHistReq;
 import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.quote.Quote;
@@ -102,6 +103,25 @@ public interface TdaClient {
    *</ul>
    */
   Quote fetchQuote(String symbol);
+
+  /**
+   * Fetch an account by the id. By default, balances are included. Positions and Orders can
+   * also be included based on the parameters.
+   * @param accountId the account. Most users only have a single account
+   * @param positions whether to include positions
+   * @param orders whether to include orders
+   * @return {@link SecuritiesAccount} with the passed id.
+   */
+  SecuritiesAccount getAccount(String accountId, boolean positions, boolean orders);
+
+  /**
+   * Fetch all your accounts. By default, balances are included. Positions and Orders can
+   * also be included based on the parameters.
+   * @param positions whether to include positions
+   * @param orders whether to include orders
+   * @return {@link SecuritiesAccount} with the passed id.
+   */
+  List<SecuritiesAccount> getAccounts(boolean positions, boolean orders);
 
   /**
    * Provides detailed information on positions and balances in the account.

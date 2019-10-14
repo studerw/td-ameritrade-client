@@ -3,17 +3,21 @@ package com.studerw.tda.client;
 import com.studerw.tda.http.LoggingInterceptor;
 import com.studerw.tda.http.cookie.CookieJarImpl;
 import com.studerw.tda.http.cookie.store.MemoryCookieStore;
+import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.history.PriceHistReq;
 import com.studerw.tda.model.history.PriceHistReqValidator;
 import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.quote.Quote;
 import com.studerw.tda.parse.TdaJsonParser;
+import com.studerw.tda.parse.Utils;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -102,6 +106,7 @@ public class HttpTdaClient implements TdaClient {
   /**
    * validates the necessary props like refresh token and client id. If others are missing, just use
    * friendly defaults.
+   *
    * @param tdaProps the required props to validate
    */
   protected static void validateProps(Properties tdaProps) {
@@ -131,7 +136,7 @@ public class HttpTdaClient implements TdaClient {
   @Override
   public PriceHistory priceHistory(String symbol) {
     symbol = StringUtils.upperCase(symbol);
-    LOGGER.debug("price history for symbol: {}", symbol);
+    LOGGER.info("price history for symbol: {}", symbol);
     if (StringUtils.isBlank(symbol)) {
       throw new IllegalArgumentException("symbol cannot be empty");
     }
@@ -148,7 +153,7 @@ public class HttpTdaClient implements TdaClient {
 
   @Override
   public PriceHistory priceHistory(PriceHistReq priceHistReq) {
-    LOGGER.debug("PriceHistory: {}", priceHistReq);
+    LOGGER.info("PriceHistory: {}", priceHistReq);
     List<String> violations = PriceHistReqValidator.validate(priceHistReq);
     if (violations.size() > 0) {
       throw new IllegalArgumentException(violations.toString());
@@ -192,7 +197,7 @@ public class HttpTdaClient implements TdaClient {
 
   @Override
   public List<Quote> fetchQuotes(List<String> symbols) {
-    LOGGER.debug("Fetching quotes: {}", symbols);
+    LOGGER.info("Fetching quotes: {}", symbols);
     HttpUrl url = baseUrl("marketdata", "quotes")
         .addQueryParameter("symbol", String.join(",", symbols))
         .addQueryParameter("apikey", this.tdaProps.getProperty("tda.client_id"))
@@ -215,6 +220,64 @@ public class HttpTdaClient implements TdaClient {
     return quotes.get(0);
   }
 
+  @Override
+  public SecuritiesAccount getAccount(String accountId, boolean positions, boolean orders) {
+    LOGGER.info("GetAccount[id={}], positions={}, orders={}", accountId, positions, orders);
+    if (StringUtils.isBlank(accountId)) {
+      throw new IllegalArgumentException("accountId cannot be blank.");
+    }
+    List<String> args = new ArrayList<>();
+    if (positions) {
+      args.add("positions");
+    }
+    if (orders) {
+      args.add("orders");
+    }
+
+    final Builder accountsBldr = baseUrl("accounts", accountId);
+    if (!Utils.isNullOrEmpty(args)) {
+      accountsBldr.addQueryParameter("fields", String.join(",", args));
+    }
+    final URL url = accountsBldr.build().url();
+    final Request request = new Request.Builder().url(url).headers(defaultHeaders())
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response);
+      return tdaJsonParser.parseAccount(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public List<SecuritiesAccount> getAccounts(boolean positions, boolean orders) {
+    LOGGER.info("GetAccount positions={}, orders={}", positions, orders);
+    List<String> args = new ArrayList<>();
+    if (positions) {
+      args.add("positions");
+    }
+    if (orders) {
+      args.add("orders");
+    }
+
+    final Builder accountsBldr = baseUrl("accounts");
+    if (!Utils.isNullOrEmpty(args)) {
+      accountsBldr.addQueryParameter("fields", String.join(",", args));
+    }
+    final URL url = accountsBldr.build().url();
+    final Request request = new Request.Builder().url(url).headers(defaultHeaders())
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response);
+      return tdaJsonParser.parseAccounts(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+  }
+
   /**
    * @param response the tda response
    * @return if it's a 200 response with a valid looking body, the method returns okay. Otherwise an
@@ -228,7 +291,7 @@ public class HttpTdaClient implements TdaClient {
       throw new RuntimeException(msg);
     }
     try {
-      String json = response.peekBody(20).string();
+      String json = response.peekBody(1000000).string();
       if ("{}".equals(json)) {
         String msg = String
             .format("Empty json body:  [%d - %s] - %s", response.code(), response.message(),

@@ -102,7 +102,9 @@ When this occurs, an `IllegalStateException` is thrown. This is explicitly signa
 ## Integration Tests
 Integration tests do require a Client App ID user and refresh token, though are not needed to build the jar.
 
-To run integration tests, you will need to rename this file *src/test/resources/my-test.properties.changeme* to *my-test.properties* and add your own TDA properties.
+To run integration tests, you will need to rename this file *src/test/resources/my-test.properties.changeme* to *my-test.properties* and fill in the 
+necessary TDA properties.
+
 Then run the following command.
 
 ```

@@ -2,7 +2,7 @@ package com.studerw.tda.model.quote;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.studerw.tda.parse.FormatUtils;
+import com.studerw.tda.parse.Utils;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -243,9 +243,9 @@ public class EquityQuote extends Quote implements Serializable {
         .append("netChange", netChange)
         .append("totalVolume", totalVolume)
         .append("quoteTimeInLong", quoteTimeInLong)
-        .append("quoteTimeInLongStr", FormatUtils.epochToStr(quoteTimeInLong))
+        .append("quoteTimeInLongStr", Utils.epochToStr(quoteTimeInLong))
         .append("tradeTimeInLong", tradeTimeInLong)
-        .append("tradeTimeInLongStr", FormatUtils.epochToStr(tradeTimeInLong))
+        .append("tradeTimeInLongStr", Utils.epochToStr(tradeTimeInLong))
         .append("mark", mark)
         .append("exchange", exchange)
         .append("exchangeName", exchangeName)
@@ -264,7 +264,7 @@ public class EquityQuote extends Quote implements Serializable {
         .append("regularMarketLastSize", regularMarketLastSize)
         .append("regularMarketNetChange", regularMarketNetChange)
         .append("regularMarketTradeTimeInLong", regularMarketTradeTimeInLong)
-        .append("regularMarketTradeTimeInLongStr", FormatUtils.epochToStr(regularMarketTradeTimeInLong))
+        .append("regularMarketTradeTimeInLongStr", Utils.epochToStr(regularMarketTradeTimeInLong))
         .toString();
   }
 }
