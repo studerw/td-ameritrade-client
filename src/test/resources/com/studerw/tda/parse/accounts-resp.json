@@ -1,0 +1,119 @@
+[
+  {
+    "securitiesAccount": {
+      "type": "MARGIN",
+      "accountId": "1234567890",
+      "roundTrips": 0,
+      "isDayTrader": false,
+      "isClosingOnlyRestricted": false,
+      "positions": [
+        {
+          "shortQuantity": 0.0,
+          "averagePrice": 1.0,
+          "currentDayProfitLoss": 0.0,
+          "currentDayProfitLossPercentage": 0.0,
+          "longQuantity": 200.72,
+          "settledLongQuantity": 200.72,
+          "settledShortQuantity": 0.0,
+          "instrument": {
+            "assetType": "CASH_EQUIVALENT",
+            "cusip": "9ZZZFD104",
+            "symbol": "MMDA1",
+            "description": "FDIC INSURED DEPOSIT ACCOUNT  CORE  NOT COVERED BY SIPC",
+            "type": "MONEY_MARKET_FUND"
+          },
+          "marketValue": 200.72
+        },
+        {
+          "shortQuantity": 0.0,
+          "averagePrice": 10.05625,
+          "currentDayProfitLoss": -429.69,
+          "currentDayProfitLossPercentage": -0.12,
+          "longQuantity": 347.58,
+          "settledLongQuantity": 347.58,
+          "settledShortQuantity": 0.0,
+          "instrument": {
+            "assetType": "EQUITY",
+            "cusip": "345370860",
+            "symbol": "F"
+          },
+          "marketValue": 3065.66
+        }
+      ],
+      "initialBalances": {
+        "accruedInterest": 0.0,
+        "availableFundsNonMarginableTrade": 2023.58,
+        "bondValue": 0.0,
+        "buyingPower": 4047.16,
+        "cashBalance": 0.0,
+        "cashAvailableForTrading": 0.0,
+        "cashReceipts": 0.0,
+        "dayTradingBuyingPower": 0.0,
+        "dayTradingBuyingPowerCall": 0.0,
+        "dayTradingEquityCall": 0.0,
+        "equity": 3252.47,
+        "equityPercentage": 100.0,
+        "liquidationValue": 3252.47,
+        "longMarginValue": 3051.75,
+        "longOptionMarketValue": 0.0,
+        "longStockValue": 3051.75,
+        "maintenanceCall": 0.0,
+        "maintenanceRequirement": 915.53,
+        "margin": 0.0,
+        "marginEquity": 3051.75,
+        "moneyMarketFund": 200.72,
+        "mutualFundValue": 0.0,
+        "regTCall": 0.0,
+        "shortMarginValue": 0.0,
+        "shortOptionMarketValue": 0.0,
+        "shortStockValue": 0.0,
+        "totalCash": 0.0,
+        "isInCall": false,
+        "pendingDeposits": 0.0,
+        "marginBalance": 0.0,
+        "shortBalance": 0.0,
+        "accountValue": 3252.47
+      },
+      "currentBalances": {
+        "accruedInterest": 0.0,
+        "cashBalance": 0.0,
+        "cashReceipts": 0.0,
+        "longOptionMarketValue": 0.0,
+        "liquidationValue": 3266.38,
+        "longMarketValue": 3065.66,
+        "moneyMarketFund": 200.72,
+        "savings": 0.0,
+        "shortMarketValue": 0.0,
+        "pendingDeposits": 0.0,
+        "availableFunds": 2023.58,
+        "availableFundsNonMarginableTrade": 2023.58,
+        "buyingPower": 4047.16,
+        "buyingPowerNonMarginableTrade": 2023.58,
+        "dayTradingBuyingPower": 0.0,
+        "equity": 3266.38,
+        "equityPercentage": 100.0,
+        "longMarginValue": 3065.66,
+        "maintenanceCall": 0.0,
+        "maintenanceRequirement": 919.7,
+        "marginBalance": 0.0,
+        "regTCall": 0.0,
+        "shortBalance": 0.0,
+        "shortMarginValue": 0.0,
+        "shortOptionMarketValue": 0.0,
+        "sma": 2224.3,
+        "bondValue": 0.0
+      },
+      "projectedBalances": {
+        "availableFunds": 2023.58,
+        "availableFundsNonMarginableTrade": 2023.58,
+        "buyingPower": 4047.16,
+        "dayTradingBuyingPower": 0.0,
+        "dayTradingBuyingPowerCall": 0.0,
+        "maintenanceCall": 0.0,
+        "regTCall": 0.0,
+        "isInCall": false,
+        "stockBuyingPower": 4047.16
+      }
+    }
+  }
+]

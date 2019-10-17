@@ -1,9 +1,12 @@
 package com.studerw.tda.client;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 import com.studerw.tda.model.account.SecuritiesAccount;
+import com.studerw.tda.parse.Utils;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,21 +19,34 @@ public class AccountTestIT extends BaseTestIT {
   @Test(expected = Exception.class)
   public void testAccountNoId() {
     final SecuritiesAccount account = httpTdaClient.getAccount("", false, false);
-    assertThat(account).isNotNull();
-    LOGGER.debug(account.toString());
+    fail("shouldn't get here");
   }
 
   @Test
   public void testAccountAlone() {
+    String accountId = getAccountId();
+    if (StringUtils.isBlank(accountId)) {
+      LOGGER.warn("No accountID set in props - ignoring 'getAccount('accountId', ...)' test");
+      return;
+    }
+
     final SecuritiesAccount account = httpTdaClient.getAccount(getAccountId(), true, true);
     assertThat(account).isNotNull();
     LOGGER.debug(account.toString());
+    if (!Utils.isNullOrEmpty(account.getOtherFields())) {
+      LOGGER.warn("some files weren't mapped: {}", account.getOtherFields());
+    }
   }
 
   @Test
   public void testGetAccounts() {
     final List<SecuritiesAccount> accounts = httpTdaClient.getAccounts(true, true);
-    LOGGER.debug(accounts.toString());
+    for (SecuritiesAccount account : accounts) {
+      if (!Utils.isNullOrEmpty(account.getOtherFields())) {
+        LOGGER.warn("some files weren't mapped: {}", account.getOtherFields());
+      }
+    }
+    accounts.forEach(a -> LOGGER.debug("{}", a));
   }
 
 

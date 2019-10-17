@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +28,7 @@ public class TdaJsonParser {
     LOGGER.trace("parsing quotes...");
     try (BufferedInputStream bIn = new BufferedInputStream(in)) {
       LinkedHashMap<String, Quote> quotesMap = new LinkedHashMap<>();
-      quotesMap = DefaultMapper.fromJson(in, new TypeReference<LinkedHashMap<String, Quote>>() {
+      quotesMap = DefaultMapper.fromJson(bIn, new TypeReference<LinkedHashMap<String, Quote>>() {
       });
       LOGGER.debug("returned a map of size: {}", quotesMap.size());
 
@@ -41,15 +42,15 @@ public class TdaJsonParser {
   }
 
   /**
-   *
    * @param in {@link InputStream} of JSON from TDA; the stream will be closed upon return.
    * @return PriceHistory
    */
   public PriceHistory parsePriceHistory(InputStream in) {
     LOGGER.trace("parsing quotes...");
     try (BufferedInputStream bIn = new BufferedInputStream(in)) {
-      final PriceHistory priceHistory = DefaultMapper.fromJson(in, PriceHistory.class);
-      LOGGER.debug("returned a price history for {} of size: {}", priceHistory.getSymbol(), priceHistory.getCandles().size());
+      final PriceHistory priceHistory = DefaultMapper.fromJson(bIn, PriceHistory.class);
+      LOGGER.debug("returned a price history for {} of size: {}", priceHistory.getSymbol(),
+          priceHistory.getCandles().size());
       return priceHistory;
     } catch (IOException e) {
       e.printStackTrace();
@@ -58,18 +59,17 @@ public class TdaJsonParser {
   }
 
   /**
-   *
    * @param in {@link InputStream} of JSON from TDA; the stream will be closed upon return.
    * @return SecuritiesAccount
    */
   public SecuritiesAccount parseAccount(InputStream in) {
     LOGGER.trace("parsing securitiesAccount...");
     try (BufferedInputStream bIn = new BufferedInputStream(in)) {
-      //Cannot use defaultMapper because accout is wrapped in '{ securitiesAccount: {...} }'
+      //Cannot use defaultMapper because account is wrapped in '{ securitiesAccount: {...} }'
       final ObjectMapper objMapper = new ObjectMapper();
       objMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
 
-      final SecuritiesAccount securitiesAccount = objMapper.readValue(in, SecuritiesAccount.class);
+      final SecuritiesAccount securitiesAccount = objMapper.readValue(bIn, SecuritiesAccount.class);
       LOGGER.debug("returned a securitiesAccount of type: {}",
           securitiesAccount.getClass().getName());
       return securitiesAccount;
@@ -80,18 +80,27 @@ public class TdaJsonParser {
   }
 
   /**
-   *
    * @param in {@link InputStream} of JSON from TDA; the stream will be closed upon return.
    * @return List of SecuritiesAccounts
    */
   public List<SecuritiesAccount> parseAccounts(InputStream in) {
     LOGGER.trace("parsing securitiesAccounts...");
     try (BufferedInputStream bIn = new BufferedInputStream(in)) {
-      final TypeReference<List<SecuritiesAccount>> typeReference = new TypeReference<List<SecuritiesAccount>>() {
+
+      TypeReference<List<Map<String, SecuritiesAccount>>> typeReference = new TypeReference<List<Map<String, SecuritiesAccount>>>() {
       };
-      final List<SecuritiesAccount> accounts = DefaultMapper
-          .fromJson(in, typeReference);
-      LOGGER.debug("returned a a list of securitiesAccounts: {}", accounts);
+      ObjectMapper mapper = new ObjectMapper();
+      List<SecuritiesAccount> accounts = new ArrayList<>();
+      List<Map<String, SecuritiesAccount>> maps = mapper.readValue(bIn, typeReference);
+      for (Map<String, SecuritiesAccount> map : maps) {
+        if (map.size() != 1 && map.containsKey("securitiesAccount")) {
+          throw new IllegalStateException("Expecting of json list of securitiesAccount");
+        }
+        SecuritiesAccount securitiesAccount = map.get("securitiesAccount");
+        accounts.add(securitiesAccount);
+      }
+
+      LOGGER.debug("returned a a list of {} securitiesAccounts: {}", accounts.size(), accounts);
       return accounts;
     } catch (IOException e) {
       e.printStackTrace();

@@ -17,9 +17,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 
 /**
- * TDA SecuritiesAccount. This is an abstract class and you need to check the
- * {@link SecuritiesAccount.Type} to cast to either a {@link CashAccount} or
- * {@link MarginAccount}. For example:
+ * TDA SecuritiesAccount. This is an abstract class and you need to check the {@link
+ * SecuritiesAccount.Type} to cast to either a {@link CashAccount} or {@link MarginAccount}. For
+ * example:
  *
  * <pre class="code">
  *   SecuritiesAccount account = tdaClient.getAccount("2342..");
@@ -31,7 +31,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *   }
  *   ...
  * </pre>
- *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonRootName("securitiesAccount")
@@ -45,6 +44,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     @JsonSubTypes.Type(value = CashAccount.class, name = "CASH"),
 })
 public class SecuritiesAccount implements Serializable {
+
   private final static long serialVersionUID = -3030706788121803012L;
 
   @JsonProperty("type")
