@@ -52,7 +52,18 @@ public class HttpTdaClient implements TdaClient {
   Properties tdaProps;
 
   /**
-   * Passing in no props will lead to using the properties found at {@code classpath:/tda-api.properties}) will be used.
+   * Using this constructor will assume there are properties found at {@code classpath:/tda-api.properties}).
+   * This props file can include:
+   * </p>
+   * <ul>
+   *   <li>tda.token.refresh</li>
+   *   <li>tda.client_id</li>
+   *   <li>tda.url=https://apis.tdameritrade.com/v1</li>
+   *   <li>tda.debug.bytes.length=-1 (How many bytes of logging interceptor debug to print, -1 is unlimited)</li>
+   * </ul>
+   *
+   * <p>There are no defaults for the <em>tda.token.refresh</em> and <em>tda.client_id</em>. If they
+   * are not set, an exception will be thrown</p>
    */
   public HttpTdaClient() {
     this(null);
@@ -61,7 +72,7 @@ public class HttpTdaClient implements TdaClient {
   /**
    * @param props required properties
    * <p>
-   * To override the default properties file, you can define everything that is currently in {@code
+   * To avoid using a properties file, you can define anything that would be in {@code
    * tda-api.properties} file. This includes:
    * </p>
    * <ul>

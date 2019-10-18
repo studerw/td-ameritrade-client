@@ -46,9 +46,14 @@ Add the following to your Maven build file:
 You need to obtain a valid TDA Developer *refresh token* every 90 days. See TDA's [Simple Auth for Local Apps](https://developer.tdameritrade.com/content/simple-auth-local-apps).
 
 ```
-  TdaClient tdaClient = new HttpTdaClient();
+  Properties props = new Properties();
+  props.set("tda.client_id", "...");
+  props.set("tda.token.refresh", "..."
+
+  TdaClient tdaClient = new HttpTdaClient(props);
   final Quote quote = tdaClient.fetchQuote("msft");
   EquityQuote equityQuote = (EquityQuote) quote;
+
   System.out.println("Current price of MSFT: " + equityQuote.getAskPrice());
 ```
 

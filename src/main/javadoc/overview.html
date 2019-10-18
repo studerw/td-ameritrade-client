@@ -6,9 +6,19 @@
 <body>
 The <strong>TdaClient</strong> is your main interface into the API.
 
+<p>Create a <em>tda-api.properties</em> in your classpath with the following properties:</p>
+<ul>
+  <li>tda.client_id</li>
+  <li>tda.token.refresh</li>
+</ul>
+
 <pre class="code">
   TdaClient tdaClient = new HttpTdaClient();
-  Quote quote = tdaClient.fetchQuote("AMTD");
+
+  Quote quote = tdaClient.fetchQuote("msft");
+  EquityQuote equityQuote = (EquityQuote) quote;
+
+  System.out.println("Current price of MSFT: " + equityQuote.getAskPrice());
 </pre>
 
 </body>
