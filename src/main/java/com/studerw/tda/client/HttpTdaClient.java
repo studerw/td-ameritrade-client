@@ -42,17 +42,17 @@ import org.slf4j.LoggerFactory;
  */
 public class HttpTdaClient implements TdaClient {
 
-  protected static final String DEFAULT_PATH = "https://apis.tdameritrade.com/v1";
+  static final String DEFAULT_PATH = "https://apis.tdameritrade.com/v1";
   protected static final int LOGGING_BYTES = -1;
   protected static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE;
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpTdaClient.class);
-  protected final TdaJsonParser tdaJsonParser = new TdaJsonParser();
-  protected final OkHttpClient httpClient;
-  protected Properties tdaProps;
+  private HttpUrl httpUrl;
+  final TdaJsonParser tdaJsonParser = new TdaJsonParser();
+  final OkHttpClient httpClient;
+  Properties tdaProps;
 
   /**
-   * Passing in no props will lead to using the properties found at {@code
-   * /src/main/resources/tda-api.properties}) will be used.
+   * Passing in no props will lead to using the properties found at {@code classpath:/tda-api.properties}) will be used.
    */
   public HttpTdaClient() {
     this(null);
@@ -61,18 +61,21 @@ public class HttpTdaClient implements TdaClient {
   /**
    * @param props required properties
    * <p>
-   * To override the default properties file, you must define everything that is currently in {@code
+   * To override the default properties file, you can define everything that is currently in {@code
    * tda-api.properties} file. This includes:
    * </p>
    * <ul>
    *   <li>tda.token.refresh</li>
    *   <li>tda.client_id</li>
-   *   <li>tda.http.path=https://apis.tdameritrade.com/v1</li>
+   *   <li>tda.url=https://apis.tdameritrade.com/v1</li>
    *   <li>tda.debug.bytes.length=-1 (How many bytes of logging interceptor debug to print, -1 is unlimited)</li>
    * </ul>
+   *
+   * <p>There are no defaults for the <em>tda.token.refresh</em> and <em>tda.client_id</em>. If they
+   * are not set, an exception will be thrown</p>
    */
   public HttpTdaClient(Properties props) {
-    LOGGER.info("Initiating HttpTdaClient with props passed in...");
+    LOGGER.info("Initiating HttpTdaClient...");
 
     this.tdaProps = (props == null) ? initTdaProps() : props;
     validateProps(this.tdaProps);
@@ -90,12 +93,6 @@ public class HttpTdaClient implements TdaClient {
         .getResourceAsStream("tda-api.properties")) {
       Properties tdProperties = new Properties();
       tdProperties.load(in);
-
-      String clientId = tdProperties.getProperty("tda.client_id");
-      if (StringUtils.isBlank(clientId)) {
-        throw new IllegalArgumentException(
-            "Missing tda.client_id property. This is obtained from TDA developer API when registering an app");
-      }
       return tdProperties;
     } catch (IOException e) {
       throw new IllegalArgumentException(
@@ -123,9 +120,9 @@ public class HttpTdaClient implements TdaClient {
           "Missing tda.token.refresh property. This is obtained from the TDA developer API page when creating a temporary authentication token");
     }
 
-    String path = tdaProps.getProperty("tda.http.path");
-    if (StringUtils.isBlank(refreshToken)) {
-      tdaProps.setProperty("tda.http.path", DEFAULT_PATH);
+    String url = tdaProps.getProperty("tda.url");
+    if (StringUtils.isBlank(url)) {
+      tdaProps.setProperty("tda.url", DEFAULT_PATH);
     }
 
     if (tdaProps.get("tda.debug.bytes.length") == null) {
@@ -312,10 +309,10 @@ public class HttpTdaClient implements TdaClient {
   }
 
   protected HttpUrl.Builder baseUrl(String... pathSegments) {
-    Builder builder = new Builder()
-        .scheme(tdaProps.getProperty("tda.http.schema"))
-        .host(tdaProps.getProperty("tda.http.host"))
-        .addPathSegment(tdaProps.getProperty("tda.http.path"));
+    if (this.httpUrl == null) {
+      this.httpUrl = HttpUrl.parse(tdaProps.getProperty("tda.url"));
+    }
+    Builder builder = httpUrl.newBuilder();
     for (String segment : pathSegments) {
       builder.addPathSegment(segment);
     }
