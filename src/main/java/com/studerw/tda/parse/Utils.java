@@ -60,7 +60,7 @@ public class Utils {
 
   /**
    *
-   * @param zonedDateTime
+   * @param zonedDateTime the date to format
    * @return a string formatted like {@code yyyy-MM-dd'T'HH:mm:ssz}.
    */
   public static String toTdaISO8601(ZonedDateTime zonedDateTime) {
@@ -69,7 +69,7 @@ public class Utils {
 
   /**
    *
-   * @param zonedDateTime
+   * @param zonedDateTime the date to format
    * @return a string formatted like {@code yyyy-MM-dd}.
    */
   public static String toTdaYMD(ZonedDateTime zonedDateTime) {

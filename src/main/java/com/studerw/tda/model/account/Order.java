@@ -19,7 +19,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * Order both sent and received when making trades. Some of the easier examples are described on the
  * TDA Developer page.
  *
- * @see <href="https://developer.tdameritrade.com/content/place-order-samples">Place Order Samples</a>
+ * @see <a href="https://developer.tdameritrade.com/content/place-order-samples">Place Order Samples</a>
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Order implements Serializable {

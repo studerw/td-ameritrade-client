@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Main interface of the TDA Client. Implementations should be thread safe.
+ * @see HttpTdaClient
  */
 public interface TdaClient {
 
@@ -227,16 +228,24 @@ public interface TdaClient {
   /**
    * Place a Trade.
    * @param accountId the account under which the order is to be placed
-   * @param order
+   * @param order the order to place
    *
-   * @see <href="https://developer.tdameritrade.com/content/place-order-samples">Place Order Samples</a>
+   * @see <a href="https://developer.tdameritrade.com/content/place-order-samples">Place Order Samples</a>
    */
   void placeOrder(String accountId, Order order);
 
   /**
+   * <p>
    * Fetch all orders for a given account using the criteria of the orderRequest.
+   * You can just use a blank order to use sane defaults.
+   * </p>
+   *
+   * <pre class="code">
+   *   Order order = client.fetchOrder("123456789", new OrderRequest());
+   * </pre>
+   *
    * @param accountId the orders from only this account
-   * @param orderRequest
+   * @param orderRequest the request.
    * @return list of orders specified by the {@link OrderRequest} param.
    */
   List<Order> fetchOrders(String accountId, OrderRequest orderRequest);
