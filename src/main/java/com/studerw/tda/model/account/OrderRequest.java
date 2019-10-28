@@ -3,7 +3,11 @@ package com.studerw.tda.model.account;
 import java.time.ZonedDateTime;
 
 /**
- * Class used for simple order requests.
+ * Class used for simple order requests. If an empty request is sent, then all orders
+ * from all valid dates will be returned for the account.
+ *
+ * If a {@coe fromEnteredTime} is used, a {@coe toEnteredTime} must also be used, and vice versa.
+ * There is a 60 day max from today's date for the {@code fromEnteredTime} param.
  */
 public class OrderRequest {
   private Integer maxResults;
@@ -42,7 +46,7 @@ public class OrderRequest {
   }
 
   /**
-   * @return fromEnteredTime as a string
+   * @return fromEnteredTime
    */
   public ZonedDateTime getFromEnteredTime() {
     return fromEnteredTime;

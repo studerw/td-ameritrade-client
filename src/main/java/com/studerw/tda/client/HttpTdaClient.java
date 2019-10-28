@@ -56,13 +56,12 @@ public class HttpTdaClient implements TdaClient {
 
   /**
    * Using this constructor will assume there are properties found at {@code
-   * classpath:/tda-api.properties}). This props file can include:
-   * </p>
+   * classpath:/tda-api.properties}. This props file can include:
    * <ul>
    *   <li>tda.token.refresh</li>
    *   <li>tda.client_id</li>
-   *   <li>tda.url=https://apis.tdameritrade.com/v1</li>
-   *   <li>tda.debug.bytes.length=-1 (How many bytes of logging interceptor debug to print, -1 is unlimited)</li>
+   *   <li>tda.url=<em>https://apis.tdameritrade.com/v1</em></li>
+   *   <li>tda.debug.bytes.length=<em>-1</em> (How many bytes of logging interceptor debug to print, -1 is unlimited)</li>
    * </ul>
    *
    * <p>There are no defaults for the <em>tda.token.refresh</em> and <em>tda.client_id</em>. If they
@@ -73,20 +72,22 @@ public class HttpTdaClient implements TdaClient {
   }
 
   /**
-   * @param props required properties
    * <p>
    * To avoid using a properties file, you can define anything that would be in {@code
    * tda-api.properties} file. This includes:
    * </p>
+
    * <ul>
    *   <li>tda.token.refresh</li>
    *   <li>tda.client_id</li>
-   *   <li>tda.url=https://apis.tdameritrade.com/v1</li>
-   *   <li>tda.debug.bytes.length=-1 (How many bytes of logging interceptor debug to print, -1 is unlimited)</li>
+   *   <li>tda.url=<em>https://apis.tdameritrade.com/v1</em></li>
+   *   <li>tda.debug.bytes.length=<em>-1</em> (How many bytes of logging interceptor debug to print, -1 is unlimited)</li>
    * </ul>
    *
-   * <p>There are no defaults for the <em>tda.token.refresh</em> and <em>tda.client_id</em>. If they
+   * <p>There are no defaults for <em>tda.token.refresh</em> and <em>tda.client_id</em>. If they
    * are not set, an exception will be thrown</p>
+   *
+   * @param props required properties
    */
   public HttpTdaClient(Properties props) {
     LOGGER.info("Initiating HttpTdaClient...");
