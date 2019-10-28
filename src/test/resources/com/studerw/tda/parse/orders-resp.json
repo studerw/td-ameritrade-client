@@ -1,0 +1,31 @@
+[ {
+  "session" : "NORMAL",
+  "duration" : "DAY",
+  "orderType" : "MARKET",
+  "complexOrderStrategyType" : "NONE",
+  "quantity" : 15.0,
+  "filledQuantity" : 0.0,
+  "remainingQuantity" : 15.0,
+  "requestedDestination" : "AUTO",
+  "destinationLinkName" : "AutoRoute",
+  "orderLegCollection" : [ {
+    "orderLegType" : "EQUITY",
+    "legId" : 1,
+    "instrument" : {
+      "assetType" : "EQUITY",
+      "cusip" : "594918104",
+      "symbol" : "MSFT"
+    },
+    "instruction" : "BUY",
+    "positionEffect" : "OPENING",
+    "quantity" : 15.0
+  } ],
+  "orderStrategyType" : "SINGLE",
+  "orderId" : 999999999,
+  "cancelable" : true,
+  "editable" : false,
+  "status" : "WORKING",
+  "enteredTime" : "2019-11-28T03:23:09+0000",
+  "tag" : "AA_foobar",
+  "accountId" : 999999999
+} ]

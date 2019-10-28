@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * OAUTH2 response for acquiring new auth or refresh token
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AuthToken implements Serializable {
 
   private final static long serialVersionUID = -7714855788981020534L;

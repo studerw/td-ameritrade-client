@@ -7,89 +7,132 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+
+/**
+ * Order both sent and received when making trades. Some of the easier examples are described on the
+ * TDA Developer page.
+ *
+ * @see <href="https://developer.tdameritrade.com/content/place-order-samples">Place Order Samples</a>
+ */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class OrderStrategy implements Serializable {
+public class Order implements Serializable {
 
-  private final static long serialVersionUID = 8230751877078177259L;
-
+  private final static long serialVersionUID = 8347583371582106837L;
   @JsonProperty("session")
   private Session session;
+
   @JsonProperty("duration")
   private Duration duration;
+
   @JsonProperty("orderType")
   private OrderType orderType;
+
   @JsonProperty("cancelTime")
   private CancelTime cancelTime;
+
   @JsonProperty("complexOrderStrategyType")
   private ComplexOrderStrategyType complexOrderStrategyType;
+
   @JsonProperty("quantity")
   private BigDecimal quantity;
+
   @JsonProperty("filledQuantity")
   private BigDecimal filledQuantity;
+
   @JsonProperty("remainingQuantity")
   private BigDecimal remainingQuantity;
+
   @JsonProperty("requestedDestination")
   private RequestedDestination requestedDestination;
+
   @JsonProperty("destinationLinkName")
   private String destinationLinkName;
+
   @JsonProperty("releaseTime")
-  private String releaseTime;
+  private Date releaseTime;
+
   @JsonProperty("stopPrice")
   private BigDecimal stopPrice;
+
   @JsonProperty("stopPriceLinkBasis")
   private StopPriceLinkBasis stopPriceLinkBasis;
+
   @JsonProperty("stopPriceLinkType")
   private StopPriceLinkType stopPriceLinkType;
+
   @JsonProperty("stopPriceOffset")
   private BigDecimal stopPriceOffset;
+
   @JsonProperty("stopType")
   private StopType stopType;
+
   @JsonProperty("priceLinkBasis")
   private PriceLinkBasis priceLinkBasis;
+
   @JsonProperty("priceLinkType")
   private PriceLinkType priceLinkType;
+
   @JsonProperty("price")
   private BigDecimal price;
+
   @JsonProperty("taxLotMethod")
   private TaxLotMethod taxLotMethod;
+
   @JsonProperty("orderLegCollection")
-  private List<OrderLegCollection> orderLegCollection = new ArrayList<>();
+  private List<OrderLegCollection> orderLegCollection = new ArrayList<OrderLegCollection>();
+
   @JsonProperty("activationPrice")
   private BigDecimal activationPrice;
+
   @JsonProperty("specialInstruction")
   private SpecialInstruction specialInstruction;
+
   @JsonProperty("orderStrategyType")
   private OrderStrategyType orderStrategyType;
+
   @JsonProperty("orderId")
   private Long orderId;
+
   @JsonProperty("cancelable")
   private Boolean cancelable;
+
   @JsonProperty("editable")
   private Boolean editable;
+
   @JsonProperty("status")
   private Status status;
+
   @JsonProperty("enteredTime")
-  private String enteredTime;
+  private Date enteredTime;
+
   @JsonProperty("closeTime")
-  private String closeTime;
+  private Date closeTime;
+
   @JsonProperty("tag")
   private String tag;
+
   @JsonProperty("accountId")
   private Long accountId;
+
   @JsonProperty("orderActivityCollection")
   private List<OrderActivityCollection> orderActivityCollection = new ArrayList<OrderActivityCollection>();
+
   @JsonProperty("replacingOrderCollection")
   private List<Object> replacingOrderCollection = new ArrayList<Object>();
+
   @JsonProperty("childOrderStrategies")
-  private List<OrderStrategy> childOrderStrategies = new ArrayList<>();
+  private List<Object> childOrderStrategies = new ArrayList<Object>();
+
   @JsonProperty("statusDescription")
   private String statusDescription;
+
   @JsonAnySetter
   private Map<String, Object> otherFields = new HashMap<>();
 
@@ -97,144 +140,293 @@ public class OrderStrategy implements Serializable {
     return session;
   }
 
+  public void setSession(Session session) {
+    this.session = session;
+  }
+
   public Duration getDuration() {
     return duration;
+  }
+
+  public void setDuration(Duration duration) {
+    this.duration = duration;
   }
 
   public OrderType getOrderType() {
     return orderType;
   }
 
+  public void setOrderType(OrderType orderType) {
+    this.orderType = orderType;
+  }
+
   public CancelTime getCancelTime() {
     return cancelTime;
+  }
+
+  public void setCancelTime(CancelTime cancelTime) {
+    this.cancelTime = cancelTime;
   }
 
   public ComplexOrderStrategyType getComplexOrderStrategyType() {
     return complexOrderStrategyType;
   }
 
+  public void setComplexOrderStrategyType(
+      ComplexOrderStrategyType complexOrderStrategyType) {
+    this.complexOrderStrategyType = complexOrderStrategyType;
+  }
+
   public BigDecimal getQuantity() {
     return quantity;
+  }
+
+  public void setQuantity(BigDecimal quantity) {
+    this.quantity = quantity;
   }
 
   public BigDecimal getFilledQuantity() {
     return filledQuantity;
   }
 
+  public void setFilledQuantity(BigDecimal filledQuantity) {
+    this.filledQuantity = filledQuantity;
+  }
+
   public BigDecimal getRemainingQuantity() {
     return remainingQuantity;
+  }
+
+  public void setRemainingQuantity(BigDecimal remainingQuantity) {
+    this.remainingQuantity = remainingQuantity;
   }
 
   public RequestedDestination getRequestedDestination() {
     return requestedDestination;
   }
 
+  public void setRequestedDestination(
+      RequestedDestination requestedDestination) {
+    this.requestedDestination = requestedDestination;
+  }
+
   public String getDestinationLinkName() {
     return destinationLinkName;
   }
 
-  public String getReleaseTime() {
+  public void setDestinationLinkName(String destinationLinkName) {
+    this.destinationLinkName = destinationLinkName;
+  }
+
+  public Date getReleaseTime() {
     return releaseTime;
+  }
+
+  public void setReleaseTime(Date releaseTime) {
+    this.releaseTime = releaseTime;
   }
 
   public BigDecimal getStopPrice() {
     return stopPrice;
   }
 
+  public void setStopPrice(BigDecimal stopPrice) {
+    this.stopPrice = stopPrice;
+  }
+
   public StopPriceLinkBasis getStopPriceLinkBasis() {
     return stopPriceLinkBasis;
+  }
+
+  public void setStopPriceLinkBasis(
+      StopPriceLinkBasis stopPriceLinkBasis) {
+    this.stopPriceLinkBasis = stopPriceLinkBasis;
   }
 
   public StopPriceLinkType getStopPriceLinkType() {
     return stopPriceLinkType;
   }
 
+  public void setStopPriceLinkType(StopPriceLinkType stopPriceLinkType) {
+    this.stopPriceLinkType = stopPriceLinkType;
+  }
+
   public BigDecimal getStopPriceOffset() {
     return stopPriceOffset;
+  }
+
+  public void setStopPriceOffset(BigDecimal stopPriceOffset) {
+    this.stopPriceOffset = stopPriceOffset;
   }
 
   public StopType getStopType() {
     return stopType;
   }
 
+  public void setStopType(StopType stopType) {
+    this.stopType = stopType;
+  }
+
   public PriceLinkBasis getPriceLinkBasis() {
     return priceLinkBasis;
+  }
+
+  public void setPriceLinkBasis(PriceLinkBasis priceLinkBasis) {
+    this.priceLinkBasis = priceLinkBasis;
   }
 
   public PriceLinkType getPriceLinkType() {
     return priceLinkType;
   }
 
+  public void setPriceLinkType(PriceLinkType priceLinkType) {
+    this.priceLinkType = priceLinkType;
+  }
+
   public BigDecimal getPrice() {
     return price;
+  }
+
+  public void setPrice(BigDecimal price) {
+    this.price = price;
   }
 
   public TaxLotMethod getTaxLotMethod() {
     return taxLotMethod;
   }
 
+  public void setTaxLotMethod(TaxLotMethod taxLotMethod) {
+    this.taxLotMethod = taxLotMethod;
+  }
+
   public List<OrderLegCollection> getOrderLegCollection() {
     return orderLegCollection;
+  }
+
+  public void setOrderLegCollection(
+      List<OrderLegCollection> orderLegCollection) {
+    this.orderLegCollection = orderLegCollection;
   }
 
   public BigDecimal getActivationPrice() {
     return activationPrice;
   }
 
+  public void setActivationPrice(BigDecimal activationPrice) {
+    this.activationPrice = activationPrice;
+  }
+
   public SpecialInstruction getSpecialInstruction() {
     return specialInstruction;
+  }
+
+  public void setSpecialInstruction(SpecialInstruction specialInstruction) {
+    this.specialInstruction = specialInstruction;
   }
 
   public OrderStrategyType getOrderStrategyType() {
     return orderStrategyType;
   }
 
+  public void setOrderStrategyType(OrderStrategyType orderStrategyType) {
+    this.orderStrategyType = orderStrategyType;
+  }
+
   public Long getOrderId() {
     return orderId;
+  }
+
+  public void setOrderId(Long orderId) {
+    this.orderId = orderId;
   }
 
   public Boolean getCancelable() {
     return cancelable;
   }
 
+  public void setCancelable(Boolean cancelable) {
+    this.cancelable = cancelable;
+  }
+
   public Boolean getEditable() {
     return editable;
+  }
+
+  public void setEditable(Boolean editable) {
+    this.editable = editable;
   }
 
   public Status getStatus() {
     return status;
   }
 
-  public String getEnteredTime() {
+  public void setStatus(Status status) {
+    this.status = status;
+  }
+
+  public Date getEnteredTime() {
     return enteredTime;
   }
 
-  public String getCloseTime() {
+  public void setEnteredTime(Date enteredTime) {
+    this.enteredTime = enteredTime;
+  }
+
+  public Date getCloseTime() {
     return closeTime;
+  }
+
+  public void setCloseTime(Date closeTime) {
+    this.closeTime = closeTime;
   }
 
   public String getTag() {
     return tag;
   }
 
+  public void setTag(String tag) {
+    this.tag = tag;
+  }
+
   public Long getAccountId() {
     return accountId;
+  }
+
+  public void setAccountId(Long accountId) {
+    this.accountId = accountId;
   }
 
   public List<OrderActivityCollection> getOrderActivityCollection() {
     return orderActivityCollection;
   }
 
+  public void setOrderActivityCollection(
+      List<OrderActivityCollection> orderActivityCollection) {
+    this.orderActivityCollection = orderActivityCollection;
+  }
+
   public List<Object> getReplacingOrderCollection() {
     return replacingOrderCollection;
   }
 
-  public List<OrderStrategy> getChildOrderStrategies() {
+  public void setReplacingOrderCollection(List<Object> replacingOrderCollection) {
+    this.replacingOrderCollection = replacingOrderCollection;
+  }
+
+  public List<Object> getChildOrderStrategies() {
     return childOrderStrategies;
+  }
+
+  public void setChildOrderStrategies(List<Object> childOrderStrategies) {
+    this.childOrderStrategies = childOrderStrategies;
   }
 
   public String getStatusDescription() {
     return statusDescription;
+  }
+
+  public void setStatusDescription(String statusDescription) {
+    this.statusDescription = statusDescription;
   }
 
   @JsonIgnore
@@ -285,4 +477,3 @@ public class OrderStrategy implements Serializable {
         .toString();
   }
 }
-

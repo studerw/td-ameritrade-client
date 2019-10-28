@@ -1,6 +1,7 @@
 package com.studerw.tda.model.account;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
@@ -13,7 +14,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * Current Balances of a Cash Account
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class CashCurrentBalances implements Serializable {
   private final static long serialVersionUID = -7035699616977210547L;
 
@@ -140,6 +141,7 @@ public class CashCurrentBalances implements Serializable {
     return unsettledCash;
   }
 
+  @JsonIgnore
   public Map<String, Object> getOtherFields() {
     return otherFields;
   }

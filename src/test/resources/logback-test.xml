@@ -10,9 +10,9 @@
     </encoder>
   </appender>
 
-  <logger name="TDA_HTTP" level="info"/>
+  <logger name="TDA_HTTP" level="debug"/>
   <logger name="com.studerw.tda" level="debug"/>
-  <logger name="com.studerw.tda.client.OauthInterceptor" level="info"/>
+  <logger name="com.studerw.tda.client.OauthInterceptor" level="debug"/>
   <logger name="com.squareup.okhttp3" level="info"/>
 
   <root level="WARN">

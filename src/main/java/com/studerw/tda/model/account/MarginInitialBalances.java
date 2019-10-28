@@ -1,6 +1,7 @@
 package com.studerw.tda.model.account;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -15,7 +16,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * Initial Balances of a Margin Account
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class MarginInitialBalances implements Serializable {
   private final static long serialVersionUID = -7328609525719064258L;
 
@@ -74,7 +75,7 @@ public class MarginInitialBalances implements Serializable {
   @JsonProperty("totalCash")
   private BigDecimal totalCash;
   @JsonProperty("isInCall")
-  private Boolean isInCall = false;
+  private Boolean isInCall;
   @JsonProperty("unsettledCash")
   private BigDecimal unsettledCash;
   @JsonProperty("pendingDeposits")
@@ -220,6 +221,7 @@ public class MarginInitialBalances implements Serializable {
     return accountValue;
   }
 
+  @JsonIgnore
   public Map<String, Object> getOtherFields() {
     return otherFields;
   }

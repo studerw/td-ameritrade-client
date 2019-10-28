@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class MutualFundQuote extends Quote implements Serializable {
 
   private final static long serialVersionUID = 6499081434369769426L;

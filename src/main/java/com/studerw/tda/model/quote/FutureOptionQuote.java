@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class FutureOptionQuote extends Quote implements Serializable {
 
   private final static long serialVersionUID = -5072373475224958309L;

@@ -1,6 +1,7 @@
 package com.studerw.tda.model.account;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
@@ -16,7 +17,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * Order Activity
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class OrderActivity implements Serializable {
 
   private final static long serialVersionUID = 589737347638334679L;
@@ -54,6 +55,7 @@ public class OrderActivity implements Serializable {
     return executionLegs;
   }
 
+  @JsonIgnore
   public Map<String, Object> getOtherFields() {
     return otherFields;
   }
@@ -68,11 +70,6 @@ public class OrderActivity implements Serializable {
         .append("executionLegs", executionLegs)
         .append("otherFields", otherFields)
         .toString();
-  }
-
-  public enum ActivityType {
-    EXECUTION,
-    ORDER_ACTION
   }
 
   public enum ExecutionType {

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class OptionDeliverable implements Serializable {
 
   private final static long serialVersionUID = -3299806247296774837L;
@@ -36,13 +36,13 @@ public class OptionDeliverable implements Serializable {
   }
 
   public enum AssetType {
+    CASH_EQUIVALENT,
+    CURRENCY,
     EQUITY,
-    OPTION,
+    FIXED_INCOME,
     INDEX,
     MUTUAL_FUND,
-    CASH_EQUIVALENT,
-    FIXED_INCOME,
-    CURRENCY
+    OPTION
   }
 
   public enum CurrencyType {

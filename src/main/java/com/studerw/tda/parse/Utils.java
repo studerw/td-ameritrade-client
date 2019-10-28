@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import java.util.Map;
 public class Utils {
 
   final private static ObjectMapper mapper = new ObjectMapper();
+  final private static DateTimeFormatter TMD = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
   /**
    *
@@ -56,5 +58,22 @@ public class Utils {
     return m == null || m.isEmpty();
   }
 
+  /**
+   *
+   * @param zonedDateTime
+   * @return a string formatted like {@code yyyy-MM-dd'T'HH:mm:ssz}.
+   */
+  public static String toTdaISO8601(ZonedDateTime zonedDateTime) {
+    return zonedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssz"));
+  }
+
+  /**
+   *
+   * @param zonedDateTime
+   * @return a string formatted like {@code yyyy-MM-dd}.
+   */
+  public static String toTdaYMD(ZonedDateTime zonedDateTime) {
+    return zonedDateTime.format(TMD);
+  }
 
 }

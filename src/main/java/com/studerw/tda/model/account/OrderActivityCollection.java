@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.io.Serializable;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class OrderActivityCollection implements Serializable {
   private final static long serialVersionUID = 84543157970094919L;
 
@@ -16,8 +16,4 @@ public class OrderActivityCollection implements Serializable {
     return activityType;
   }
 
-  public enum ActivityType {
-    EXECUTION,
-    ORDER_ACTION
-  }
 }

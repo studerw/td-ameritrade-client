@@ -2,6 +2,7 @@ package com.studerw.tda.model.quote;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -59,6 +60,7 @@ public class Quote implements Serializable {
     return description;
   }
 
+  @JsonIgnore
   public Map<String, Object> getOtherFields() {
     return otherFields;
   }

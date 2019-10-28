@@ -9,9 +9,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * Mutual Fund Instrument
  */
 public class MutualFundInstrument extends Instrument {
-
   @JsonProperty("type")
   private Type type;
+
+  public MutualFundInstrument(){
+    this.setAssetType(AssetType.MUTUAL_FUND);
+  }
 
   public Type getType() {
     return type;

@@ -13,13 +13,13 @@ Uses the new [TDA OAuth2 API](https://developer.tdameritrade.com/).
 
 I'm happy to collaborate contractually or OSS with other devs. 
 
-## 2019 
+## 2019 Update - Old API Deprecated
 
 See the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-xml-api) branch for the previous project based on the soon-to-be-deprecated TDA XML API.
 
 Sometime in-between the beginning of this project (based on TDA's older XML API) and now, TDA released a restful [API](https://developer.tdameritrade.com/). 
 Unfortunately the old API is being [deprecated in 2020](https://apiforums.tdameritrade.com/tda-board/ubbthreads.php) and so the
-original source code for this project has been moved to the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-xml-api) branch.
+original source code for this project has been moved to the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-xml-api) branch and is now known as version 1.0.0.
 
 ## Build
 
@@ -31,7 +31,7 @@ mvn clean install
 
 ## Usage
 Until the project is finished, you will need to have built this locally in order to put the necessary jars in your local Maven repo.
-Once we have a 1.0.0 version, it will be submitted to Maven Central. 
+Once we have a ~~1.0.0~~ 2.0.0 version, it will be submitted to Maven Central. 
 
 Add the following to your Maven build file:
 
@@ -48,7 +48,7 @@ You need to obtain a valid TDA Developer *refresh token* every 90 days. See TDA'
 ```
   Properties props = new Properties();
   props.set("tda.client_id", "...");
-  props.set("tda.token.refresh", "..."
+  props.set("tda.token.refresh", "...")
 
   TdaClient tdaClient = new HttpTdaClient(props);
   final Quote quote = tdaClient.fetchQuote("msft");
@@ -57,8 +57,10 @@ You need to obtain a valid TDA Developer *refresh token* every 90 days. See TDA'
   System.out.println("Current price of MSFT: " + equityQuote.getAskPrice());
 ```
 
-In java, you will get a `Quote` pojo. All of the response objects extend the base `Quote`
-which can then be casted to its actual type.
+In java, you will get a `Quote` pojo which is the superclass of numerous `Quote` types
+such as `EquityQuote`, `MutualFundQuote`, etc. You can cast it to its actual type to
+get more specific properties for its type. 
+
 
 ## DateTime Handling
 Most TDA dates and times are returned as longs (i.e. milliseconds since the epoch UTC).
@@ -80,6 +82,17 @@ To convert a long to human readable ISO 8601 String, use the following:
 long currentTime = System.currentTimeMillis();
 String formattedDate = FormatUtils.epochToStr(currentTime);
 System.out.println(formattedDate) //   2019-09-13T19:59-04:00[America/New_York]
+```
+
+## POJO `otherfields` Property
+The TDA API seems to be in a constant state of change and some of the documentation is sometimes wrong.
+Thus, in order to ensure that all properties are marshalled from the returned JSON into our Java objects,
+a `otherfields` Map is contained in most types. You can get any new or undocumented fields using the code similar
+to the following:
+
+```java
+Quote quote = httpTdaClient.fetchQuote("msft");
+String someField = (String)quote.getOtherFields().get("someField"))
 ```
 
 ## Error Handling

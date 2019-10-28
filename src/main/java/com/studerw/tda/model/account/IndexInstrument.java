@@ -8,4 +8,7 @@ import com.studerw.tda.model.account.Instrument;
  */
 public class IndexInstrument extends Instrument {
 
+  public IndexInstrument(){
+    this.setAssetType(AssetType.INDEX);
+  }
 }

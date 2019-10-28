@@ -3,19 +3,20 @@ package com.studerw.tda.client;
 import com.studerw.tda.http.LoggingInterceptor;
 import com.studerw.tda.http.cookie.CookieJarImpl;
 import com.studerw.tda.http.cookie.store.MemoryCookieStore;
+import com.studerw.tda.model.account.Order;
+import com.studerw.tda.model.account.OrderRequest;
+import com.studerw.tda.model.account.OrderRequestValidator;
 import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.history.PriceHistReq;
 import com.studerw.tda.model.history.PriceHistReqValidator;
 import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.quote.Quote;
+import com.studerw.tda.parse.DefaultMapper;
 import com.studerw.tda.parse.TdaJsonParser;
 import com.studerw.tda.parse.Utils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,8 +27,10 @@ import java.util.Properties;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.HttpUrl.Builder;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -42,18 +45,18 @@ import org.slf4j.LoggerFactory;
  */
 public class HttpTdaClient implements TdaClient {
 
-  static final String DEFAULT_PATH = "https://apis.tdameritrade.com/v1";
   protected static final int LOGGING_BYTES = -1;
   protected static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE;
+  static final String DEFAULT_PATH = "https://apis.tdameritrade.com/v1";
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpTdaClient.class);
-  private HttpUrl httpUrl;
   final TdaJsonParser tdaJsonParser = new TdaJsonParser();
   final OkHttpClient httpClient;
   Properties tdaProps;
+  private HttpUrl httpUrl;
 
   /**
-   * Using this constructor will assume there are properties found at {@code classpath:/tda-api.properties}).
-   * This props file can include:
+   * Using this constructor will assume there are properties found at {@code
+   * classpath:/tda-api.properties}). This props file can include:
    * </p>
    * <ul>
    *   <li>tda.token.refresh</li>
@@ -286,6 +289,98 @@ public class HttpTdaClient implements TdaClient {
 
   }
 
+  @Override
+  public void placeOrder(String accountId, Order order) {
+    LOGGER.info("Placing Order for account[{}] -> {}", accountId, order);
+    if (StringUtils.isBlank(accountId)) {
+      throw new IllegalArgumentException("accountId cannot be blank.");
+    }
+
+    HttpUrl url = baseUrl("accounts", accountId, "orders")
+        .build();
+
+    String json = DefaultMapper.toJson(order);
+    RequestBody body = RequestBody.create(MediaType.parse("application/json"), json);
+    Request request = new Request.Builder().url(url).
+        headers(defaultHeaders())
+        .post(body)
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response);
+      if (response.code() != 201) {
+        LOGGER.warn("Expected 201 response, but received " + response.code());
+      }
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+  }
+
+  @Override
+  public List<Order> fetchOrders(String accountId, OrderRequest orderRequest) {
+    LOGGER.info("FetchOrders for account[{}] with request: {}", accountId, orderRequest);
+
+    if (StringUtils.isBlank(accountId)) {
+      throw new IllegalArgumentException("accountId cannot be blank.");
+    }
+
+    List<String> violations = OrderRequestValidator.validate(orderRequest);
+    if (violations.size() > 0) {
+      throw new IllegalArgumentException(violations.toString());
+    }
+
+    Builder urlBuilder = baseUrl("accounts", accountId, "orders");
+    if (orderRequest.getMaxResults() != null) {
+      urlBuilder.addQueryParameter("maxResults", String.valueOf(orderRequest.getMaxResults()));
+    }
+    if (orderRequest.getToEnteredTime() != null) {
+      urlBuilder
+          .addQueryParameter("toEnteredTime", Utils.toTdaISO8601(orderRequest.getToEnteredTime()));
+    }
+    if (orderRequest.getFromEnteredTime() != null) {
+      urlBuilder.addQueryParameter("fromEnteredTime",
+          Utils.toTdaISO8601(orderRequest.getFromEnteredTime()));
+    }
+    if (orderRequest.getStatus() != null) {
+      urlBuilder.addQueryParameter("status", orderRequest.getStatus().name());
+    }
+
+    Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response);
+      return tdaJsonParser.parseOrders(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public void cancelOrder(String accountId, String orderId) {
+    LOGGER.info("Cancelling order: {} for account[{}].", orderId, accountId);
+    if (StringUtils.isBlank(accountId)) {
+      throw new IllegalArgumentException("accountId cannot be blank.");
+    }
+    if (StringUtils.isBlank(orderId)) {
+      throw new IllegalArgumentException("orderId cannot be blank.");
+    }
+
+    HttpUrl url = baseUrl("accounts", accountId, "orders", orderId).build();
+
+    Request request = new Request.Builder().url(url).
+        headers(defaultHeaders())
+        .delete()
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   /**
    * @param response the tda response
    * @return if it's a 200 response with a valid looking body, the method returns okay. Otherwise an
@@ -299,7 +394,7 @@ public class HttpTdaClient implements TdaClient {
       throw new RuntimeException(msg);
     }
     try {
-      String json = response.peekBody(1000000).string();
+      String json = response.peekBody(100).string();
       if ("{}".equals(json)) {
         String msg = String
             .format("Empty json body:  [%d - %s] - %s", response.code(), response.message(),
@@ -328,11 +423,5 @@ public class HttpTdaClient implements TdaClient {
       builder.addPathSegment(segment);
     }
     return builder;
-  }
-
-  protected String longToTimeStr(Long epoch) {
-    ZonedDateTime zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(epoch),
-        ZoneId.systemDefault());
-    return zdt.toString();
   }
 }

@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class EtfQuote extends Quote implements Serializable {
 
   private final static long serialVersionUID = 4708352699832618193L;
@@ -52,9 +52,9 @@ public class EtfQuote extends Quote implements Serializable {
   @JsonProperty("exchangeName")
   private String exchangeName;
   @JsonProperty("marginable")
-  private Boolean marginable = false;
+  private Boolean marginable;
   @JsonProperty("shortable")
-  private Boolean shortable = false;
+  private Boolean shortable;
   @JsonProperty("volatility")
   private BigDecimal volatility;
   @JsonProperty("digits")

@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.studerw.tda.parse.Utils;
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,6 +55,17 @@ public class MiscTest {
     Long epoch = System.currentTimeMillis();
     String pretty = Utils.epochToStr(epoch);
     LOGGER.debug("epoch: {} -> {}", epoch, pretty);
+  }
+
+  @Test
+  public void testIso8601Format(){
+    ZonedDateTime now = ZonedDateTime.now();
+    final String formatted = Utils.toTdaISO8601(now);
+    LOGGER.debug(formatted);
+
+    final String isoFormatted = now.format(DateTimeFormatter.ISO_INSTANT);
+    LOGGER.debug(isoFormatted);
+
   }
 
   @Test

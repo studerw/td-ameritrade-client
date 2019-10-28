@@ -20,6 +20,10 @@ public class FixedIncomeInstrument extends Instrument {
   @JsonProperty("factor")
   private BigDecimal factor;
 
+  public FixedIncomeInstrument(){
+    this.setAssetType(AssetType.FIXED_INCOME);
+  }
+
   public Date getMaturityDate() {
     return maturityDate;
   }

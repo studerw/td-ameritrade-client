@@ -1,6 +1,7 @@
 package com.studerw.tda.model.account;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -12,7 +13,7 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonTypeInfo(
     use = Id.NAME,
     property = "assetType",
@@ -27,11 +28,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     @JsonSubTypes.Type(value = CashEquivalentInstrument.class, name = "CASH_EQUIVALENT"),
     @JsonSubTypes.Type(value = FixedIncomeInstrument.class, name = "FIXED_INCOME")
 })
-public class Instrument implements Serializable {
+public abstract class Instrument implements Serializable {
 
   private final static long serialVersionUID = -3284598815785216905L;
 
   @JsonProperty("assetType")
+  @JsonIgnore
   private AssetType assetType;
   @JsonProperty("cusip")
   private String cusip;
@@ -42,6 +44,8 @@ public class Instrument implements Serializable {
   @JsonAnySetter
   private Map<String, Object> otherFields = new HashMap<>();
 
+  @JsonIgnore
+  @JsonProperty
   public AssetType getAssetType() {
     return assetType;
   }
@@ -58,8 +62,26 @@ public class Instrument implements Serializable {
     return description;
   }
 
+  @JsonIgnore
   public Map<String, Object> getOtherFields() {
     return otherFields;
+  }
+
+  @JsonProperty
+  public void setAssetType(AssetType assetType) {
+    this.assetType = assetType;
+  }
+
+  public void setCusip(String cusip) {
+    this.cusip = cusip;
+  }
+
+  public void setSymbol(String symbol) {
+    this.symbol = symbol;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   @Override
@@ -74,12 +96,12 @@ public class Instrument implements Serializable {
   }
 
   public enum AssetType {
+    CASH_EQUIVALENT,
+    CURRENCY,
     EQUITY,
-    OPTION,
+    FIXED_INCOME,
     INDEX,
     MUTUAL_FUND,
-    CASH_EQUIVALENT,
-    FIXED_INCOME,
-    CURRENCY
+    OPTION,
   }
 }

@@ -34,7 +34,7 @@ public class LoggingInterceptor implements Interceptor {
     Request request = chain.request();
 
     long t1 = System.nanoTime();
-    LOGGER.info(String.format("REQUEST: %s", request.url()));
+    LOGGER.info(String.format("REQUEST %s: %s", request.method(), request.url()));
 
     if (LOGGER.isDebugEnabled()) {
 

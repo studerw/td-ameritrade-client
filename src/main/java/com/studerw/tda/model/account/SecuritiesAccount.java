@@ -1,6 +1,7 @@
 package com.studerw.tda.model.account;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -32,7 +33,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *   ...
  * </pre>
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonRootName("securitiesAccount")
 @JsonTypeInfo(
     use = Id.NAME,
@@ -54,9 +55,9 @@ public class SecuritiesAccount implements Serializable {
   @JsonProperty("roundTrips")
   private Long roundTrips;
   @JsonProperty("isDayTrader")
-  private Boolean isDayTrader = false;
+  private Boolean isDayTrader;
   @JsonProperty("isClosingOnlyRestricted")
-  private Boolean isClosingOnlyRestricted = false;
+  private Boolean isClosingOnlyRestricted;
   @JsonProperty("positions")
   private List<Position> positions = new ArrayList<Position>();
   @JsonProperty("orderStrategies")
@@ -96,6 +97,7 @@ public class SecuritiesAccount implements Serializable {
     return isClosingOnlyRestricted;
   }
 
+  @JsonIgnore
   public Map<String, Object> getOtherFields() {
     return otherFields;
   }

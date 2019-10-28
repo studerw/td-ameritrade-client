@@ -11,6 +11,12 @@ import com.studerw.tda.model.account.MarginAccount;
 import com.studerw.tda.model.account.MarginCurrentBalances;
 import com.studerw.tda.model.account.MarginInitialBalances;
 import com.studerw.tda.model.account.MarginProjectedBalances;
+import com.studerw.tda.model.account.Order;
+import com.studerw.tda.model.account.OrderLegCollection;
+import com.studerw.tda.model.account.OrderLegCollection.Instruction;
+import com.studerw.tda.model.account.OrderLegCollection.OrderLegType;
+import com.studerw.tda.model.account.OrderStrategy;
+import com.studerw.tda.model.account.OrderStrategyType;
 import com.studerw.tda.model.account.Position;
 import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.account.SecuritiesAccount.Type;
@@ -223,6 +229,32 @@ public class TdaJsonParserTest {
 
       LOGGER.debug("{}", account);
 
+    }
+  }
+
+  @Test
+  public void testParseOrders() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/orders-resp.json")) {
+      final List<Order> orders = tdaJsonParser.parseOrders(in);
+      assertThat(orders).size().isEqualTo(1);
+      Order order = orders.get(0);
+      assertThat(order.getOrderStrategyType()).isEqualTo(OrderStrategyType.SINGLE);
+      assertThat(order.getOrderId()).isEqualTo(999999999L);
+      assertThat(order.getEditable()).isFalse();
+      assertThat(order.getQuantity()).isEqualTo("15.0");
+
+
+      OrderLegCollection olc = order.getOrderLegCollection().get(0);
+      assertThat(olc.getOrderLegType()).isEqualTo(OrderLegType.EQUITY);
+      assertThat(olc.getInstruction()).isEqualTo(Instruction.BUY);
+      assertThat(olc.getQuantity()).isEqualTo("15.0");
+
+      assertThat(olc.getInstrument().getAssetType()).isEqualTo(Instrument.AssetType.EQUITY);
+      assertThat(olc.getInstrument().getSymbol()).isEqualToIgnoringCase("msft");
+
+
+      LOGGER.debug(orders.toString());
     }
   }
 

@@ -1,9 +1,13 @@
 package com.studerw.tda.model.account;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.studerw.tda.model.account.Instrument;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -23,6 +27,12 @@ public class OptionInstrument extends Instrument {
   private Long optionMultiplier;
   @JsonProperty("optionDeliverables")
   private List<OptionDeliverable> optionDeliverables = new ArrayList<OptionDeliverable>();
+  @JsonAnySetter
+  private Map<String, Object> otherFields = new HashMap<>();
+
+  public OptionInstrument(){
+    this.setAssetType(AssetType.OPTION);
+  }
 
   public Type getType() {
     return type;
@@ -44,6 +54,11 @@ public class OptionInstrument extends Instrument {
     return optionDeliverables;
   }
 
+  @JsonIgnore
+  public Map<String, Object> getOtherFields() {
+    return otherFields;
+  }
+
   @Override
   public String toString() {
     return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
@@ -53,6 +68,7 @@ public class OptionInstrument extends Instrument {
         .append("underlyingSymbol", underlyingSymbol)
         .append("optionMultiplier", optionMultiplier)
         .append("optionDeliverables", optionDeliverables)
+        .append("otherFields", otherFields)
         .toString();
   }
 

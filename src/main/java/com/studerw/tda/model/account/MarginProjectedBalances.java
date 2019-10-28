@@ -1,6 +1,7 @@
 package com.studerw.tda.model.account;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
@@ -14,7 +15,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * Projected Balances of a Margin Account
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class MarginProjectedBalances implements Serializable {
 
   private final static long serialVersionUID = -8049645023475195214L;
@@ -46,7 +47,7 @@ public class MarginProjectedBalances implements Serializable {
   @JsonProperty("equityPercentage")
   private BigDecimal equityPercentage;
   @JsonProperty("isInCall")
-  private Boolean isInCall = false;
+  private Boolean isInCall;
   @JsonProperty("liquidationValue")
   private BigDecimal liquidationValue;
   @JsonProperty("longOptionMarketValue")
@@ -83,7 +84,6 @@ public class MarginProjectedBalances implements Serializable {
   private BigDecimal sma;
   @JsonProperty("stockBuyingPower")
   private BigDecimal stockBuyingPower;
-
   @JsonAnySetter
   private Map<String, Object> otherFields = new HashMap<>();
 
@@ -215,6 +215,7 @@ public class MarginProjectedBalances implements Serializable {
     return stockBuyingPower;
   }
 
+  @JsonIgnore
   public Map<String, Object> getOtherFields() {
     return otherFields;
   }

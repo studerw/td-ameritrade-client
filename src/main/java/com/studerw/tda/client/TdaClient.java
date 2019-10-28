@@ -1,5 +1,7 @@
 package com.studerw.tda.client;
 
+import com.studerw.tda.model.account.Order;
+import com.studerw.tda.model.account.OrderRequest;
 import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.history.PriceHistReq;
 import com.studerw.tda.model.history.PriceHistory;
@@ -119,7 +121,7 @@ public interface TdaClient {
    * also be included based on the parameters.
    * @param positions whether to include positions
    * @param orders whether to include orders
-   * @return {@link SecuritiesAccount} with the passed id.
+   * @return List of all the user's {@link SecuritiesAccount}.
    */
   List<SecuritiesAccount> getAccounts(boolean positions, boolean orders);
 
@@ -220,19 +222,27 @@ public interface TdaClient {
 //  MarketSnapshot fetchMarketOverview();
 
   /**
-   * Trade an equity
-   * @param equityOrder, note that this requires a {@link com.studerw.tda.model.trade.EquityOrder.EquityOrderBldr} to create.
-   * @return an {@link EquityTrade}
+   * Place a Trade
+   * @param accountId the account under which the order is to be placed
+   * @param order
    *
+   * @see <href="https://developer.tdameritrade.com/content/place-order-samples">Place Order Samples</a>
    */
-//  EquityTrade tradeEquity(EquityOrder equityOrder);
+  void placeOrder(String accountId, Order order);
 
   /**
-   * Trade an option. You must be explicitly approved by TDA for option trading.
-   * @param optionOrder, note that this requires a {@link com.studerw.tda.model.trade.OptionOrder.OptionOrderBldr} to create.
-   * @return an {@link OptionTrade}
-   *
+   * Fetch all orders for a given account using the criteria of the orderRequest.
+   * @param accountId the orders from only this account
+   * @param orderRequest
+   * @return list of orders specified by the {@link OrderRequest} param.
    */
-//  OptionTrade tradeOption(OptionOrder optionOrder);
+  List<Order> fetchOrders(String accountId, OrderRequest orderRequest);
+
+  /**
+   * Cancel an order by accountId and orderId.
+   * @param accountId the orders from only this account
+   * @param orderId the order to cancel
+   */
+  void cancelOrder(String accountId, String orderId);
 
 }

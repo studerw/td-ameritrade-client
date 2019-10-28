@@ -3,6 +3,7 @@ package com.studerw.tda.parse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.studerw.tda.model.account.Order;
 import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.quote.Quote;
@@ -102,6 +103,31 @@ public class TdaJsonParser {
 
       LOGGER.debug("returned a a list of {} securitiesAccounts: {}", accounts.size(), accounts);
       return accounts;
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+  }
+
+  public Order parseOrder(InputStream in) {
+    LOGGER.trace("parsing order...");
+    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
+      final Order order = DefaultMapper.fromJson(bIn, Order.class);
+      LOGGER.debug("Returned order of id: {}", order.getOrderId());
+      return order;
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+  }
+
+  public List<Order> parseOrders(InputStream in) {
+    LOGGER.trace("parsing orders...");
+    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
+      TypeReference<List<Order>> typeReference = new TypeReference<List<Order>>() {};
+      final List<Order> orders= DefaultMapper.fromJson(bIn, typeReference);
+      LOGGER.debug("Returned list of orders of size: {}", orders.size());
+      return orders;
     } catch (IOException e) {
       e.printStackTrace();
       throw new RuntimeException(e);

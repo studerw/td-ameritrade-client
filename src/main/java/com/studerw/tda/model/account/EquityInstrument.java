@@ -8,4 +8,8 @@ import com.studerw.tda.model.account.Instrument;
  */
 public class EquityInstrument extends Instrument {
 
+  public EquityInstrument(){
+    this.setAssetType(AssetType.EQUITY);
+  }
+
 }
