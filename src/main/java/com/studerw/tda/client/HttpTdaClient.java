@@ -179,24 +179,25 @@ public class HttpTdaClient implements TdaClient {
     if (priceHistReq.getEndDate() != null) {
       urlBuilder.addQueryParameter("endDate", String.valueOf(priceHistReq.getEndDate()));
     }
-    if (priceHistReq.getPeriod() != null) {
-      urlBuilder.addQueryParameter("period", String.valueOf(priceHistReq.getPeriod()));
-    }
     if (priceHistReq.getFrequency() != null) {
       urlBuilder.addQueryParameter("frequency", String.valueOf(priceHistReq.getFrequency()));
     }
     if (priceHistReq.getFrequencyType() != null) {
       urlBuilder.addQueryParameter("frequencyType", priceHistReq.getFrequencyType().name());
     }
+    if (priceHistReq.getPeriod() != null) {
+      urlBuilder.addQueryParameter("period", String.valueOf(priceHistReq.getPeriod()));
+    }
     if (priceHistReq.getPeriodType() != null) {
-      urlBuilder.addQueryParameter("periodType", priceHistReq.getFrequencyType().name());
+      urlBuilder.addQueryParameter("periodType", priceHistReq.getPeriodType().name());
     }
     if (priceHistReq.getExtendedHours() != null) {
       urlBuilder.addQueryParameter("needExtendedHoursData",
           String.valueOf(priceHistReq.getExtendedHours()));
     }
 
-    Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
+    Request request = new Request.Builder().url(urlBuilder.build()).
+        headers(defaultHeaders())
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {

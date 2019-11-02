@@ -7,7 +7,7 @@
 
   <groupId>com.studerw.tda</groupId>
   <artifactId>td-ameritrade-client</artifactId>
-  <version>2.0-SNAPSHOT</version>
+  <version>2.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>td-ameritrade-client</name>
@@ -26,6 +26,7 @@
   </issueManagement>
 
   <inceptionYear>2017</inceptionYear>
+
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -33,6 +34,7 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
   <scm>
     <connection>git@github.com:studerw/td-ameritrade-client.git</connection>
     <developerConnection>git@github.com:studerw/td-ameritrade-client.git</developerConnection>
@@ -155,25 +157,10 @@
           <skipTests>${skipUTs}</skipTests>
         </configuration>
       </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>2.20.1</version>
-        <!-- <executions> -->
-        <!--   <execution> -->
-        <!--     <id>run-integration-tests</id> -->
-        <!--     <phase>integration-test</phase> -->
-        <!--     <goals> -->
-        <!--       <goal>integration-test</goal> -->
-        <!--       <goal>verify</goal> -->
-        <!--     </goals> -->
-        <!--   </execution> -->
-        <!-- </executions> -->
-        <!-- <configuration> -->
-        <!--   <skipTests>${skipTests}</skipTests> -->
-        <!--   <skipITs>${skipITs}</skipITs> -->
-        <!-- </configuration> -->
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -204,7 +191,18 @@
           </execution>
         </executions>
       </plugin>
-
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.7</version>
+        <extensions>true</extensions>
+        <configuration>
+          <!-- The Base URL of Nexus instance where we want to stage -->
+          <nexusUrl>https://oss.sonatype.org/nexus</nexusUrl>
+          <!-- The server "id" element from settings to use authentication from -->
+          <serverId>local-nexus</serverId>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <profiles>
@@ -230,6 +228,7 @@
       </build>
     </profile>
   </profiles>
+
 
   <distributionManagement>
     <snapshotRepository>
