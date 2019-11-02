@@ -241,7 +241,7 @@ public interface TdaClient {
    * </p>
    *
    * <pre class="code">
-   *   Order order = client.fetchOrder("123456789", new OrderRequest());
+   *   Order order = client.fetchOrders("123456789", new OrderRequest());
    * </pre>
    *
    * @param accountId the orders from only this account
