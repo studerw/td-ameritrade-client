@@ -153,4 +153,13 @@ public class getInstrumentTestIT extends BaseTestIT {
     LOGGER.debug("Size: {}", instruments.size());
     LOGGER.debug("{}", instruments);
   }
+
+  @Test
+  public void testQueryDescription3(){
+    Query query = new Query("bank", QueryType.DESCRIPTION_SEARCH);
+    final List<Instrument> instruments = httpTdaClient.queryInstruments(query);
+    assertThat(instruments).size().isGreaterThan(0);
+    LOGGER.debug("Size: {}", instruments.size());
+    LOGGER.debug("{}", instruments);
+  }
 }

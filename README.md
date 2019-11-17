@@ -5,21 +5,18 @@
 [![APL v2](https://img.shields.io/badge/license-Apache%202-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 ----
-[API Documentation](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/).
+Java rest client for [OAuth2 TD Ameritrade Api](https://developer.tdameritrade.com/). 
+Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
 
-Java rest client for TD Ameritrade Api. Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
-
-Uses the new [TDA OAuth2 API](https://developer.tdameritrade.com/).
+* [Javadoc API](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/)
+* Get started with the [How-To](https://github.com/studerw/td-ameritrade-client/wiki/how-to) on the Wiki.
 
 I'm happy to collaborate contractually or OSS with other devs. 
 
-## 2019 Update - Old API Deprecated
+## Required TDA Properties
 
-See the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-xml-api) branch for the previous project based on the soon-to-be-deprecated TDA XML API.
-
-Sometime in-between the beginning of this project (based on TDA's older XML API) and now, TDA released a restful [API](https://developer.tdameritrade.com/). 
-Unfortunately the old API is being [deprecated in 2020](https://apiforums.tdameritrade.com/tda-board/ubbthreads.php) and so the
-original source code for this project has been moved to the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-xml-api) branch and is now known as version 1.0.0.
+The client only requires a TDA Client ID and current OAuth Refresh Token. The refresh token expires every 90 days.
+See the [Getting Started](https://developer.tdameritrade.com/content/getting-started) and [Simple Auth for Local Apps](https://developer.tdameritrade.com/content/simple-auth-local-apps) for help.
 
 ## Build
 
@@ -39,7 +36,7 @@ Add the following to your Maven build file:
   <dependency>
     <groupId>com.studerw.tda</groupId>
     <artifactId>td-ameritrade-client</artifactId>
-    <version>2.0-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
   </dependency>
 ```
 ----
@@ -57,10 +54,28 @@ You need to obtain a valid TDA Developer *refresh token* every 90 days. See TDA'
   System.out.println("Current price of MSFT: " + equityQuote.getAskPrice());
 ```
 
-In java, you will get a `Quote` pojo which is the superclass of numerous `Quote` types
-such as `EquityQuote`, `MutualFundQuote`, etc. You can cast it to its actual type to
-get more specific properties for its type. 
+## Integration Tests
+Integration tests do require a Client App ID user and refresh token, though are not needed to build the jar.
 
+To run integration tests, you will need to rename this file *src/test/resources/my-test.properties.changeme* to *my-test.properties* and fill in the 
+necessary TDA properties.
+
+Then run the following command.
+
+```
+mvn failsafe:integration-test
+```
+
+## POJO `otherfields` Property
+The TDA API seems to be in a constant state of change and some of the documentation is sometimes wrong.
+Thus, in order to ensure that all properties are deserialized from the returned JSON into our Java objects,
+an `otherfields` Map is contained in most types. You can get any new or undocumented fields using the code similar
+to the following:
+
+```java
+Quote quote = httpTdaClient.fetchQuote("msft");
+String someField = (String)quote.getOtherFields().get("someField"))
+```
 
 ## DateTime Handling
 Most TDA dates and times are returned as longs (i.e. milliseconds since the epoch UTC).
@@ -84,17 +99,6 @@ String formattedDate = FormatUtils.epochToStr(currentTime);
 System.out.println(formattedDate) //   2019-09-13T19:59-04:00[America/New_York]
 ```
 
-## POJO `otherfields` Property
-The TDA API seems to be in a constant state of change and some of the documentation is sometimes wrong.
-Thus, in order to ensure that all properties are marshalled from the returned JSON into our Java objects,
-a `otherfields` Map is contained in most types. You can get any new or undocumented fields using the code similar
-to the following:
-
-```java
-Quote quote = httpTdaClient.fetchQuote("msft");
-String someField = (String)quote.getOtherFields().get("someField"))
-```
-
 ## Error Handling
 
 Before the call is even made, validator or other exceptions can be thrown. Usually you won't have to catch these in your program, they'll be helpful
@@ -116,20 +120,58 @@ The rules are this within the Client:
 The only exception to this rule is if we cannot login - either due to bad credentials, locked account, or otherwise.
 When this occurs, an `IllegalStateException` is thrown. This is explicitly signalled by a 401 response code.  
 
+## Logging
+The API uses [SLF4J](http://www.slf4j.org/) as does [OKHttp 3](https://github.com/square/okhttp).
+You can use any implementation like Logback or Log4j.
 
-## Integration Tests
-Integration tests do require a Client App ID user and refresh token, though are not needed to build the jar.
+Specific Loggers that you can tune:
 
-To run integration tests, you will need to rename this file *src/test/resources/my-test.properties.changeme* to *my-test.properties* and fill in the 
-necessary TDA properties.
+* `TDA_HTTP` - set this to _INFO_ for basic request / response info, or _DEBUG_ to see full headers and body.
+* `com.studerw.tda.client.OauthInterceptor` - detailed info on OAUTH can be seen using either _INFO_ or _DEBUG_
+* `com.studerw.tda` - basic API logging with either _INFO_ or _DEBUG_
+* `com.squareup.okhttp3` - low-level OKHTTP library.
 
-Then run the following command.
+### Logback
+Add `Logback` to your pom:
+```xml
+<dependency>
+  <groupId>ch.qos.logback</groupId>
+  <artifactId>logback-classic</artifactId>
+  <version>1.2.3</version>
+</dependency>
 
 ```
-mvn failsafe:integration-test
+Add a `logback-config.xml` to you classpath (e.g. _src/main/resources/_)
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="false" scanPeriod="3 seconds" debug="false">
+  <contextName>main</contextName>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>
+        %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n
+      </pattern>
+    </encoder>
+  </appender>
+
+  <logger name="TDA_HTTP" level="INFO"/>
+  <logger name="com.studerw.tda" level="INFO"/>
+  <logger name="com.studerw.tda.client.OauthInterceptor" level="INFO"/>
+  <logger name="com.squareup.okhttp3" level="INFO"/>
+
+  <root level="WARN">
+    <appender-ref ref="STDOUT"/>
+  </root>
+
+</configuration>
+
 ```
 
-## Login Parameters
-The client only requires a Client ID and Refresh Token. The refresh token expires every 90 days.
-See the [Simple Auth for Local Apps](https://developer.tdameritrade.com/content/simple-auth-local-apps) for help.
+## 2019 Update - Old API Deprecated
 
+See the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-xml-api) branch for the previous project based on the soon-to-be-deprecated TDA XML API.
+
+Sometime in-between the beginning of this project (based on TDA's older XML API) and now, TDA released a restful [API](https://developer.tdameritrade.com/). 
+Unfortunately the old API is being [deprecated in 2020](https://apiforums.tdameritrade.com/tda-board/ubbthreads.php) and so the
+original source code for this project has been moved to the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-xml-api) branch and is now known as version 1.0.0.
