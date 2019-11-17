@@ -22,4 +22,9 @@ debug.log
 test-debug.log
 **/my-test.properties
 *chm
-tda_json/
+tda_json/java_out
+tda_json/json_source
+tda_json/help.txt
+
+
+
