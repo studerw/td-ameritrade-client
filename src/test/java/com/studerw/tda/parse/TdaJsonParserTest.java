@@ -22,6 +22,8 @@ import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.account.SecuritiesAccount.Type;
 import com.studerw.tda.model.history.Candle;
 import com.studerw.tda.model.history.PriceHistory;
+import com.studerw.tda.model.instrument.FullInstrument;
+import com.studerw.tda.model.instrument.Fundamental;
 import com.studerw.tda.model.quote.EquityQuote;
 import com.studerw.tda.model.quote.EtfQuote;
 import com.studerw.tda.model.quote.ForexQuote;
@@ -257,6 +259,58 @@ public class TdaJsonParserTest {
       LOGGER.debug(orders.toString());
     }
   }
+
+  @Test
+  public void testParseCusipResp() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/cusip-resp.json")) {
+      final com.studerw.tda.model.instrument.Instrument instrument = tdaJsonParser
+          .parseInstrumentArraySingle(in);
+      assertThat(instrument.getAssetType()).isEqualTo(com.studerw.tda.model.instrument.Instrument.AssetType.BOND);
+      assertThat(instrument.getBondPrice()).isEqualTo("99.86");
+      assertThat(instrument.getSymbol()).isEqualTo("7954505R2");
+      assertThat(instrument.getCusip()).isEqualTo("7954505R2");
+      assertThat(instrument.getExchange()).isEqualTo("OTC");
+      LOGGER.debug(instrument.toString());
+    }
+  }
+
+  @Test
+  public void testParseInstrumentMap() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/multi-instrument-resp.json")) {
+      final List<com.studerw.tda.model.instrument.Instrument> instruments = tdaJsonParser
+          .parseInstrumentMap(in);
+      assertThat(instruments).hasSize(54);
+      instruments.stream().forEach(instrument -> {
+        assertThat(instrument.getAssetType()).isNotNull();
+        assertThat(instrument.getBondPrice()).isNull();
+        assertThat(instrument.getSymbol()).isNotNull();
+        assertThat(instrument.getCusip()).isNotNull();
+        assertThat(instrument.getExchange()).isNotNull();
+        assertThat(instrument.getDescription()).isNotNull();
+        LOGGER.debug("{}", instrument);
+      });
+    }
+  }
+
+  @Test
+  public void testParseInstrumentFundamental() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/instrument-fundamental-resp.json")) {
+      final FullInstrument instrument = tdaJsonParser.parseFullInstrumentMap(in).get(0);
+      assertThat(instrument.getAssetType()).isEqualTo(com.studerw.tda.model.instrument.Instrument.AssetType.EQUITY);
+      assertThat(instrument.getSymbol()).isEqualTo("MSFT");
+      assertThat(instrument.getCusip()).isEqualTo("594918104");
+      assertThat(instrument.getExchange()).isEqualTo("NASDAQ");
+      Fundamental fundamental = instrument.getFundamental();
+      assertThat(fundamental).isNotNull();
+      assertThat(fundamental.getMarketCapFloat()).isEqualTo("7521.585");
+      assertThat(fundamental.getDividendDate()).isEqualTo("2019-11-20 00:00:00.000");
+      LOGGER.debug(instrument.toString());
+    }
+  }
+
 
 }
 

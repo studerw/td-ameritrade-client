@@ -10,6 +10,9 @@ import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.history.PriceHistReq;
 import com.studerw.tda.model.history.PriceHistReqValidator;
 import com.studerw.tda.model.history.PriceHistory;
+import com.studerw.tda.model.instrument.FullInstrument;
+import com.studerw.tda.model.instrument.Instrument;
+import com.studerw.tda.model.instrument.Query;
 import com.studerw.tda.model.quote.Quote;
 import com.studerw.tda.parse.DefaultMapper;
 import com.studerw.tda.parse.TdaJsonParser;
@@ -171,8 +174,7 @@ public class HttpTdaClient implements TdaClient {
       throw new IllegalArgumentException(violations.toString());
     }
 
-    Builder urlBuilder = baseUrl("marketdata", priceHistReq.getSymbol(), "pricehistory")
-        .addQueryParameter("apikey", this.tdaProps.getProperty("tda.client_id"));
+    Builder urlBuilder = baseUrl("marketdata", priceHistReq.getSymbol(), "pricehistory");
     if (priceHistReq.getStartDate() != null) {
       urlBuilder.addQueryParameter("startDate", String.valueOf(priceHistReq.getStartDate()));
     }
@@ -213,7 +215,6 @@ public class HttpTdaClient implements TdaClient {
     LOGGER.info("Fetching quotes: {}", symbols);
     HttpUrl url = baseUrl("marketdata", "quotes")
         .addQueryParameter("symbol", String.join(",", symbols))
-        .addQueryParameter("apikey", this.tdaProps.getProperty("tda.client_id"))
         .build();
 
     Request request = new Request.Builder().url(url).headers(defaultHeaders())
@@ -456,6 +457,80 @@ public class HttpTdaClient implements TdaClient {
 
     try (Response response = this.httpClient.newCall(request).execute()) {
       checkResponse(response);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+
+  @Override
+  public Instrument getBond(String cusip) {
+    return this.getInstrumentByCUSIP(cusip);
+  }
+
+  @Override
+  public List<Instrument> queryInstruments(Query query) {
+    LOGGER.info("Querying for Instruments with query: {}", query);
+    HttpUrl url = baseUrl("instruments")
+        .addQueryParameter("symbol", query.getSearchStr())
+        .addQueryParameter("projection", query.getQueryType().getQueryType())
+        .build();
+
+    Request request = new Request.Builder().url(url).headers(defaultHeaders()).build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response);
+      return tdaJsonParser.parseInstrumentMap(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public FullInstrument getFundamentalData(String id) {
+    LOGGER.info("Fetching Fundamental Instrument data with id: {}", id);
+    if (StringUtils.isBlank(id)) {
+      throw new IllegalArgumentException("Id cannot be blank.");
+    }
+    HttpUrl url = baseUrl("instruments")
+        .addQueryParameter("symbol", id)
+        .addQueryParameter("projection", "fundamental")
+        .build();
+
+    Request request = new Request.Builder().url(url).headers(defaultHeaders()).build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response);
+      final List<FullInstrument> fullInstruments = tdaJsonParser
+          .parseFullInstrumentMap(response.body().byteStream());
+      if (fullInstruments.size() != 1) {
+        throw new RuntimeException(
+            "Expecting a single instrument but received: " + fullInstruments.size());
+      }
+      return fullInstruments.get(0);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public Instrument getInstrumentByCUSIP(String id) {
+    LOGGER.info("Fetching Instrument with id: {}", id);
+    if (StringUtils.isBlank(id)) {
+      throw new IllegalArgumentException("Id cannot be blank.");
+    }
+    HttpUrl url = baseUrl("instruments", id)
+        .addQueryParameter("fundamental", "true")
+        .build();
+
+    Request request = new Request.Builder().url(url).
+
+        headers(defaultHeaders())
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response);
+      return tdaJsonParser.parseInstrumentArraySingle(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

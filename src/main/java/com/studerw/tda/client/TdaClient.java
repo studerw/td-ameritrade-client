@@ -5,6 +5,9 @@ import com.studerw.tda.model.account.OrderRequest;
 import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.history.PriceHistReq;
 import com.studerw.tda.model.history.PriceHistory;
+import com.studerw.tda.model.instrument.FullInstrument;
+import com.studerw.tda.model.instrument.Instrument;
+import com.studerw.tda.model.instrument.Query;
 import com.studerw.tda.model.quote.Quote;
 import java.util.List;
 
@@ -54,8 +57,8 @@ public interface TdaClient {
 
   /**
    * <p>
-   * Fetch Detailed quote information for one or more symbols. Currently the API allows symbol types
-   * of Stocks, Options, Mutual Funds and Indexes, and ETFs. Quotes are real-time for accounts
+   * Fetch detailed quote information for one or more symbols. Currently the API allows symbol types
+   * of Stocks, Options, Mutual Funds Indexes, and ETFs. Quotes are real-time for accounts
    * subscribed to this service; otherwise, quotes are delayed according to exchange and TDA rules.
    * The following types of <em>Quote</em> are actually returned and can be casted:
    * </p>
@@ -145,15 +148,6 @@ public interface TdaClient {
 //  OptionChain fetchOptionChain(String symbol);
 
   /**
-   * Provides the ability to lookup symbols for stocks and ETFs.
-   *f
-   * @param matchStr The string being searched for. Partial name of the company for example <em>Bank
-   * of Amer</em> would return <em>Bank of America</em>. Used, perhaps, for auto select fields.
-   * @return a LookupResponse
-   */
-//  SymbolLookup symbolLookup(String matchStr);
-
-  /**
    *  A snapshot of the five main indices.
    * @return {@link MarketSnapshot} MarketSnapshot
    */
@@ -193,8 +187,8 @@ public interface TdaClient {
 
   /**
    * <p>
-   * Fetch all orders for all accounts using the criteria of the orderRequest.
-   * You can just use a blank order to use sane defaults.
+   * Fetch all orders for all accounts using the criteria of the orderRequest. You can use a blank
+   * order to use sane defaults.
    * </p>
    *
    * <pre class="code">
@@ -214,7 +208,7 @@ public interface TdaClient {
   List<Order> fetchOrders();
 
   /**
-   * This call assumes the order under the given parameters definitely exists. If not, an {@link
+   * This call assumes the order under the given parameters definitely exists. If not, a {@link
    * RuntimeException} is thrown as, behind the scenes, the TDA API will return a 404 response.
    *
    * @param accountId account under which the order was originally placed
@@ -230,4 +224,70 @@ public interface TdaClient {
    * @param orderId the order to cancel
    */
   void cancelOrder(String accountId, String orderId);
+
+  /**
+   * Get basic data for an instrument via its CUSIP number. Data includes attributes such as
+   * description, possible symbol, exchange, etc.
+   *
+   * <p>
+   * Apparently the following instrument types are able to be looked up: {@link
+   * com.studerw.tda.model.instrument.Instrument.AssetType}.
+   * </p>
+   *
+   * @param cusip (committee on uniform securities identification procedures numbers).
+   * @return Basic data using a security's CUSIP. The {@link Instrument#getBondPrice()} will return
+   * null unless the {@code cusip} parameter references a bond.
+   * @see <a href="https://www.sec.gov/answers/cusip.htm">CUSIP Number</a>
+   */
+  Instrument getInstrumentByCUSIP(String cusip);
+
+  /**
+   * Get basic info for a bond via its CUSIP number.
+   *
+   * @param cusip (committee on uniform securities identification procedures numbers).
+   * @return Basic data of the bond including the price.
+   * @see <a href="https://www.sec.gov/answers/cusip.htm">CUSIP Number</a>
+   */
+  Instrument getBond(String cusip);
+
+  /**
+   * <p>
+   * Query TDA for {@link com.studerw.tda.model.instrument.Instrument Instruments} using symbol,
+   * name, description, cusip, etc. Apparently the following instrument types are queryable: {@link
+   * com.studerw.tda.model.instrument.Instrument.AssetType}.
+   * </p>
+   *
+   * <p>
+   * The following {@link com.studerw.tda.model.instrument.Query.QueryType QueryTypes} can be made:
+   * </p>
+   *
+   * <ul>
+   *   <li><em><strong>SYMBOL_SEARCH</strong></em>: retrieve an instrument using the exact symbol name or CUSIP</li>
+   *   <li><em><strong>SYMBOL_REGEX</strong></em>: Retrieve instrument data for all symbols matching regex. For example <em>XYZ.*</em> will return all symbols beginning with <em>XYZ</em></li>
+   *   <li><em><strong>DESCRIPTION_SEARCH</strong></em>: Retrieve instrument data for instruments whose description contains the word supplied. Example: <em>Bank</em> will return all instruments with <em>Bank</em> in the description.</li>
+   *   <li><em><strong>DESCRIPTION_REGEX</strong></em>: Search description with full regex support.
+   *   For example <em>XYZ.[A-C]</em> returns all instruments whose descriptions contain a word beginning with <em>XYZ</em> followed by a character <em>A</em> through <em>C</em>.</li>
+   * </ul>
+   *
+   * @param query contains the type of query and the search string.
+   * @return List of 0 or more instruments that matched the query. If you want the full data of an
+   * instrument, you must use {@link #getFundamentalData} using the exact <em>CUSIP</em> or symbol.
+   * Note that {@link com.studerw.tda.model.instrument.Instrument#getBondPrice} will return null for
+   * any instruments not of type BOND.
+   * @see com.studerw.tda.model.instrument.Query.QueryType
+   * @see #getFundamentalData
+   */
+  List<Instrument> queryInstruments(Query query);
+
+  /**
+   * Get full fundamental data for a specific security via its CUSIP number or ticker symbol (e.g.
+   * <em>MSFT</em>). Not all CUSIP numbers work, for example those referencing BONDs, at least as
+   * of Nov. 2019.
+   *
+   * @param id CUSIP number or symbol (e.g. <em>MSFT</em>)
+   * @return full fundamentals of an instrument using a CUSIP or symbol. The {@link
+   * Instrument#getBondPrice()} will be empty unless it is a bond referenced by {@code cusip}.
+   * @see <a href="https://www.sec.gov/answers/cusip.htm">CUSIP Number</a>
+   */
+  FullInstrument getFundamentalData(String id);
 }

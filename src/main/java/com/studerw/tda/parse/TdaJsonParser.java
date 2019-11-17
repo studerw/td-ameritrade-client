@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.studerw.tda.model.account.Order;
 import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.history.PriceHistory;
+import com.studerw.tda.model.instrument.FullInstrument;
+import com.studerw.tda.model.instrument.Instrument;
 import com.studerw.tda.model.quote.Quote;
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -133,6 +135,65 @@ public class TdaJsonParser {
       throw new RuntimeException(e);
     }
   }
+
+  /**
+   *
+   * @param in of json that is either an array of instruments or a map keyed by symbol
+   * @return a single parsed Instrument from the list
+   */
+  public Instrument parseInstrumentArraySingle(InputStream in) {
+    LOGGER.trace("parsing instrument array...");
+    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
+      TypeReference<List<Instrument>> typeReference = new TypeReference<List<Instrument>>() {};
+      List<Instrument> instruments = DefaultMapper.fromJson(bIn, typeReference);
+      if (instruments.size() != 1) {
+        throw new RuntimeException("Excepting a json array of Instruments from TDA");
+      }
+      Instrument instrument = instruments.get(0);
+      LOGGER.debug("Returned instrument: {}", instrument);
+      return instrument;
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+  }
+
+  /**
+   *
+   * @param in of json that is either an array of instruments or a map keyed by symbol
+   * @return list of instruments
+   */
+  public List<Instrument> parseInstrumentMap(InputStream in) {
+    LOGGER.trace("parsing instrument map...");
+    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
+      TypeReference<Map<String, Instrument>> typeReference = new TypeReference<Map<String, Instrument>>() {};
+      Map<String, Instrument> instruments = DefaultMapper.fromJson(bIn, typeReference);
+      LOGGER.debug("Returned instruments map of size: {}", instruments.size());
+      return new ArrayList(instruments.values());
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+  }
+
+  /**
+   *
+   * @param in of json that is either an array of instruments or a map keyed by symbol
+   * @return list of full instruments
+   */
+  public List<FullInstrument> parseFullInstrumentMap(InputStream in) {
+    LOGGER.trace("parsing full instrument map...");
+    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
+      TypeReference<Map<String, FullInstrument>> typeReference = new TypeReference<Map<String, FullInstrument>>() {};
+      Map<String, FullInstrument> instruments = DefaultMapper.fromJson(bIn, typeReference);
+      LOGGER.debug("Returned full instruments map of size: {}", instruments.size());
+      return new ArrayList(instruments.values());
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+  }
+
 
 //  public <T> T parseTdaJson(InputStream in, Class<T> type){
 //    try (BufferedInputStream bIn = new BufferedInputStream(in)) {

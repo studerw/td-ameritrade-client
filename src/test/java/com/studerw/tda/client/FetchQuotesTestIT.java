@@ -99,16 +99,4 @@ public class FetchQuotesTestIT extends BaseTestIT {
     LOGGER.debug(etfQuote.toString());
   }
 
-//
-//  //Not sure what a valid bond ticker symbol is.
-//  @Ignore
-//  @Test
-//  public void testBondQuote() {
-//    List<String> bonds = Arrays.asList("UST10Y");
-//    final QuoteResponse response = httpTdaClient.fetchQuotes(bonds);
-//    LOGGER.debug(response.toString());
-//    assertThat(response.isTdaError()).isFalse();
-//  }
-//
-
 }

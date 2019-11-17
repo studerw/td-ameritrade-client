@@ -2,6 +2,8 @@ package com.studerw.tda;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.studerw.tda.model.instrument.Query;
+import com.studerw.tda.model.instrument.Query.QueryType;
 import com.studerw.tda.parse.Utils;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -92,6 +94,11 @@ public class MiscTest {
     long weekAgo = now - (1_000 * 60 * 60 * 24 * 7);
     LOGGER.debug("Week ago: {}", String.valueOf(weekAgo));
     LOGGER.debug("Week ago: {}", Utils.epochToStr(weekAgo));
+  }
 
+  @Test
+  public void javaEnumTest(){
+    QueryType qt = QueryType.SYMBOL_REGEX;
+    LOGGER.debug("{} - {}", qt.name(), qt.getQueryType());
   }
 }

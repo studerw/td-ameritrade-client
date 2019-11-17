@@ -1,0 +1,380 @@
+{
+  "MBCI": {
+    "cusip": "554094102",
+    "symbol": "MBCI",
+    "description": "MabCure Inc. Common Stock (PN)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBAY": {
+    "cusip": "58446J207",
+    "symbol": "MBAY",
+    "description": "MediaBay, Inc. Common Stock (CV EM)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBCN": {
+    "cusip": "596304204",
+    "symbol": "MBCN",
+    "description": "Middlefield Banc Corp. - Common Stock",
+    "exchange": "NASDAQ",
+    "assetType": "EQUITY"
+  },
+  "MBCQ": {
+    "cusip": "55280E104",
+    "symbol": "MBCQ",
+    "description": "MB BANCORP INC  Common Stock (PC)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBDC": {
+    "cusip": "575600101",
+    "symbol": "MBDC",
+    "description": "Massachusetts Business Development Corp Common Stock (PN)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBDE": {
+    "cusip": "617883202",
+    "symbol": "MBDE",
+    "description": "Morris Business Development Company Common Stock (PN)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBII": {
+    "cusip": "57165B106",
+    "symbol": "MBII",
+    "description": "Marrone Bio Innovations, Inc. - Common Stock",
+    "exchange": "NASDAQ",
+    "assetType": "EQUITY"
+  },
+  "MBIN": {
+    "cusip": "58844R108",
+    "symbol": "MBIN",
+    "description": "Merchants Bancorp - Common Stock",
+    "exchange": "NASDAQ",
+    "assetType": "EQUITY"
+  },
+  "MBIO": {
+    "cusip": "62818Q104",
+    "symbol": "MBIO",
+    "description": "Mustang Bio, Inc. - Common Stock",
+    "exchange": "NASDAQ",
+    "assetType": "EQUITY"
+  },
+  "MBKL": {
+    "cusip": "55281E103",
+    "symbol": "MBKL",
+    "description": "MBT Bancshares, Inc. Common Stock (PC)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBLV": {
+    "cusip": "60742Q109",
+    "symbol": "MBLV",
+    "description": "MobiVentures Inc. Common Stock (PN)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBOF": {
+    "cusip": "56813P103",
+    "symbol": "MBOF",
+    "description": "MARINE BANCORP FLA INC Common Stock (PC)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBOT": {
+    "cusip": "59503A204",
+    "symbol": "MBOT",
+    "description": "Microbot Medical Inc.  - Common Stock",
+    "exchange": "NASDAQ",
+    "assetType": "EQUITY"
+  },
+  "MBSD": {
+    "cusip": "33939L779",
+    "symbol": "MBSD",
+    "description": "FlexShares Disciplined Duration MBS Index Fund",
+    "exchange": "NASDAQ",
+    "assetType": "ETF"
+  },
+  "MBST": {
+    "cusip": "607423209",
+    "symbol": "MBST",
+    "description": "Mobile Star Corp. Common Stock (CV EM)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBSV": {
+    "cusip": "60741C101",
+    "symbol": "MBSV",
+    "description": "MOBILIS RELOCATION SVCS INC COM",
+    "exchange": "Unknown",
+    "assetType": "UNKNOWN"
+  },
+  "MBRX": {
+    "cusip": "60855D101",
+    "symbol": "MBRX",
+    "description": "Moleculin Biotech, Inc. - Common Stock",
+    "exchange": "NASDAQ",
+    "assetType": "EQUITY"
+  },
+  "MBUU": {
+    "cusip": "56117J100",
+    "symbol": "MBUU",
+    "description": "Malibu Boats, Inc. - Common Stock",
+    "exchange": "NASDAQ",
+    "assetType": "EQUITY"
+  },
+  "MBWM": {
+    "cusip": "587376104",
+    "symbol": "MBWM",
+    "description": "Mercantile Bank Corporation - Common Stock",
+    "exchange": "NASDAQ",
+    "assetType": "EQUITY"
+  },
+  "MBVA": {
+    "cusip": "60037B205",
+    "symbol": "MBVA",
+    "description": "Millennium Bankshares Corporation Common Stock (PN)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBVX": {
+    "cusip": "55414P702",
+    "symbol": "MBVX",
+    "description": "MabVax Therapeutics Holdings, Inc. Common Stock (PC)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBAIF": {
+    "cusip": "17163Y102",
+    "symbol": "MBAIF",
+    "description": "CIBT Education Group Inc. Ordinary Shares (Canada) (QX)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBCFF": {
+    "cusip": "G49715108",
+    "symbol": "MBCFF",
+    "description": "Itafos Common Shares (PC)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBCKF": {
+    "cusip": "L65822105",
+    "symbol": "MBCKF",
+    "description": "Symbol not found",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBGCF": {
+    "cusip": "J43959113",
+    "symbol": "MBGCF",
+    "description": "Mitsubishi Gas Chemical Co Inc Ordinary Shares (GM)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBGNF": {
+    "cusip": "58402B305",
+    "symbol": "MBGNF",
+    "description": "MED BIOGENE INC Common Shares (GM)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBGRF": {
+    "cusip": "W5658C151",
+    "symbol": "MBGRF",
+    "description": "MOBERG PHARMA AB PUBL Ordinary Shares (GM)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBFJF": {
+    "cusip": "J44497105",
+    "symbol": "MBFJF",
+    "description": "Mitsubishi UFJ Financial Group Inc Ordinary Shares (Japan) (PC)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBINO": {
+    "cusip": "58844R603",
+    "symbol": "MBINO",
+    "description": "Merchants Bancorp - Depositary Shares Each Representing a 1/40th Interest in a S",
+    "exchange": "NASDAQ",
+    "assetType": "EQUITY"
+  },
+  "MBINP": {
+    "cusip": "58844R405",
+    "symbol": "MBINP",
+    "description": "Merchants Bancorp - 7.00% Fixed-to-Floating Rate Series A Non-Cumulative Perpetu",
+    "exchange": "NASDAQ",
+    "assetType": "EQUITY"
+  },
+  "MBIOF": {
+    "cusip": "60743K408",
+    "symbol": "MBIOF",
+    "description": "Mobio Technologies, Inc. Ordinary Shares (PC)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBKUN": {
+    "cusip": "56502D106",
+    "symbol": "MBKUN",
+    "description": "Manulife US Regional Bank Trust",
+    "exchange": "Unknown",
+    "assetType": "UNKNOWN"
+  },
+  "MBMID": {
+    "cusip": "34460J100",
+    "symbol": "MBMID",
+    "description": "Fonon Corporation Common Stock",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBLTY": {
+    "cusip": "590717104",
+    "symbol": "MBLTY",
+    "description": "MESOBLAST LTD SP ADR",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBPFF": {
+    "cusip": "G61614122",
+    "symbol": "MBPFF",
+    "description": "Mitchells & Butlers Plc Ordinary Shares (UK) NEW (PC)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBPFY": {
+    "cusip": "60668M306",
+    "symbol": "MBPFY",
+    "description": "Mitchells & Butlers Plc Unsponsored ADR (GM)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBNKF": {
+    "cusip": "G60640102",
+    "symbol": "MBNKF",
+    "description": "Metro Bank PLC Ordinary Shares (Unoted Kingdom) (PC)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBPPF": {
+    "cusip": "J44217115",
+    "symbol": "MBPPF",
+    "description": "Mitsubishi Paper Mills Ltd Common Stock (Japan) (GM)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBSRY": {
+    "cusip": "68407T102",
+    "symbol": "MBSRY",
+    "description": "Orange Belgium American Depositary Receipts - Unsponsored (GM)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBRRP": {
+    "cusip": "607097201",
+    "symbol": "MBRRP",
+    "description": "Mobile & Birmingham Railroad Company Preferred Stock (GM)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBRTD": {
+    "cusip": "552643405",
+    "symbol": "MBRTD",
+    "description": "MBMI Resources Inc Ordinary Shares (PN)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBRTF": {
+    "cusip": "552643405",
+    "symbol": "MBRTF",
+    "description": "MBMI Resources Inc Ordinary Shares (PN)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBUMF": {
+    "cusip": "J39186101",
+    "symbol": "MBUMF",
+    "description": "Mabuchi Motor Co Ltd Ordinary Shares (Japan) (GM)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBUMY": {
+    "cusip": "554141101",
+    "symbol": "MBUMY",
+    "description": "Mabuchi Motor Co Ltd Unsponsored American Depository Receipt (Japan) (PC)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBXBF": {
+    "cusip": "59501P104",
+    "symbol": "MBXBF",
+    "description": "Microbix Biosystems Inc Ordinary Shares (GM)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBVXQ": {
+    "cusip": "55414P702",
+    "symbol": "MBVXQ",
+    "description": "MabVax Therapeutics Holdings, Inc. Common Stock (PN)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBYMF": {
+    "cusip": "623858206",
+    "symbol": "MBYMF",
+    "description": "Mountain Boy Minerals Ltd Ordinary Shares (GM)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBB": {
+    "cusip": "464288588",
+    "symbol": "MBB",
+    "description": "iShares MBS ETF",
+    "exchange": "NASDAQ",
+    "assetType": "ETF"
+  },
+  "MBG": {
+    "cusip": "78464A383",
+    "symbol": "MBG",
+    "description": "SPDR Bloomberg Barclays Mortgage Backed Bond ETF",
+    "exchange": "Pacific",
+    "assetType": "ETF"
+  },
+  "MBI": {
+    "cusip": "55262C100",
+    "symbol": "MBI",
+    "description": "MBIA Inc. Common Stock",
+    "exchange": "NYSE",
+    "assetType": "EQUITY"
+  },
+  "MBO": {
+    "cusip": "60743K101",
+    "symbol": "MBO",
+    "description": "Mobio Technologies Inc",
+    "exchange": "Unknown",
+    "assetType": "UNKNOWN"
+  },
+  "MBT": {
+    "cusip": "607409109",
+    "symbol": "MBT",
+    "description": "Mobile TeleSystems PJSC",
+    "exchange": "NYSE",
+    "assetType": "EQUITY"
+  },
+  "MBLQ": {
+    "cusip": "618304109",
+    "symbol": "MBLQ",
+    "description": "Morris St Bancshares Inc Common Shares (PC)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  },
+  "MBLU": {
+    "cusip": "618304109",
+    "symbol": "MBLU",
+    "description": "Morris St Bancshares Inc Common Shares (PC)",
+    "exchange": "Pink Sheet",
+    "assetType": "EQUITY"
+  }
+}
