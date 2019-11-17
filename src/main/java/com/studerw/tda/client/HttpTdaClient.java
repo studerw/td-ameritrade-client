@@ -76,7 +76,7 @@ public class HttpTdaClient implements TdaClient {
    * To avoid using a properties file, you can define anything that would be in {@code
    * tda-api.properties} file. This includes:
    * </p>
-
+   *
    * <ul>
    *   <li>tda.token.refresh</li>
    *   <li>tda.client_id</li>
@@ -357,6 +357,84 @@ public class HttpTdaClient implements TdaClient {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  @Override
+  public List<Order> fetchOrders(OrderRequest orderRequest) {
+    LOGGER.info("FetchOrders all orders with request: {}", orderRequest);
+
+    List<String> violations = OrderRequestValidator.validate(orderRequest);
+    if (violations.size() > 0) {
+      throw new IllegalArgumentException(violations.toString());
+    }
+
+    Builder urlBuilder = baseUrl("orders");
+    if (orderRequest.getMaxResults() != null) {
+      urlBuilder.addQueryParameter("maxResults", String.valueOf(orderRequest.getMaxResults()));
+    }
+    if (orderRequest.getToEnteredTime() != null) {
+      urlBuilder
+          .addQueryParameter("toEnteredTime", Utils.toTdaISO8601(orderRequest.getToEnteredTime()));
+    }
+    if (orderRequest.getFromEnteredTime() != null) {
+      urlBuilder.addQueryParameter("fromEnteredTime",
+          Utils.toTdaISO8601(orderRequest.getFromEnteredTime()));
+    }
+    if (orderRequest.getStatus() != null) {
+      urlBuilder.addQueryParameter("status", orderRequest.getStatus().name());
+    }
+
+    Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response);
+      return tdaJsonParser.parseOrders(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public List<Order> fetchOrders() {
+    LOGGER.info("FetchOrders all orders.");
+
+    Builder urlBuilder = baseUrl("orders");
+    Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response);
+      return tdaJsonParser.parseOrders(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+  }
+
+  @Override
+  public Order fetchOrder(String accountId, Long orderId) {
+    LOGGER.info("Fetching for account[{}] order[{}]", accountId, orderId);
+
+    if (StringUtils.isBlank(accountId)) {
+      throw new IllegalArgumentException("accountId cannot be blank.");
+    }
+
+    if (orderId == null) {
+      throw new IllegalArgumentException("orderId cannot be blank.");
+    }
+
+    Builder urlBuilder = baseUrl("accounts", accountId, "orders", String.valueOf(orderId));
+    Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response);
+      return tdaJsonParser.parseOrder(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
   }
 
   @Override
