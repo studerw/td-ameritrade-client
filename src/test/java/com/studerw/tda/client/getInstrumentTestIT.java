@@ -2,6 +2,7 @@ package com.studerw.tda.client;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.in;
+import static org.junit.Assert.fail;
 
 import com.studerw.tda.model.instrument.FullInstrument;
 import com.studerw.tda.model.instrument.Fundamental;
@@ -92,8 +93,27 @@ public class getInstrumentTestIT extends BaseTestIT {
     });
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testBadQuery(){
+    httpTdaClient.queryInstruments(new Query(null, null));
+    fail("Should not have got here");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testBadQuery2(){
+    httpTdaClient.queryInstruments(new Query("", QueryType.SYMBOL_REGEX));
+    fail("Should not have got here");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testBadQuery3(){
+    httpTdaClient.queryInstruments(new Query("foo", null));
+    fail("Should not have got here");
+  }
+
   @Test
-  public void testFundamentalData(){
+  public void testFundamentalData() {
+
     final FullInstrument instrument = httpTdaClient.getFundamentalData("msft");
     assertThat(instrument.getAssetType()).isEqualTo(AssetType.EQUITY);
     assertThat(instrument.getSymbol()).isEqualTo("MSFT");

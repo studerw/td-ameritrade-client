@@ -471,6 +471,10 @@ public class HttpTdaClient implements TdaClient {
   @Override
   public List<Instrument> queryInstruments(Query query) {
     LOGGER.info("Querying for Instruments with query: {}", query);
+    if (query == null || StringUtils.isEmpty(query.getSearchStr()) || query.getQueryType() == null) {
+      throw new IllegalArgumentException(
+          "The instrument query must have both a searchStr and QueryType set.");
+    }
     HttpUrl url = baseUrl("instruments")
         .addQueryParameter("symbol", query.getSearchStr())
         .addQueryParameter("projection", query.getQueryType().getQueryType())
