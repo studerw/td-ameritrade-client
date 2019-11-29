@@ -2,8 +2,11 @@ package com.studerw.tda;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.studerw.tda.model.instrument.Query;
 import com.studerw.tda.model.instrument.Query.QueryType;
+import com.studerw.tda.model.marketdata.Mover.Direction;
+import com.studerw.tda.model.marketdata.MoversReq;
+import com.studerw.tda.model.marketdata.MoversReq.Change;
+import com.studerw.tda.model.marketdata.MoversReq.Index;
 import com.studerw.tda.parse.Utils;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -100,5 +103,14 @@ public class MiscTest {
   public void javaEnumTest(){
     QueryType qt = QueryType.SYMBOL_REGEX;
     LOGGER.debug("{} - {}", qt.name(), qt.getQueryType());
+  }
+
+  @Test
+  public void enumTest(){
+    MoversReq moversReq = new MoversReq(Index.DOW_JONES, Direction.UP, Change.PERCENT);
+    LOGGER.debug("Name: {}",moversReq.getIndex().name());
+    LOGGER.debug("values: {}", moversReq.getIndex().values());
+    LOGGER.debug("toStr: {}", moversReq.getIndex().toString());
+    LOGGER.debug("getIndex: {}", moversReq.getIndex().getIndex());
   }
 }

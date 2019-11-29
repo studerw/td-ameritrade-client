@@ -8,6 +8,7 @@ import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.instrument.FullInstrument;
 import com.studerw.tda.model.instrument.Instrument;
+import com.studerw.tda.model.marketdata.Mover;
 import com.studerw.tda.model.quote.Quote;
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -194,6 +195,18 @@ public class TdaJsonParser {
     }
   }
 
+  public List<Mover> parseMovers(InputStream in) {
+    LOGGER.trace("parsing movers...");
+    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
+      TypeReference<List<Mover>> typeReference = new TypeReference<List<Mover>>() {};
+      final List<Mover> movers = DefaultMapper.fromJson(bIn, typeReference);
+      LOGGER.debug("Returned list of movers of size: {}", movers.size());
+      return movers;
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+  }
 
 //  public <T> T parseTdaJson(InputStream in, Class<T> type){
 //    try (BufferedInputStream bIn = new BufferedInputStream(in)) {

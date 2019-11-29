@@ -13,6 +13,8 @@ import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.instrument.FullInstrument;
 import com.studerw.tda.model.instrument.Instrument;
 import com.studerw.tda.model.instrument.Query;
+import com.studerw.tda.model.marketdata.Mover;
+import com.studerw.tda.model.marketdata.MoversReq;
 import com.studerw.tda.model.quote.Quote;
 import com.studerw.tda.parse.DefaultMapper;
 import com.studerw.tda.parse.TdaJsonParser;
@@ -471,7 +473,8 @@ public class HttpTdaClient implements TdaClient {
   @Override
   public List<Instrument> queryInstruments(Query query) {
     LOGGER.info("Querying for Instruments with query: {}", query);
-    if (query == null || StringUtils.isEmpty(query.getSearchStr()) || query.getQueryType() == null) {
+    if (query == null || StringUtils.isEmpty(query.getSearchStr())
+        || query.getQueryType() == null) {
       throw new IllegalArgumentException(
           "The instrument query must have both a searchStr and QueryType set.");
     }
@@ -512,6 +515,32 @@ public class HttpTdaClient implements TdaClient {
             "Expecting a single instrument but received: " + fullInstruments.size());
       }
       return fullInstruments.get(0);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public List<Mover> fetchMovers(MoversReq moversReq) {
+    LOGGER.info("Fetching Movers with req: {}", moversReq);
+    if (moversReq.getIndex() == null) {
+      throw new IllegalArgumentException("The index cannot be empty.");
+    }
+
+    Builder urlBuilder = baseUrl("marketdata", moversReq.getIndex().getIndex(), "movers");
+    if (moversReq.getChange() != null) {
+      urlBuilder.addQueryParameter("change", moversReq.getChange().getChange());
+    }
+    if (moversReq.getDirection() != null) {
+      urlBuilder.addQueryParameter("direction", moversReq.getDirection().getDirection());
+    }
+
+    Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response);
+      return tdaJsonParser.parseMovers(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

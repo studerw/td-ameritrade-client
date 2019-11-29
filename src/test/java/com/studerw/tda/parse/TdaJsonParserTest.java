@@ -24,6 +24,7 @@ import com.studerw.tda.model.history.Candle;
 import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.instrument.FullInstrument;
 import com.studerw.tda.model.instrument.Fundamental;
+import com.studerw.tda.model.marketdata.Mover;
 import com.studerw.tda.model.quote.EquityQuote;
 import com.studerw.tda.model.quote.EtfQuote;
 import com.studerw.tda.model.quote.ForexQuote;
@@ -34,6 +35,7 @@ import com.studerw.tda.model.quote.Quote;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -308,6 +310,25 @@ public class TdaJsonParserTest {
       assertThat(fundamental.getMarketCapFloat()).isEqualTo("7521.585");
       assertThat(fundamental.getDividendDate()).isEqualTo("2019-11-20 00:00:00.000");
       LOGGER.debug(instrument.toString());
+    }
+  }
+
+  @Test
+  @Ignore
+  //TODO
+  public void testParseMovers() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/movers-resp.json")) {
+      List<Mover> movers = tdaJsonParser.parseMovers(in);
+//      assertThat(instrument.getAssetType()).isEqualTo(com.studerw.tda.model.instrument.Instrument.AssetType.EQUITY);
+//      assertThat(instrument.getSymbol()).isEqualTo("MSFT");
+//      assertThat(instrument.getCusip()).isEqualTo("594918104");
+//      assertThat(instrument.getExchange()).isEqualTo("NASDAQ");
+//      Fundamental fundamental = instrument.getFundamental();
+//      assertThat(fundamental).isNotNull();
+//      assertThat(fundamental.getMarketCapFloat()).isEqualTo("7521.585");
+//      assertThat(fundamental.getDividendDate()).isEqualTo("2019-11-20 00:00:00.000");
+      LOGGER.debug(movers.toString());
     }
   }
 

@@ -8,6 +8,8 @@ import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.instrument.FullInstrument;
 import com.studerw.tda.model.instrument.Instrument;
 import com.studerw.tda.model.instrument.Query;
+import com.studerw.tda.model.marketdata.Mover;
+import com.studerw.tda.model.marketdata.MoversReq;
 import com.studerw.tda.model.quote.Quote;
 import java.util.List;
 
@@ -290,4 +292,11 @@ public interface TdaClient {
    * @see <a href="https://www.sec.gov/answers/cusip.htm">CUSIP Number</a>
    */
   FullInstrument getFundamentalData(String id);
+
+  /**
+   * Top 10 (up or down) movers by value or percent for a particular market
+   * @param moversReq Index must be set, the other fields can be null which will use TDA defaults.
+   * @return List of top 10 market movers defined by the request
+   */
+  List<Mover> fetchMovers(MoversReq moversReq);
 }
