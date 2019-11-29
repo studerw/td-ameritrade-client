@@ -11,78 +11,78 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class OptionQuote extends Quote implements Serializable {
 
   private final static long serialVersionUID = 5700643694979579869L;
-  @JsonProperty("bidPrice")
-  private BigDecimal bidPrice;
-  @JsonProperty("bidSize")
-  private Long bidSize;
   @JsonProperty("askPrice")
   private BigDecimal askPrice;
   @JsonProperty("askSize")
   private Long askSize;
-  @JsonProperty("lastPrice")
-  private BigDecimal lastPrice;
-  @JsonProperty("lastSize")
-  private Long lastSize;
-  @JsonProperty("openPrice")
-  private BigDecimal openPrice;
-  @JsonProperty("highPrice")
-  private BigDecimal highPrice;
-  @JsonProperty("lowPrice")
-  private BigDecimal lowPrice;
+  @JsonProperty("bidPrice")
+  private BigDecimal bidPrice;
+  @JsonProperty("bidSize")
+  private Long bidSize;
   @JsonProperty("closePrice")
   private BigDecimal closePrice;
-  @JsonProperty("netChange")
-  private BigDecimal netChange;
-  @JsonProperty("totalVolume")
-  private Long totalVolume;
-  @JsonProperty("quoteTimeInLong")
-  private Long quoteTimeInLong;
-  @JsonProperty("tradeTimeInLong")
-  private Long tradeTimeInLong;
-  @JsonProperty("mark")
-  private BigDecimal mark;
-  @JsonProperty("openInterest")
-  private BigDecimal openInterest;
-  @JsonProperty("volatility")
-  private BigDecimal volatility;
-  @JsonProperty("moneyIntrinsicValue")
-  private BigDecimal moneyIntrinsicValue;
-  @JsonProperty("multiplier")
-  private BigDecimal multiplier;
-  @JsonProperty("strikePrice")
-  private BigDecimal strikePrice;
   @JsonProperty("contractType")
   private String contractType;
-  @JsonProperty("underlying")
-  private String underlying;
-  @JsonProperty("timeValue")
-  private BigDecimal timeValue;
   @JsonProperty("deliverables")
   private String deliverables;
   @JsonProperty("delta")
   private BigDecimal delta;
-  @JsonProperty("gamma")
-  private BigDecimal gamma;
-  @JsonProperty("theta")
-  private BigDecimal theta;
-  @JsonProperty("vega")
-  private BigDecimal vega;
-  @JsonProperty("rho")
-  private BigDecimal rho;
-  @JsonProperty("securityStatus")
-  private String securityStatus;
-  @JsonProperty("theoreticalOptionValue")
-  private BigDecimal theoreticalOptionValue;
-  @JsonProperty("underlyingPrice")
-  private BigDecimal underlyingPrice;
-  @JsonProperty("uvExpirationType")
-  private String uvExpirationType;
   @JsonProperty("exchange")
   private String exchange;
   @JsonProperty("exchangeName")
   private String exchangeName;
+  @JsonProperty("gamma")
+  private BigDecimal gamma;
+  @JsonProperty("highPrice")
+  private BigDecimal highPrice;
+  @JsonProperty("lastPrice")
+  private BigDecimal lastPrice;
+  @JsonProperty("lastSize")
+  private Long lastSize;
+  @JsonProperty("lowPrice")
+  private BigDecimal lowPrice;
+  @JsonProperty("openPrice")
+  private BigDecimal openPrice;
+  @JsonProperty("mark")
+  private BigDecimal mark;
+  @JsonProperty("moneyIntrinsicValue")
+  private BigDecimal moneyIntrinsicValue;
+  @JsonProperty("multiplier")
+  private BigDecimal multiplier;
+  @JsonProperty("netChange")
+  private BigDecimal netChange;
+  @JsonProperty("openInterest")
+  private BigDecimal openInterest;
+  @JsonProperty("quoteTimeInLong")
+  private Long quoteTimeInLong;
+  @JsonProperty("rho")
+  private BigDecimal rho;
+  @JsonProperty("securityStatus")
+  private String securityStatus;
   @JsonProperty("settlementType")
   private String settlementType;
+  @JsonProperty("strikePrice")
+  private BigDecimal strikePrice;
+  @JsonProperty("timeValue")
+  private BigDecimal timeValue;
+  @JsonProperty("theta")
+  private BigDecimal theta;
+  @JsonProperty("theoreticalOptionValue")
+  private BigDecimal theoreticalOptionValue;
+  @JsonProperty("totalVolume")
+  private Long totalVolume;
+  @JsonProperty("tradeTimeInLong")
+  private Long tradeTimeInLong;
+  @JsonProperty("volatility")
+  private BigDecimal volatility;
+  @JsonProperty("underlying")
+  private String underlying;
+  @JsonProperty("vega")
+  private BigDecimal vega;
+  @JsonProperty("underlyingPrice")
+  private BigDecimal underlyingPrice;
+  @JsonProperty("uvExpirationType")
+  private String uvExpirationType;
 
   public BigDecimal getBidPrice() {
     return bidPrice;

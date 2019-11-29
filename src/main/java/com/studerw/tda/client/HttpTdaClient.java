@@ -15,6 +15,7 @@ import com.studerw.tda.model.instrument.Instrument;
 import com.studerw.tda.model.instrument.Query;
 import com.studerw.tda.model.marketdata.Mover;
 import com.studerw.tda.model.marketdata.MoversReq;
+import com.studerw.tda.model.option.OptionChain;
 import com.studerw.tda.model.quote.Quote;
 import com.studerw.tda.parse.DefaultMapper;
 import com.studerw.tda.parse.TdaJsonParser;
@@ -544,6 +545,44 @@ public class HttpTdaClient implements TdaClient {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  @Override
+  public OptionChain getOptionChain(String symbol) {
+    LOGGER.info("get option chaing for symbol: {}", symbol);
+
+    if (StringUtils.isBlank(symbol)){
+      throw new IllegalArgumentException("Symbol cannot be blank.");
+    }
+
+    Builder urlBuilder = baseUrl("marketdata", "chains")
+        .addQueryParameter("symbol", symbol.toUpperCase());
+
+//    if (orderRequest.getMaxResults() != null) {
+//      urlBuilder.addQueryParameter("maxResults", String.valueOf(orderRequest.getMaxResults()));
+//    }
+//    if (orderRequest.getToEnteredTime() != null) {
+//      urlBuilder
+//          .addQueryParameter("toEnteredTime", Utils.toTdaISO8601(orderRequest.getToEnteredTime()));
+//    }
+//    if (orderRequest.getFromEnteredTime() != null) {
+//      urlBuilder.addQueryParameter("fromEnteredTime",
+//          Utils.toTdaISO8601(orderRequest.getFromEnteredTime()));
+//    }
+//    if (orderRequest.getStatus() != null) {
+//      urlBuilder.addQueryParameter("status", orderRequest.getStatus().name());
+//    }
+
+    Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response);
+      return tdaJsonParser.parseOptionChain(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
   }
 
   @Override

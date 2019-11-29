@@ -25,6 +25,11 @@ import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.instrument.FullInstrument;
 import com.studerw.tda.model.instrument.Fundamental;
 import com.studerw.tda.model.marketdata.Mover;
+import com.studerw.tda.model.option.Option;
+import com.studerw.tda.model.option.Option.PutCall;
+import com.studerw.tda.model.option.OptionChain;
+import com.studerw.tda.model.option.OptionChain.Strategy;
+import com.studerw.tda.model.option.Underlying;
 import com.studerw.tda.model.quote.EquityQuote;
 import com.studerw.tda.model.quote.EtfQuote;
 import com.studerw.tda.model.quote.ForexQuote;
@@ -34,7 +39,9 @@ import com.studerw.tda.model.quote.OptionQuote;
 import com.studerw.tda.model.quote.Quote;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -332,6 +339,58 @@ public class TdaJsonParserTest {
     }
   }
 
+  @Test
+  public void testParseOptionChain() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/optionChain-resp.json")) {
+      final OptionChain optionChain = tdaJsonParser.parseOptionChain(in);
+      assertThat(optionChain.getSymbol()).isEqualToIgnoringCase("MSFT");
+      assertThat(optionChain.getStatus()).isEqualTo("SUCCESS");
+      assertThat(optionChain.getStrategy()).isEqualTo(Strategy.SINGLE);
+      assertThat(optionChain.getIndex()).isFalse();
+      assertThat(optionChain.getDelayed()).isTrue();
+      assertThat(optionChain.getOtherFields()).isEmpty();
+
+      final Underlying underlying = optionChain.getUnderlying();
+      assertThat(underlying.getSymbol()).isEqualToIgnoringCase("MSFT");
+      assertThat(underlying.getClose()).isEqualTo("152.32");
+      assertThat(underlying.getTradeTime()).isEqualTo(1574902778840L);
+      assertThat(underlying.getFiftyTwoWeekHigh()).isEqualTo("152.5");
+      assertThat(underlying.getDelayed()).isTrue();
+      assertThat(underlying.getOtherFields()).isEmpty();
+
+      final Map<String, Map<BigDecimal, List<Option>>> putExpDateMap = optionChain
+          .getPutExpDateMap();
+      final Map<BigDecimal, List<Option>> bigDecimalListMap = putExpDateMap.get("2020-01-10:42");
+      final List<Option> options = bigDecimalListMap.get(new BigDecimal("135.0"));
+      assertThat(options.size()).isEqualTo(1);
+      Option option = options.get(0);
+      assertThat(option.getPutCall()).isEqualTo(PutCall.PUT);
+      assertThat(option.getBidPrice()).isEqualTo("0.23");
+      assertThat(option.getTradeTimeInLong()).isEqualTo(1574886746322L);
+      assertThat(option.getRho()).isEqualTo("-0.01");
+      assertThat(option.getMini()).isFalse();
+      assertThat(option.getInTheMoney()).isFalse();
+      assertThat(option.getOtherFields()).isNotEmpty();
+
+      final Map<String, Map<BigDecimal, List<Option>>> callExpDateMap = optionChain
+          .getCallExpDateMap();
+      final Map<BigDecimal, List<Option>> bigDecimalListMap2 = callExpDateMap.get("2020-01-03:35");
+      final List<Option> options2 = bigDecimalListMap2.get(new BigDecimal("135.0"));
+      assertThat(options2.size()).isEqualTo(1);
+      Option option2 = options2.get(0);
+      assertThat(option2.getPutCall()).isEqualTo(PutCall.CALL);
+      assertThat(option2.getBidPrice()).isEqualTo("17.3");
+      assertThat(option2.getTradeTimeInLong()).isEqualTo(1574446609655L);
+      assertThat(option2.getRho()).isEqualTo("0.11");
+      assertThat(option2.getMini()).isFalse();
+      assertThat(option2.getInTheMoney()).isTrue();
+      assertThat(option2.getOtherFields()).isNotEmpty();
+
+
+      LOGGER.debug(optionChain.toString());
+    }
+  }
 
 }
 

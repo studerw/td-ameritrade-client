@@ -10,6 +10,7 @@ import com.studerw.tda.model.instrument.Instrument;
 import com.studerw.tda.model.instrument.Query;
 import com.studerw.tda.model.marketdata.Mover;
 import com.studerw.tda.model.marketdata.MoversReq;
+import com.studerw.tda.model.option.OptionChain;
 import com.studerw.tda.model.quote.Quote;
 import java.util.List;
 
@@ -299,4 +300,11 @@ public interface TdaClient {
    * @return List of top 10 market movers defined by the request
    */
   List<Mover> fetchMovers(MoversReq moversReq);
+
+  /**
+   *
+   * @param symbol - should be upper case (e.g. <em>MSFT</em>)
+   * @return an option chain using all TDA Default parameters
+   */
+  OptionChain getOptionChain(String symbol);
 }

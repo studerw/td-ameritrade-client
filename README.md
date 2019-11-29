@@ -9,7 +9,7 @@ Java rest client for [OAuth2 TD Ameritrade Api](https://developer.tdameritrade.c
 Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
 
 * [Javadoc API](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/)
-* Get started with the [How-To](https://github.com/studerw/td-ameritrade-client/wiki/how-to) on the Wiki.
+* [How-To](https://github.com/studerw/td-ameritrade-client/wiki/how-to) on the Wiki.
 
 I'm happy to collaborate contractually or OSS with other devs. 
 

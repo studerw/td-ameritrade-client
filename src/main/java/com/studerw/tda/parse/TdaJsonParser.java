@@ -9,6 +9,7 @@ import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.instrument.FullInstrument;
 import com.studerw.tda.model.instrument.Instrument;
 import com.studerw.tda.model.marketdata.Mover;
+import com.studerw.tda.model.option.OptionChain;
 import com.studerw.tda.model.quote.Quote;
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -202,6 +203,19 @@ public class TdaJsonParser {
       final List<Mover> movers = DefaultMapper.fromJson(bIn, typeReference);
       LOGGER.debug("Returned list of movers of size: {}", movers.size());
       return movers;
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+  }
+
+  public OptionChain parseOptionChain(InputStream in) {
+    LOGGER.trace("parsing option chain...");
+    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
+      TypeReference<OptionChain> typeReference = new TypeReference<OptionChain>() {};
+      final OptionChain optionChain = DefaultMapper.fromJson(bIn, typeReference);
+      LOGGER.debug("Returned optionChain: {}", optionChain);
+      return optionChain;
     } catch (IOException e) {
       e.printStackTrace();
       throw new RuntimeException(e);
