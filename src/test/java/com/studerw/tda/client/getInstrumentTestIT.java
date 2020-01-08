@@ -74,7 +74,7 @@ public class getInstrumentTestIT extends BaseTestIT {
 
   @Test
   public void testBondCusips() {
-    List<String> cusips = Arrays.asList("70153RJT6", "33616CGC8", "06405VDP1", "61690UNX4", "7954505R2", "7954505R2");
+    List<String> cusips = Arrays.asList("70153RJT6", "33616CGC8", "61690UNX4", "7954505R2", "7954505R2");
     cusips.forEach(cusip -> {
       Instrument instrument = httpTdaClient.getBond(cusip);
       assertThat(instrument.getAssetType()).isEqualTo(AssetType.BOND);

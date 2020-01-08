@@ -24,6 +24,9 @@ public class FetchMoversTestIT extends BaseTestIT {
     final List<Mover> movers = httpTdaClient.fetchMovers(moversReq);
     assertThat(movers).isNotNull();
     assertThat(movers.size()).isEqualTo(0);
+    movers.forEach(m -> {
+      LOGGER.debug("{}", m);
+    });
 
 //    assertThat(movers.size()).isEqualTo(10);
   }
