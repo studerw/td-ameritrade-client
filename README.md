@@ -1,7 +1,7 @@
 # TD Ameritrade Java Client
 ![TDA_LOGO](https://github.com/studerw/td-ameritrade-client/blob/master/td_logo.png)
 
-![travisci-passing](https://api.travis-ci.org/studerw/td-ameritrade-client.svg?branch=old-xml-api)
+![travisci-passing](https://api.travis-ci.org/studerw/td-ameritrade-client.svg?branch=master)
 [![APL v2](https://img.shields.io/badge/license-Apache%202-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 ----
@@ -11,11 +11,11 @@ Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
 * [Javadoc API](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/)
 * [How-To](https://github.com/studerw/td-ameritrade-client/wiki/how-to) on the Wiki.
 
-I'm happy to collaborate contractually or OSS with other devs. 
+I'm happy to collaborate contractually or OSS with other developers. 
 
 ## Required TDA Properties
 
-The client only requires a TDA Client ID and current OAuth Refresh Token. The refresh token expires every 90 days.
+The client only requires a TDA client ID and current OAuth refresh token. The refresh token expires every 90 days.
 See the [Getting Started](https://developer.tdameritrade.com/content/getting-started) and [Simple Auth for Local Apps](https://developer.tdameritrade.com/content/simple-auth-local-apps) for help.
 
 ## Build
@@ -57,8 +57,8 @@ You need to obtain a valid TDA Developer *refresh token* every 90 days. See TDA'
 ## Integration Tests
 Integration tests do require a Client App ID user and refresh token, though are not needed to build the jar.
 
-To run integration tests, you will need to rename this file *src/test/resources/my-test.properties.changeme* to *my-test.properties* and fill in the 
-necessary TDA properties.
+To run integration tests, you will need to rename this file *src/test/resources/my-test.properties.changeme* 
+to *my-test.properties* and fill in the necessary TDA properties.
 
 Then run the following command.
 
@@ -67,23 +67,25 @@ mvn failsafe:integration-test
 ```
 
 ## POJO `otherfields` Property
-The TDA API seems to be in a constant state of change and some of the documentation is sometimes wrong.
-Thus, in order to ensure that all properties are deserialized from the returned JSON into our Java objects,
-an `otherfields` Map is contained in most types. You can get any new or undocumented fields using the code similar
+The TDA API seems to be in a constant state of change, and some of the documentation is out of sync with the actual responses.
+Thus, in order to ensure that all properties are deserialized from the returned JSON into our Java pojos,
+an `otherfields` Map is contained in most types. You can get any new or undocumented fields using code similar
 to the following:
 
 ```java
-Quote quote = httpTdaClient.fetchQuote("msft");
+Quote quote = tdaClient.fetchQuote("msft");
 String someField = (String)quote.getOtherFields().get("someField"))
 ```
 
 ## DateTime Handling
 Most TDA dates and times are returned as longs (i.e. milliseconds since the epoch UTC).
-An easy way to convert them to Java's new DateTime is via the following:
+An easy way to convert them to Java's new [DateTime](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) 
+is via the following:
 
 ```java
-long someDateTime = ...
-ZonedDateTime dateTime = Instant.ofEpochMilli(someDateTime).atZone(ZoneId.systemDefault());
+long someMilliseconds= ...
+ZonedDateTime dateTime = Instant.ofEpochMilli(someDateTime)
+  .atZone(ZoneId.systemDefault());
 ```
 Or you could use the deprecated _java.util.Date_.
 
@@ -101,25 +103,27 @@ System.out.println(formattedDate) //   2019-09-13T19:59-04:00[America/New_York]
 
 ## Error Handling
 
-Before the call is even made, validator or other exceptions can be thrown. Usually you won't have to catch these in your program, they'll be helpful
-when testing, though.
+Only **unchecked exceptions** are called to avoid having to litter your code with `try catch` blocks.
 
-Once the call is made, the TDA server returns 200 success responses **even if the call was not successful**, for example you've sent an invalid request type 
-or some other issue. Often this means the body is an empty JSON string.
+Before the call is made, request parameter validation exceptions can be thrown. Usually you won't have to catch these in your program, though they'll be helpful
+when testing.
 
-The rules are this within the Client:
+Once the call is made, the TDA server can return 200 success responses **even if the call was not successful**, for example, you've sent an invalid request type 
+or set of parameters. Often this means the body is an empty JSON string.
 
-* Most validation exception before the call was made will throw unchecked `IllegalArgumentException`.
+The rules are this:
 
-* All non 200 HTTP responses throw unchecked `RuntimeExceptions` since there is no way to recover, usually.
+* OAuth authentication problems, explicitly signalled by a 401 response codes, usually mean an invalid TDA 
+client id or an expired refresh token, and this will throw an `IllegalStateException`.
 
-*  Responses that are completely empty but should have returned a full json body throw a `RunTimeException` also.
+* Validation issues that are known before the call is made, e.g. null or empty required parameters, will throw unchecked `IllegalArgumentException`.
+
+* All non 200 HTTP responses throw unchecked `RuntimeExceptions` since there is no way for the API to recover.
+
+* Responses that are completely empty but should have returned a full json body throw a `RunTimeException` also.
 
 * If there is an error parsing the JSON into a Java pojo, the `RuntimeException` wrapping the `IOException` from Jackson will be thrown.
  
-The only exception to this rule is if we cannot login - either due to bad credentials, locked account, or otherwise.
-When this occurs, an `IllegalStateException` is thrown. This is explicitly signalled by a 401 response code.  
-
 ## Logging
 The API uses [SLF4J](http://www.slf4j.org/) as does [OKHttp 3](https://github.com/square/okhttp).
 You can use any implementation like Logback or Log4j.
