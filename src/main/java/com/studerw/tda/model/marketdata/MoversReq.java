@@ -6,10 +6,8 @@ import java.io.Serializable;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-
 /**
- * <p>
- * Query for Movers - Top 10 (up or down) movers by value or percent for a particular market
+ * Query for Movers - Top 10 (up or down) movers by value or percent for a particular market index.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MoversReq implements Serializable {
@@ -19,7 +17,7 @@ public class MoversReq implements Serializable {
   private Mover.Direction direction;
   private Change change;
 
-  public MoversReq(Index index, Direction direction, Change change) {
+  public MoversReq(Index index, Mover.Direction direction, Change change) {
     this.index = index;
     this.direction = direction;
     this.change = change;

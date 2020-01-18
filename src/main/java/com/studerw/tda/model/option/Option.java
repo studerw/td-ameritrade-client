@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.studerw.tda.model.account.OptionDeliverable;
+import com.studerw.tda.parse.BigDecimalNanDeserializer;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -23,101 +25,151 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class Option implements Serializable {
 
   private final static long serialVersionUID = -6922953717171708238L;
+
   @JsonProperty("putCall")
   private PutCall putCall;
+
   @JsonProperty("symbol")
   private String symbol;
+
   @JsonProperty("description")
   private String description;
+
   @JsonProperty("exchangeName")
   private String exchangeName;
+
   @JsonAlias({"bid"})
   @JsonProperty("bidPrice")
   private BigDecimal bidPrice;
+
   @JsonAlias({"ask"})
   @JsonProperty("askPrice")
   private BigDecimal askPrice;
+
   @JsonAlias({"last"})
   @JsonProperty("lastPrice")
   private BigDecimal lastPrice;
+
   @JsonProperty("bidAskSize")
   private String bidAskSize;
+
   @JsonAlias({"mark"})
   @JsonProperty("markPrice")
   private BigDecimal markPrice;
+
   @JsonProperty("bidSize")
   private Long bidSize;
+
   @JsonProperty("askSize")
   private Long askSize;
+
   @JsonProperty("lastSize")
   private Long lastSize;
+
   @JsonProperty("highPrice")
   private BigDecimal highPrice;
+
   @JsonProperty("lowPrice")
   private BigDecimal lowPrice;
+
   @JsonProperty("openPrice")
   private BigDecimal openPrice;
+
   @JsonProperty("closePrice")
   private BigDecimal closePrice;
+
   @JsonProperty("totalVolume")
   private Long totalVolume;
+
   @JsonProperty("quoteTimeInLong")
   private Long quoteTimeInLong;
+
   @JsonProperty("tradeTimeInLong")
   private Long tradeTimeInLong;
+
   @JsonProperty("netChange")
   private BigDecimal netChange;
+
   @JsonProperty("volatility")
   private BigDecimal volatility;
+
+  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("delta")
   private BigDecimal delta;
+
+  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("gamma")
   private BigDecimal gamma;
+
+  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("theta")
   private BigDecimal theta;
+
+  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("vega")
   private BigDecimal vega;
+
   @JsonProperty("rho")
+  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   private BigDecimal rho;
+
   @JsonProperty("timeValue")
   private BigDecimal timeValue;
+
   @JsonProperty("openInterest")
   private BigDecimal openInterest;
+
   @JsonAlias({"inTheMoney"})
   @JsonProperty("isInTheMoney")
   private Boolean isInTheMoney;
+
   @JsonProperty("theoreticalOptionValue")
   private BigDecimal theoreticalOptionValue;
+
   @JsonProperty("theoreticalVolatility")
   private BigDecimal theoreticalVolatility;
+
   @JsonAlias({"mini"})
   @JsonProperty("isMini")
   private Boolean isMini;
+
   @JsonProperty("isNonStandard")
   @JsonAlias({"nonStandard"})
   private Boolean isNonStandard;
+
   @JsonProperty("optionDeliverablesList")
   private List<OptionDeliverable> optionDeliverablesList = new ArrayList<OptionDeliverable>();
+
   @JsonProperty("strikePrice")
   private BigDecimal strikePrice;
+
   @JsonProperty("expirationDate")
   private Long expirationDate;
+
   @JsonProperty("expirationType")
   private String expirationType;
+
   @JsonProperty("multiplier")
   private BigDecimal multiplier;
+
   @JsonProperty("settlementType")
   private String settlementType;
+
   @JsonProperty("deliverableNote")
   private String deliverableNote;
+
   @JsonProperty("isIndexOption")
   private Boolean isIndexOption;
+
   @JsonProperty("percentChange")
   private BigDecimal percentChange;
+
   @JsonProperty("markChange")
   private BigDecimal markChange;
+
   @JsonProperty("markPercentChange")
   private BigDecimal markPercentChange;
+
   @JsonAnySetter
   private Map<String, Object> otherFields = new HashMap<>();
 

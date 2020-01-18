@@ -2,6 +2,8 @@ package com.studerw.tda.model.quote;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.studerw.tda.parse.BigDecimalNanDeserializer;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -11,76 +13,117 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class OptionQuote extends Quote implements Serializable {
 
   private final static long serialVersionUID = 5700643694979579869L;
+
   @JsonProperty("askPrice")
   private BigDecimal askPrice;
+
   @JsonProperty("askSize")
   private Long askSize;
+
   @JsonProperty("bidPrice")
   private BigDecimal bidPrice;
+
   @JsonProperty("bidSize")
   private Long bidSize;
+
   @JsonProperty("closePrice")
   private BigDecimal closePrice;
+
   @JsonProperty("contractType")
   private String contractType;
+
   @JsonProperty("deliverables")
   private String deliverables;
+
+  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("delta")
   private BigDecimal delta;
+
   @JsonProperty("exchange")
   private String exchange;
+
   @JsonProperty("exchangeName")
   private String exchangeName;
+
+  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("gamma")
   private BigDecimal gamma;
+
   @JsonProperty("highPrice")
   private BigDecimal highPrice;
+
   @JsonProperty("lastPrice")
   private BigDecimal lastPrice;
+
   @JsonProperty("lastSize")
   private Long lastSize;
+
   @JsonProperty("lowPrice")
   private BigDecimal lowPrice;
+
   @JsonProperty("openPrice")
   private BigDecimal openPrice;
+
   @JsonProperty("mark")
   private BigDecimal mark;
+
   @JsonProperty("moneyIntrinsicValue")
   private BigDecimal moneyIntrinsicValue;
+
   @JsonProperty("multiplier")
   private BigDecimal multiplier;
+
   @JsonProperty("netChange")
   private BigDecimal netChange;
+
   @JsonProperty("openInterest")
   private BigDecimal openInterest;
+
   @JsonProperty("quoteTimeInLong")
   private Long quoteTimeInLong;
+
+  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("rho")
   private BigDecimal rho;
+
   @JsonProperty("securityStatus")
   private String securityStatus;
+
   @JsonProperty("settlementType")
   private String settlementType;
+
   @JsonProperty("strikePrice")
   private BigDecimal strikePrice;
+
   @JsonProperty("timeValue")
   private BigDecimal timeValue;
+
+  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("theta")
   private BigDecimal theta;
+
   @JsonProperty("theoreticalOptionValue")
   private BigDecimal theoreticalOptionValue;
+
   @JsonProperty("totalVolume")
   private Long totalVolume;
+
   @JsonProperty("tradeTimeInLong")
   private Long tradeTimeInLong;
+
   @JsonProperty("volatility")
   private BigDecimal volatility;
+
   @JsonProperty("underlying")
   private String underlying;
+
+  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("vega")
   private BigDecimal vega;
+
   @JsonProperty("underlyingPrice")
   private BigDecimal underlyingPrice;
+
   @JsonProperty("uvExpirationType")
   private String uvExpirationType;
 

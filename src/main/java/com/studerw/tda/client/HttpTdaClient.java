@@ -162,7 +162,7 @@ public class HttpTdaClient implements TdaClient {
     HttpUrl url = baseUrl("marketdata", symbol, "pricehistory").build();
     Request request = new Request.Builder().url(url).headers(defaultHeaders()).build();
     try (Response response = this.httpClient.newCall(request).execute()) {
-      checkResponse(response);
+      checkResponse(response, false);
       return tdaJsonParser.parsePriceHistory(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -206,7 +206,7 @@ public class HttpTdaClient implements TdaClient {
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
-      checkResponse(response);
+      checkResponse(response, false);
       return tdaJsonParser.parsePriceHistory(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -224,7 +224,7 @@ public class HttpTdaClient implements TdaClient {
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
-      checkResponse(response);
+      checkResponse(response, false);
       return tdaJsonParser.parseQuotes(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -260,7 +260,7 @@ public class HttpTdaClient implements TdaClient {
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
-      checkResponse(response);
+      checkResponse(response, false);
       return tdaJsonParser.parseAccount(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -287,7 +287,7 @@ public class HttpTdaClient implements TdaClient {
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
-      checkResponse(response);
+      checkResponse(response, false);
       return tdaJsonParser.parseAccounts(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -313,7 +313,7 @@ public class HttpTdaClient implements TdaClient {
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
-      checkResponse(response);
+      checkResponse(response, false);
       if (response.code() != 201) {
         LOGGER.warn("Expected 201 response, but received " + response.code());
       }
@@ -356,7 +356,7 @@ public class HttpTdaClient implements TdaClient {
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
-      checkResponse(response);
+      checkResponse(response, false);
       return tdaJsonParser.parseOrders(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -392,7 +392,7 @@ public class HttpTdaClient implements TdaClient {
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
-      checkResponse(response);
+      checkResponse(response, false);
       return tdaJsonParser.parseOrders(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -408,7 +408,7 @@ public class HttpTdaClient implements TdaClient {
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
-      checkResponse(response);
+      checkResponse(response, false);
       return tdaJsonParser.parseOrders(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -433,7 +433,7 @@ public class HttpTdaClient implements TdaClient {
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
-      checkResponse(response);
+      checkResponse(response, false);
       return tdaJsonParser.parseOrder(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -459,7 +459,7 @@ public class HttpTdaClient implements TdaClient {
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
-      checkResponse(response);
+      checkResponse(response, false);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -487,7 +487,7 @@ public class HttpTdaClient implements TdaClient {
     Request request = new Request.Builder().url(url).headers(defaultHeaders()).build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
-      checkResponse(response);
+      checkResponse(response, false);
       return tdaJsonParser.parseInstrumentMap(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -508,7 +508,7 @@ public class HttpTdaClient implements TdaClient {
     Request request = new Request.Builder().url(url).headers(defaultHeaders()).build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
-      checkResponse(response);
+      checkResponse(response, false);
       final List<FullInstrument> fullInstruments = tdaJsonParser
           .parseFullInstrumentMap(response.body().byteStream());
       if (fullInstruments.size() != 1) {
@@ -533,14 +533,14 @@ public class HttpTdaClient implements TdaClient {
       urlBuilder.addQueryParameter("change", moversReq.getChange().getChange());
     }
     if (moversReq.getDirection() != null) {
-      urlBuilder.addQueryParameter("direction", moversReq.getDirection().getDirection());
+      urlBuilder.addQueryParameter("direction", moversReq.getDirection().name());
     }
 
     Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
-      checkResponse(response);
+      checkResponse(response, true);
       return tdaJsonParser.parseMovers(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -549,9 +549,9 @@ public class HttpTdaClient implements TdaClient {
 
   @Override
   public OptionChain getOptionChain(String symbol) {
-    LOGGER.info("get option chaing for symbol: {}", symbol);
+    LOGGER.info("get option chain for symbol: {}", symbol);
 
-    if (StringUtils.isBlank(symbol)){
+    if (StringUtils.isBlank(symbol)) {
       throw new IllegalArgumentException("Symbol cannot be blank.");
     }
 
@@ -577,7 +577,7 @@ public class HttpTdaClient implements TdaClient {
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
-      checkResponse(response);
+      checkResponse(response, false);
       return tdaJsonParser.parseOptionChain(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -601,7 +601,7 @@ public class HttpTdaClient implements TdaClient {
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
-      checkResponse(response);
+      checkResponse(response, false);
       return tdaJsonParser.parseInstrumentArraySingle(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -610,26 +610,29 @@ public class HttpTdaClient implements TdaClient {
 
   /**
    * @param response the tda response
+   * @param emptyJsonOk is an empty JSON object or array actually OK (e.g. fetchMovers)?
    * @return if it's a 200 response with a valid looking body, the method returns okay. Otherwise an
    * unchecked exception is thrown.
    */
-  private void checkResponse(Response response) {
+  private void checkResponse(Response response, boolean emptyJsonOk) {
     if (!response.isSuccessful()) {
       String msg = String
           .format("Non 200 response:  [%d - %s] - %s", response.code(), response.message(),
               response.request().url());
       throw new RuntimeException(msg);
     }
-    try {
-      String json = response.peekBody(100).string();
-      if ("{}".equals(json)) {
-        String msg = String
-            .format("Empty json body:  [%d - %s] - %s", response.code(), response.message(),
-                response.request().url());
-        throw new RuntimeException(msg);
+    if (!emptyJsonOk) {
+      try {
+        String json = response.peekBody(100).string();
+        if ("{}".equals(json) || "[]".equals(json)) {
+          String msg = String
+              .format("Empty json body:  [%d - %s] - %s", response.code(), response.message(),
+                  response.request().url());
+          throw new RuntimeException(msg);
+        }
+      } catch (IOException e) {
+        throw new RuntimeException("Error checking for JSON empty body on response");
       }
-    } catch (IOException e) {
-      throw new RuntimeException("Error checking for JSON empty body on response");
     }
   }
 

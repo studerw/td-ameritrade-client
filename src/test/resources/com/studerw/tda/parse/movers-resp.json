@@ -1,0 +1,82 @@
+[
+  {
+    "change": 0.018661358546902214,
+    "description": "Visa Inc.",
+    "direction": "up",
+    "last": 204.7,
+    "symbol": "V",
+    "totalVolume": 17428971
+  },
+  {
+    "change": 0.016387195121951345,
+    "description": "Dow Inc. Common Stock",
+    "direction": "up",
+    "last": 53.34,
+    "symbol": "DOW",
+    "totalVolume": 7226705
+  },
+  {
+    "change": 0.013539791141519592,
+    "description": "The Travelers Companies, Inc. Common Stock",
+    "direction": "up",
+    "last": 140.73,
+    "symbol": "TRV",
+    "totalVolume": 2511314
+  },
+  {
+    "change": 0.013504064330041095,
+    "description": "Home Depot, Inc. (The) Common Stock",
+    "direction": "up",
+    "last": 231.91,
+    "symbol": "HD",
+    "totalVolume": 11163499
+  },
+  {
+    "change": 0.011221824513882137,
+    "description": "Nike, Inc. Common Stock",
+    "direction": "up",
+    "last": 104.53,
+    "symbol": "NKE",
+    "totalVolume": 9394813
+  },
+  {
+    "change": 0.01107093008501462,
+    "description": "Apple Inc. - Common Stock",
+    "direction": "up",
+    "last": 318.73,
+    "symbol": "AAPL",
+    "totalVolume": 34455253
+  },
+  {
+    "change": 0.007709066532595958,
+    "description": "Verizon Communications Inc. Common Stock",
+    "direction": "up",
+    "last": 60.13,
+    "symbol": "VZ",
+    "totalVolume": 32933736
+  },
+  {
+    "change": 0.007430103408655678,
+    "description": "American Express Company Common Stock",
+    "direction": "up",
+    "last": 131.52,
+    "symbol": "AXP",
+    "totalVolume": 5176938
+  },
+  {
+    "change": 0.006921675774134708,
+    "description": "JP Morgan Chase \u0026 Co. Common Stock",
+    "direction": "up",
+    "last": 138.2,
+    "symbol": "JPM",
+    "totalVolume": 23184384
+  },
+  {
+    "change": 0.006545209176788117,
+    "description": "Johnson \u0026 Johnson Common Stock",
+    "direction": "up",
+    "last": 149.17,
+    "symbol": "JNJ",
+    "totalVolume": 14346788
+  }
+]

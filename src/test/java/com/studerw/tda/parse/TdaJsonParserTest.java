@@ -15,7 +15,6 @@ import com.studerw.tda.model.account.Order;
 import com.studerw.tda.model.account.OrderLegCollection;
 import com.studerw.tda.model.account.OrderLegCollection.Instruction;
 import com.studerw.tda.model.account.OrderLegCollection.OrderLegType;
-import com.studerw.tda.model.account.OrderStrategy;
 import com.studerw.tda.model.account.OrderStrategyType;
 import com.studerw.tda.model.account.Position;
 import com.studerw.tda.model.account.SecuritiesAccount;
@@ -25,6 +24,7 @@ import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.instrument.FullInstrument;
 import com.studerw.tda.model.instrument.Fundamental;
 import com.studerw.tda.model.marketdata.Mover;
+import com.studerw.tda.model.marketdata.Mover.Direction;
 import com.studerw.tda.model.option.Option;
 import com.studerw.tda.model.option.Option.PutCall;
 import com.studerw.tda.model.option.OptionChain;
@@ -42,7 +42,6 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -321,21 +320,19 @@ public class TdaJsonParserTest {
   }
 
   @Test
-  @Ignore
-  //TODO
   public void testParseMovers() throws IOException {
     try (InputStream in = ParseQuotesTest.class.getClassLoader().
         getResourceAsStream("com/studerw/tda/parse/movers-resp.json")) {
       List<Mover> movers = tdaJsonParser.parseMovers(in);
-//      assertThat(instrument.getAssetType()).isEqualTo(com.studerw.tda.model.instrument.Instrument.AssetType.EQUITY);
-//      assertThat(instrument.getSymbol()).isEqualTo("MSFT");
-//      assertThat(instrument.getCusip()).isEqualTo("594918104");
-//      assertThat(instrument.getExchange()).isEqualTo("NASDAQ");
-//      Fundamental fundamental = instrument.getFundamental();
-//      assertThat(fundamental).isNotNull();
-//      assertThat(fundamental.getMarketCapFloat()).isEqualTo("7521.585");
-//      assertThat(fundamental.getDividendDate()).isEqualTo("2019-11-20 00:00:00.000");
-      LOGGER.debug(movers.toString());
+      assertThat(movers).size().isEqualTo(10);
+      Mover nike = movers.get(4);
+      assertThat(nike.getChange()).isEqualTo("0.011221824513882137");
+      assertThat(nike.getDescription()).isEqualTo("Nike, Inc. Common Stock");
+      assertThat(nike.getDirection()).isEqualTo(Direction.up);
+      assertThat(nike.getLast()).isEqualTo("104.53");
+      assertThat(nike.getSymbol()).isEqualTo("NKE");
+      assertThat(nike.getTotalVolume()).isEqualTo(9394813);
+      movers.forEach(m -> LOGGER.debug("{}", m));
     }
   }
 
@@ -386,11 +383,32 @@ public class TdaJsonParserTest {
       assertThat(option2.getMini()).isFalse();
       assertThat(option2.getInTheMoney()).isTrue();
       assertThat(option2.getOtherFields()).isNotEmpty();
-
-
       LOGGER.debug(optionChain.toString());
     }
   }
 
+  @Test
+  public void testParseOptionChainNan() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/optionChain-NAN-resp.json")) {
+      final OptionChain optionChain = tdaJsonParser.parseOptionChain(in);
+
+      final Map<String, Map<BigDecimal, List<Option>>> putExpDateMap = optionChain
+          .getPutExpDateMap();
+      final Map<BigDecimal, List<Option>> bigDecimalListMap = putExpDateMap.get("2020-01-10:42");
+      final List<Option> options = bigDecimalListMap.get(new BigDecimal("135.0"));
+      assertThat(options.size()).isEqualTo(1);
+      Option option = options.get(0);
+      assertThat(option.getPutCall()).isEqualTo(PutCall.PUT);
+      assertThat(option.getBidPrice()).isEqualTo("0.23");
+      assertThat(option.getTradeTimeInLong()).isEqualTo(1574886746322L);
+      assertThat(option.getRho()).isEqualTo("-0.01");
+      assertThat(option.getTheta()).isEqualTo("0");
+      assertThat(option.getMini()).isFalse();
+      assertThat(option.getInTheMoney()).isFalse();
+      assertThat(option.getOtherFields()).isNotEmpty();
+      LOGGER.debug(optionChain.toString());
+    }
+  }
 }
 

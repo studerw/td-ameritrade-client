@@ -1,14 +1,23 @@
 package com.studerw.tda;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.studerw.tda.model.instrument.Query.QueryType;
 import com.studerw.tda.model.marketdata.Mover.Direction;
 import com.studerw.tda.model.marketdata.MoversReq;
 import com.studerw.tda.model.marketdata.MoversReq.Change;
 import com.studerw.tda.model.marketdata.MoversReq.Index;
+import com.studerw.tda.parse.BigDecimalNanDeserializer;
 import com.studerw.tda.parse.Utils;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -27,14 +36,14 @@ public class MiscTest {
   private static final Logger LOGGER = LoggerFactory.getLogger(MiscTest.class);
 
   @Test
-  public void testUnicodeByteToStr(){
+  public void testUnicodeByteToStr() {
     byte[] bytes = "T".getBytes();
     assertThat(bytes.length == 1).isTrue();
     LOGGER.debug(Arrays.toString(bytes));
   }
 
   @Test
-  public void BigDecimalTest(){
+  public void BigDecimalTest() {
     BigDecimal b = new BigDecimal("-23.52");
     assertThat(b.longValue()).isLessThan(0);
     LOGGER.debug(b.toString());
@@ -56,14 +65,14 @@ public class MiscTest {
   }
 
   @Test
-  public void testPrettyDate(){
+  public void testPrettyDate() {
     Long epoch = System.currentTimeMillis();
     String pretty = Utils.epochToStr(epoch);
     LOGGER.debug("epoch: {} -> {}", epoch, pretty);
   }
 
   @Test
-  public void testIso8601Format(){
+  public void testIso8601Format() {
     ZonedDateTime now = ZonedDateTime.now();
     final String formatted = Utils.toTdaISO8601(now);
     LOGGER.debug(formatted);
@@ -74,7 +83,7 @@ public class MiscTest {
   }
 
   @Test
-  public void testCopyVsRef(){
+  public void testCopyVsRef() {
     String someStr = "abcde";
     String copy = doesCopy(someStr);
     LOGGER.debug("after the method: {}", someStr);
@@ -89,7 +98,7 @@ public class MiscTest {
   }
 
   @Test
-  public void getWeek(){
+  public void getWeek() {
     long now = System.currentTimeMillis();
     LOGGER.debug("now: {}", String.valueOf(now));
     LOGGER.debug("now: {}", Utils.epochToStr(now));
@@ -100,17 +109,45 @@ public class MiscTest {
   }
 
   @Test
-  public void javaEnumTest(){
+  public void javaEnumTest() {
     QueryType qt = QueryType.SYMBOL_REGEX;
     LOGGER.debug("{} - {}", qt.name(), qt.getQueryType());
   }
 
   @Test
-  public void enumTest(){
-    MoversReq moversReq = new MoversReq(Index.DOW_JONES, Direction.UP, Change.PERCENT);
-    LOGGER.debug("Name: {}",moversReq.getIndex().name());
+  public void testEnum() {
+    MoversReq moversReq = new MoversReq(Index.DOW_JONES, Direction.up, Change.PERCENT);
+    LOGGER.debug("Name: {}", moversReq.getIndex().name());
     LOGGER.debug("values: {}", moversReq.getIndex().values());
     LOGGER.debug("toStr: {}", moversReq.getIndex().toString());
     LOGGER.debug("getIndex: {}", moversReq.getIndex().getIndex());
+    LOGGER.debug("direction: {}", moversReq.getDirection());
+  }
+
+  @Test(expected = NumberFormatException.class)
+  public void testNAN() {
+    String NAN = "NAN";
+    final BigDecimal bigDecimal = new BigDecimal(NAN);
+    fail("Should have thrown NumberException");
+    LOGGER.debug(NAN);
+  }
+
+  @Test
+  public void testNanDeserializer() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    String json = "{ \"theta\":  \"NAN\"}";
+
+    try (InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8))){
+      JsonParser parser = mapper.getFactory().createParser(stream);
+      DeserializationContext ctxt = mapper.getDeserializationContext();
+      BigDecimalNanDeserializer deserializer = new BigDecimalNanDeserializer();
+      parser.nextToken();
+      parser.nextToken();
+      parser.nextToken();
+
+      final BigDecimal deserialized = deserializer.deserialize(parser, ctxt);
+      LOGGER.debug("NAN -> {}", deserialized);
+      assertThat(deserialized).isEqualTo("0");
+    }
   }
 }

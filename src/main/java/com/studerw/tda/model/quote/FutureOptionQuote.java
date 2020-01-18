@@ -2,7 +2,8 @@ package com.studerw.tda.model.quote;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.studerw.tda.parse.BigDecimalNanDeserializer;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,74 +13,114 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class FutureOptionQuote extends Quote implements Serializable {
 
   private final static long serialVersionUID = -5072373475224958309L;
+
   @JsonProperty("bidPriceInDouble")
   private BigDecimal bidPriceInDouble;
+
   @JsonProperty("askPriceInDouble")
   private BigDecimal askPriceInDouble;
+
   @JsonProperty("lastPriceInDouble")
   private BigDecimal lastPriceInDouble;
+
   @JsonProperty("highPriceInDouble")
   private BigDecimal highPriceInDouble;
+
   @JsonProperty("lowPriceInDouble")
   private BigDecimal lowPriceInDouble;
+
   @JsonProperty("closePriceInDouble")
   private BigDecimal closePriceInDouble;
+
   @JsonProperty("openPriceInDouble")
   private BigDecimal openPriceInDouble;
+
   @JsonProperty("netChangeInDouble")
   private BigDecimal netChangeInDouble;
+
   @JsonProperty("openInterest")
   private BigDecimal openInterest;
+
   @JsonProperty("exchangeName")
   private String exchangeName;
+
   @JsonProperty("securityStatus")
   private String securityStatus;
+
   @JsonProperty("volatility")
   private BigDecimal volatility;
+
   @JsonProperty("moneyIntrinsicValueInDouble")
   private BigDecimal moneyIntrinsicValueInDouble;
+
   @JsonProperty("multiplierInDouble")
   private BigDecimal multiplierInDouble;
+
   @JsonProperty("digits")
   private Long digits;
+
   @JsonProperty("strikePriceInDouble")
   private BigDecimal strikePriceInDouble;
+
   @JsonProperty("contractType")
   private String contractType;
+
   @JsonProperty("underlying")
   private String underlying;
+
   @JsonProperty("timeValueInDouble")
   private BigDecimal timeValueInDouble;
+
   @JsonProperty("deltaInDouble")
+  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   private BigDecimal deltaInDouble;
+
   @JsonProperty("gammaInDouble")
+  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   private BigDecimal gammaInDouble;
+
   @JsonProperty("thetaInDouble")
+  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   private BigDecimal thetaInDouble;
+
   @JsonProperty("vegaInDouble")
+  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   private BigDecimal vegaInDouble;
+
   @JsonProperty("rhoInDouble")
+  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   private BigDecimal rhoInDouble;
+
   @JsonProperty("mark")
   private BigDecimal mark;
+
   @JsonProperty("tick")
   private BigDecimal tick;
+
   @JsonProperty("tickAmount")
   private BigDecimal tickAmount;
+
   @JsonProperty("futureIsTradable")
   private Boolean futureIsTradable;
+
   @JsonProperty("futureTradingHours")
   private String futureTradingHours;
+
   @JsonProperty("futurePercentChange")
   private BigDecimal futurePercentChange;
+
   @JsonProperty("futureIsActive")
   private Boolean futureIsActive;
+
   @JsonProperty("futureExpirationDate")
   private Long futureExpirationDate;
+
   @JsonProperty("expirationType")
   private String expirationType;
+
   @JsonProperty("exerciseType")
   private String exerciseType;
+
   @JsonProperty("inTheMoney")
   private Boolean inTheMoney;
 

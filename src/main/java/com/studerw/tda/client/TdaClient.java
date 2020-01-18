@@ -294,10 +294,11 @@ public interface TdaClient {
    */
   FullInstrument getFundamentalData(String id);
 
-  /**
+  /** Note that this call can return an empty list on days the market is closed.
    * Top 10 (up or down) movers by value or percent for a particular market
+   *
    * @param moversReq Index must be set, the other fields can be null which will use TDA defaults.
-   * @return List of top 10 market movers defined by the request
+   * @return List of top 10 market movers defined by the request.
    */
   List<Mover> fetchMovers(MoversReq moversReq);
 

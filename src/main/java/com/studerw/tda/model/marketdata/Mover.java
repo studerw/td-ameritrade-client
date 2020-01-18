@@ -74,18 +74,8 @@ public class Mover implements Serializable {
   }
 
   public enum Direction {
-    UP("up"),
-    DOWN("down");
-
-    private String direction;
-
-    Direction(String direction) {
-      this.direction = direction;
-    }
-
-    public String getDirection() {
-      return direction;
-    }
+    up,
+    down
   }
 
 }
