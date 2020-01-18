@@ -12,6 +12,8 @@ import com.studerw.tda.model.marketdata.Mover;
 import com.studerw.tda.model.marketdata.MoversReq;
 import com.studerw.tda.model.option.OptionChain;
 import com.studerw.tda.model.quote.Quote;
+import com.studerw.tda.model.transaction.Transaction;
+import com.studerw.tda.model.transaction.TransactionRequest;
 import java.util.List;
 
 /**
@@ -308,4 +310,30 @@ public interface TdaClient {
    * @return an option chain using all TDA Default parameters
    */
   OptionChain getOptionChain(String symbol);
+
+
+  /**
+   *
+   * @param accountId the account under which these transactions occurred
+   * @return list of all transactions
+   */
+  List<Transaction> fetchTransactions(String accountId);
+
+  /**
+   *
+   * @param accountId the account under which these transactions occurred
+   * @param request transaction request which may be empty or using one or more parameters.
+   * If you add a <em>startDate</em> then you do need an <em>endDate</em> and vice versa.
+   * @return list of all transactions
+   */
+  List<Transaction> fetchTransactions(String accountId, TransactionRequest request);
+
+  /**
+   *
+   * @param accountId the account under which this transactions occurred
+   * @param transactionId transaction id
+   * @return single transaction
+   */
+  Transaction getTransaction(String accountId, Long transactionId);
+
 }

@@ -3,6 +3,7 @@ package com.studerw.tda.parse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,7 +16,8 @@ import java.util.Map;
 public class Utils {
 
   final private static ObjectMapper mapper = new ObjectMapper();
-  final private static DateTimeFormatter TMD = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+  final public static DateTimeFormatter TMD = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+  final public static DateTimeFormatter ISO = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssz");
 
   /**
    *
@@ -64,7 +66,7 @@ public class Utils {
    * @return a string formatted like {@code yyyy-MM-dd'T'HH:mm:ssz}.
    */
   public static String toTdaISO8601(ZonedDateTime zonedDateTime) {
-    return zonedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssz"));
+    return zonedDateTime.format(ISO);
   }
 
   /**
@@ -76,4 +78,12 @@ public class Utils {
     return zonedDateTime.format(TMD);
   }
 
+  /**
+   *
+   * @param localDate
+   * @return a String in form of "yyyy-MM-dd"
+   */
+  public static String toTdaYMD(LocalDate localDate) {
+    return localDate.format(TMD);
+  }
 }

@@ -24,9 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class OrderTestIT extends BaseTestIT {
+public class FetchOrdersTestIT extends BaseTestIT {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(OrderTestIT.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(FetchOrdersTestIT.class);
 
   @Test(expected = IllegalArgumentException.class)
   public void testPlaceOrderNoId() {

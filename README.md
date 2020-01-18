@@ -179,3 +179,9 @@ See the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-x
 Sometime in-between the beginning of this project (based on TDA's older XML API) and now, TDA released a restful [API](https://developer.tdameritrade.com/). 
 Unfortunately the old API is being [deprecated in 2020](https://apiforums.tdameritrade.com/tda-board/ubbthreads.php) and so the
 original source code for this project has been moved to the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-xml-api) branch and is now known as version 1.0.0.
+
+## TODO
+
+* Transactions 
+  - (date parsing in Jackson) - testParseTransactions is erroring
+* OptionChain query parameters are commented out in HttpTdaClient
