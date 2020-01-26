@@ -44,8 +44,8 @@ You need to obtain a valid TDA Developer *refresh token* every 90 days. See TDA'
 
 ```
   Properties props = new Properties();
-  props.set("tda.client_id", "...");
-  props.set("tda.token.refresh", "...")
+  props.put("tda.client_id", "...");
+  props.put("tda.token.refresh", "...");
 
   TdaClient tdaClient = new HttpTdaClient(props);
   final Quote quote = tdaClient.fetchQuote("msft");
