@@ -51,16 +51,14 @@ public class OrderRequestValidator {
     List<String> violations = new ArrayList<>();
 
     if (orderRequest.getToEnteredTime() == null && orderRequest.getFromEnteredTime() != null) {
-      String msg = String
-          .format("Both toEnteredTime and FromEnteredTime must be set if one or the other is set");
+      String msg = "Both toEnteredTime and FromEnteredTime must be set if one or the other is set";
       LOGGER.warn(msg);
       violations.add(msg);
       return violations;
     }
 
     if (orderRequest.getToEnteredTime() != null && orderRequest.getFromEnteredTime() == null) {
-      String msg = String
-          .format("Both toEnteredTime and FromEnteredTime must be set if one or the other is set");
+      String msg = "Both toEnteredTime and FromEnteredTime must be set if one or the other is set";
       LOGGER.warn(msg);
       violations.add(msg);
       return violations;
