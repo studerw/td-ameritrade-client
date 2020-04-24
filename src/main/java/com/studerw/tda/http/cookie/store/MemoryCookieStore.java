@@ -17,9 +17,9 @@ public class MemoryCookieStore implements CookieStore {
             Iterator<Cookie> itOld = oldCookies.iterator();
             while (itNew.hasNext()) {
                 String va = itNew.next().name();
-                while (va != null && itOld.hasNext()) {
+                while (itOld.hasNext()) {
                     String v = itOld.next().name();
-                    if (v != null && va.equals(v)) {
+                    if (va.equals(v)) {
                         itOld.remove();
                     }
                 }
