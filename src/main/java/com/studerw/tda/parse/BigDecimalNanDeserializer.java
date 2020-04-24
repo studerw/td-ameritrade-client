@@ -21,7 +21,7 @@ public class BigDecimalNanDeserializer extends JsonDeserializer<BigDecimal> {
 
   @Override
   public BigDecimal deserialize(JsonParser jp, DeserializationContext ctxt)
-      throws IOException, JsonProcessingException {
+      throws IOException {
     final String valueAsString = jp.getValueAsString();
     if ("NAN".equalsIgnoreCase(valueAsString)) {
       LOGGER.warn("{} using invalid NAN instead of a valid double", jp.getCurrentName());
