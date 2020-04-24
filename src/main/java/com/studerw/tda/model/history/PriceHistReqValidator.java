@@ -64,8 +64,7 @@ public class PriceHistReqValidator {
         priceHistReq.getEndDate() != null &&
         priceHistReq.getPeriod() != null) {
       List<String> violations = new ArrayList<>();
-      String msg = String
-          .format("Period should not be set when both start and end dates are also set.");
+      String msg = "Period should not be set when both start and end dates are also set.";
       LOGGER.warn(msg);
       violations.add(msg);
       return violations;
@@ -74,7 +73,7 @@ public class PriceHistReqValidator {
     if ((priceHistReq.getEndDate() != null && priceHistReq.getStartDate() != null)
         && (priceHistReq.getEndDate() < priceHistReq.getStartDate())) {
       List<String> violations = new ArrayList<>();
-      String msg = String.format("End date cannot be before start date");
+      String msg = "End date cannot be before start date";
       violations.add(msg);
       LOGGER.warn(msg);
       return violations;
@@ -153,7 +152,7 @@ public class PriceHistReqValidator {
       }
 
     } else if (periodType == PeriodType.ytd) {
-      List<Integer> valids = Arrays.asList(1);
+      List<Integer> valids = Collections.singletonList(1);
       if (!valids.contains(period)) {
         String msg = String
             .format("PeriodType: %s can only use the following Period values: %s", periodType,
@@ -191,40 +190,40 @@ public class PriceHistReqValidator {
                 "FrequencyType: %s can only use minute when PeriodType is set to null (default is 'day') or explicitly to 'day'",
                 frequencyType);
         LOGGER.warn(msg);
-        return Arrays.asList(msg);
+        return Collections.singletonList(msg);
       }
     }
 
-    if (periodType == PeriodType.month && frequencyType != null) {
+    if (periodType == PeriodType.month) {
       if (!Arrays.asList(FrequencyType.daily, frequencyType.weekly).contains(frequencyType)) {
         String msg = String
             .format(
                 "FrequencyType: %s can only use 'daily' or 'weekly' when PeriodType is set to 'month'",
                 frequencyType);
         LOGGER.warn(msg);
-        return Arrays.asList(msg);
+        return Collections.singletonList(msg);
       }
     }
 
-    if (periodType == PeriodType.year && frequencyType != null) {
+    if (periodType == PeriodType.year) {
       if (!Arrays.asList(FrequencyType.daily, frequencyType.weekly, frequencyType.monthly).contains(frequencyType)) {
         String msg = String
             .format(
                 "FrequencyType: %s can only use 'daily', 'weekly', or 'monthly' when PeriodType is set to 'year'",
                 frequencyType);
         LOGGER.warn(msg);
-        return Arrays.asList(msg);
+        return Collections.singletonList(msg);
       }
     }
 
-    if (periodType == PeriodType.ytd && frequencyType != null) {
+    if (periodType == PeriodType.ytd) {
       if (!Arrays.asList(FrequencyType.daily, frequencyType.weekly).contains(frequencyType)) {
         String msg = String
             .format(
                 "FrequencyType: %s can only use 'daily', 'weekly', when PeriodType is set to 'ytd'",
                 frequencyType);
         LOGGER.warn(msg);
-        return Arrays.asList(msg);
+        return Collections.singletonList(msg);
       }
     }
 
@@ -264,7 +263,7 @@ public class PriceHistReqValidator {
         }
 
       } else if (frequencyType == FrequencyType.daily) {
-        List<Integer> valids = Arrays.asList(1);
+        List<Integer> valids = Collections.singletonList(1);
         if (!valids.contains(frequency)) {
           String msg = String
               .format("FrequencyType %s can only use the following Frequency values: %s",
@@ -274,7 +273,7 @@ public class PriceHistReqValidator {
         }
 
       } else if (frequencyType == FrequencyType.weekly) {
-        List<Integer> valids = Arrays.asList(1);
+        List<Integer> valids = Collections.singletonList(1);
         if (!valids.contains(frequency)) {
           String msg = String
               .format("FrequencyType %s can only use the following Frequency values: %s",
@@ -284,7 +283,7 @@ public class PriceHistReqValidator {
         }
 
       } else if (frequencyType == FrequencyType.monthly) {
-        List<Integer> valids = Arrays.asList(1);
+        List<Integer> valids = Collections.singletonList(1);
         if (!valids.contains(frequency)) {
           String msg = String
               .format("FrequencyType %s can only use the following Frequency values: %s",
