@@ -25,9 +25,8 @@ public class PriceHistReqValidator {
    * @return a list of error messages or empty list if there are none.
    */
   public static List<String> validate(PriceHistReq priceHistReq) {
-    List<String> violations = new ArrayList<>();
 
-    violations.addAll(useJavaValidator(priceHistReq));
+    List<String> violations = new ArrayList<>(useJavaValidator(priceHistReq));
     if (violations.size() > 0) {
       return violations;
     }
@@ -87,7 +86,7 @@ public class PriceHistReqValidator {
    */
   private static List<String> useJavaValidator(PriceHistReq priceHistReq) {
     Set<ConstraintViolation<PriceHistReq>> violations = validator.validate(priceHistReq);
-    return violations.stream().map(v -> v.getMessage()).collect(toList());
+    return violations.stream().map(ConstraintViolation::getMessage).collect(toList());
   }
 
   /**
@@ -236,7 +235,7 @@ public class PriceHistReqValidator {
    * @return list of strings with errors or empty list if none
    */
   private static List<String> checkFrequency(PriceHistReq priceHistReq) {
-    PeriodType periodType = priceHistReq.getPeriodType();
+//    PeriodType periodType = priceHistReq.getPeriodType();
     FrequencyType frequencyType = priceHistReq.getFrequencyType();
     Integer frequency = priceHistReq.getFrequency();
 

@@ -29,7 +29,7 @@ public class PriceHistory implements Serializable {
    * List of candles
    */
   @JsonProperty("candles")
-  private List<Candle> candles = new ArrayList<Candle>();
+  private List<Candle> candles = new ArrayList<>();
   @JsonProperty("empty")
   private Boolean empty;
   @JsonProperty("symbol")

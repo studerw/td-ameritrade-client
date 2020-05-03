@@ -109,11 +109,11 @@ public class MiscTest {
   @Test
   public void getWeek() {
     long now = System.currentTimeMillis();
-    LOGGER.debug("now: {}", String.valueOf(now));
+    LOGGER.debug("now: {}", now);
     LOGGER.debug("now: {}", Utils.epochToStr(now));
 
     long weekAgo = now - (1_000 * 60 * 60 * 24 * 7);
-    LOGGER.debug("Week ago: {}", String.valueOf(weekAgo));
+    LOGGER.debug("Week ago: {}", weekAgo);
     LOGGER.debug("Week ago: {}", Utils.epochToStr(weekAgo));
   }
 

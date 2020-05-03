@@ -86,7 +86,7 @@ public class Order implements Serializable {
   private TaxLotMethod taxLotMethod;
 
   @JsonProperty("orderLegCollection")
-  private List<OrderLegCollection> orderLegCollection = new ArrayList<OrderLegCollection>();
+  private List<OrderLegCollection> orderLegCollection = new ArrayList<>();
 
   @JsonProperty("activationPrice")
   private BigDecimal activationPrice;
@@ -122,13 +122,13 @@ public class Order implements Serializable {
   private Long accountId;
 
   @JsonProperty("orderActivityCollection")
-  private List<OrderActivityCollection> orderActivityCollection = new ArrayList<OrderActivityCollection>();
+  private List<OrderActivityCollection> orderActivityCollection = new ArrayList<>();
 
   @JsonProperty("replacingOrderCollection")
-  private List<Object> replacingOrderCollection = new ArrayList<Object>();
+  private List<Object> replacingOrderCollection = new ArrayList<>();
 
   @JsonProperty("childOrderStrategies")
-  private List<Object> childOrderStrategies = new ArrayList<Object>();
+  private List<Object> childOrderStrategies = new ArrayList<>();
 
   @JsonProperty("statusDescription")
   private String statusDescription;

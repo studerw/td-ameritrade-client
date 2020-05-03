@@ -26,7 +26,7 @@ public class OptionInstrument extends Instrument {
   @JsonProperty("optionMultiplier")
   private Long optionMultiplier;
   @JsonProperty("optionDeliverables")
-  private List<OptionDeliverable> optionDeliverables = new ArrayList<OptionDeliverable>();
+  private List<OptionDeliverable> optionDeliverables = new ArrayList<>();
   @JsonAnySetter
   private Map<String, Object> otherFields = new HashMap<>();
 

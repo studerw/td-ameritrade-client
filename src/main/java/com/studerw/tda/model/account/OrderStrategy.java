@@ -83,9 +83,9 @@ public class OrderStrategy implements Serializable {
   @JsonProperty("accountId")
   private Long accountId;
   @JsonProperty("orderActivityCollection")
-  private List<OrderActivityCollection> orderActivityCollection = new ArrayList<OrderActivityCollection>();
+  private List<OrderActivityCollection> orderActivityCollection = new ArrayList<>();
   @JsonProperty("replacingOrderCollection")
-  private List<Object> replacingOrderCollection = new ArrayList<Object>();
+  private List<Object> replacingOrderCollection = new ArrayList<>();
   @JsonProperty("childOrderStrategies")
   private List<OrderStrategy> childOrderStrategies = new ArrayList<>();
   @JsonProperty("statusDescription")

@@ -1,7 +1,6 @@
 package com.studerw.tda.client;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.in;
 import static org.junit.Assert.fail;
 
 import com.studerw.tda.model.instrument.FullInstrument;
@@ -10,9 +9,9 @@ import com.studerw.tda.model.instrument.Instrument;
 import com.studerw.tda.model.instrument.Instrument.AssetType;
 import com.studerw.tda.model.instrument.Query;
 import com.studerw.tda.model.instrument.Query.QueryType;
-import com.studerw.tda.model.quote.Quote;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -86,7 +85,7 @@ public class getInstrumentTestIT extends BaseTestIT {
   @Test
   @Ignore
   public void testUnknownCuisps() {
-    List<String> mfs = Arrays.asList("EUR/SEK");
+    List<String> mfs = Collections.singletonList("EUR/SEK");
     mfs.forEach(symbol -> {
       Instrument instrument = httpTdaClient.getInstrumentByCUSIP(symbol);
       LOGGER.debug("{}",instrument);

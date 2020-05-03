@@ -33,9 +33,7 @@ public class TdaJsonParser {
   public List<Quote> parseQuotes(InputStream in) {
     LOGGER.trace("parsing quotes...");
     try (BufferedInputStream bIn = new BufferedInputStream(in)) {
-      LinkedHashMap<String, Quote> quotesMap = new LinkedHashMap<>();
-      quotesMap = DefaultMapper.fromJson(bIn, new TypeReference<LinkedHashMap<String, Quote>>() {
-      });
+      LinkedHashMap<String, Quote> quotesMap = DefaultMapper.fromJson(bIn, new TypeReference<LinkedHashMap<String, Quote>>() {});
       LOGGER.debug("returned a map of size: {}", quotesMap.size());
 
       List<Quote> quotes = new ArrayList<>();

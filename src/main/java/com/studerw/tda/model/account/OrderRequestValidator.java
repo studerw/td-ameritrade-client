@@ -25,9 +25,8 @@ public class OrderRequestValidator {
    * @return a list of error messages or empty list if there are none.
    */
   public static List<String> validate(OrderRequest orderRequest) {
-    List<String> violations = new ArrayList<>();
 
-    violations.addAll(useJavaValidator(orderRequest));
+    List<String> violations = new ArrayList<>(useJavaValidator(orderRequest));
     if (violations.size() > 0) {
       return violations;
     }
@@ -89,7 +88,7 @@ public class OrderRequestValidator {
    */
   private static List<String> useJavaValidator(OrderRequest orderRequest) {
     Set<ConstraintViolation<OrderRequest>> violations = validator.validate(orderRequest);
-    return violations.stream().map(v -> v.getMessage()).collect(toList());
+    return violations.stream().map(ConstraintViolation::getMessage).collect(toList());
   }
 
 }

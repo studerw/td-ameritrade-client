@@ -1,17 +1,8 @@
 package com.studerw.tda.model.account;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-import static org.assertj.core.api.Assertions.setMaxLengthForSingleLineDescription;
 
-import com.studerw.tda.model.history.FrequencyType;
-import com.studerw.tda.model.history.PeriodType;
-import com.studerw.tda.model.history.PriceHistReq;
-import com.studerw.tda.model.history.PriceHistReq.Builder;
-import com.studerw.tda.model.history.PriceHistReqValidator;
-import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
 import org.slf4j.Logger;
