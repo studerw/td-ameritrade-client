@@ -6,15 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Convert between Java pojos and JSON. This class is thread safe.
  */
 public class DefaultMapper {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(DefaultMapper.class);
   private final static ObjectMapper defaultMapper;
 
   static {
@@ -45,7 +42,7 @@ public class DefaultMapper {
    * @param json string of json
    * @param clazz the class type
    * @param <T> the type to marshall
-   * @return a deserialzed java POJO
+   * @return a deserialized java POJO
    */
   public static <T> T fromJson(String json, Class<T> clazz) {
     try {
@@ -61,12 +58,11 @@ public class DefaultMapper {
    * @param in InputStream of json, guaranteed to be closed upon return.
    * @param clazz the class type
    * @param <T> the type to marshall
-   * @return a deserialzed java POJO
+   * @return a deserialized java POJO
    */
   public static <T> T fromJson(InputStream in, Class<T> clazz) {
-    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
-      T t = defaultMapper.readValue(in, clazz);
-      return t;
+    try (BufferedInputStream ignored = new BufferedInputStream(in)) {
+      return defaultMapper.readValue(in, clazz);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -78,12 +74,11 @@ public class DefaultMapper {
    * @param in InputStream of json, guaranteed to be closed upon return.
    * @param typeReference Jackson {@link TypeReference} of the pojo to map
    * @param <T> the type to marshall
-   * @return a deserialzed java POJO
+   * @return a deserialized java POJO
    */
   public static <T> T fromJson(InputStream in, TypeReference<T> typeReference) {
-    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
-      T t = defaultMapper.readValue(in, typeReference);
-      return t;
+    try (BufferedInputStream ignored = new BufferedInputStream(in)) {
+      return defaultMapper.readValue(in, typeReference);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

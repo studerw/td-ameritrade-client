@@ -24,12 +24,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
+
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.HttpUrl.Builder;
@@ -233,7 +229,7 @@ public class HttpTdaClient implements TdaClient {
 
   @Override
   public Quote fetchQuote(String symbol) {
-    List<Quote> quotes = fetchQuotes(Arrays.asList(symbol));
+    List<Quote> quotes = fetchQuotes(Collections.singletonList(symbol));
     return quotes.get(0);
   }
 
@@ -611,8 +607,6 @@ public class HttpTdaClient implements TdaClient {
   /**
    * @param response the tda response
    * @param emptyJsonOk is an empty JSON object or array actually OK (e.g. fetchMovers)?
-   * @return if it's a 200 response with a valid looking body, the method returns okay. Otherwise an
-   * unchecked exception is thrown.
    */
   private void checkResponse(Response response, boolean emptyJsonOk) {
     if (!response.isSuccessful()) {
