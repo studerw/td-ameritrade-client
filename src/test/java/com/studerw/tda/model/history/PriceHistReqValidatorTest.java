@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.studerw.tda.model.history.PriceHistReq.Builder;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -108,7 +109,7 @@ public class PriceHistReqValidatorTest {
 
   @Test
   public void testValidPeriodTypeYtd() {
-    List<Integer> integers = Arrays.asList(1);
+    List<Integer> integers = Collections.singletonList(1);
     for (Integer i : integers) {
       PriceHistReq request = Builder.priceHistReq()
           .withSymbol("MSFT")
@@ -176,7 +177,7 @@ public class PriceHistReqValidatorTest {
 
   @Test
   public void testValidPeriodTypeYTD() {
-    List<Integer> integers = Arrays.asList(1);
+    List<Integer> integers = Collections.singletonList(1);
     for (Integer i : integers) {
       PriceHistReq request = Builder.priceHistReq()
           .withSymbol("MSFT")

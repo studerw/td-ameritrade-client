@@ -132,7 +132,7 @@ public class ParseQuotesTest {
       assertThat(quotes.get(2)).isInstanceOf(ForexQuote.class);
       assertThat(quotes.get(3)).isInstanceOf(IndexQuote.class);
       IndexQuote indexQuote = (IndexQuote) quotes.get(3);
-      assertThat(indexQuote.getClosePrice().equals(new BigDecimal(2926.46)));
+      assertThat(indexQuote.getClosePrice().equals(new BigDecimal("2926.46")));
       assertThat(quotes.get(4)).isInstanceOf(OptionQuote.class);
       assertThat(quotes.get(5)).isInstanceOf(EtfQuote.class);
 

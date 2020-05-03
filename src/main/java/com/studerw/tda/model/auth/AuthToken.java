@@ -14,13 +14,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class AuthToken implements Serializable {
 
   private final static long serialVersionUID = -7714855788981020534L;
-  public static String GRANT_TYPE_PARAM = "grant_type";
-  public static String GRANT_TYPE_REFRESH = "refresh_token";
-  public static String GRANT_TYPE_AUTH = "authorization_code";
-  public static String ACCESS_TYPE_PARAM = "access_type";
-  public static String ACCESS_TYPE_OFFLINE = "offline";
-  public static String CLIENT_ID_PARAM = "client_id";
-  public static String REFRESH_TOKEN_PARAM = "refresh_token";
+  public final static String GRANT_TYPE_PARAM = "grant_type";
+  public final static String GRANT_TYPE_REFRESH = "refresh_token";
+  public final static String GRANT_TYPE_AUTH = "authorization_code";
+  public final static String ACCESS_TYPE_PARAM = "access_type";
+  public final static String ACCESS_TYPE_OFFLINE = "offline";
+  public final static String CLIENT_ID_PARAM = "client_id";
+  public final static String REFRESH_TOKEN_PARAM = "refresh_token";
 
   @JsonProperty("access_token")
   private String accessToken;

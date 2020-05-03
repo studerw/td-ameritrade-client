@@ -1,10 +1,8 @@
 package com.studerw.tda.parse;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;
 import java.io.IOException;
 import java.math.BigDecimal;
 import org.slf4j.Logger;
@@ -17,7 +15,7 @@ import org.slf4j.LoggerFactory;
 public class BigDecimalNanDeserializer extends JsonDeserializer<BigDecimal> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(BigDecimalNanDeserializer.class);
-  private NumberDeserializers.BigDecimalDeserializer delegate = NumberDeserializers.BigDecimalDeserializer.instance;
+//  private final NumberDeserializers.BigDecimalDeserializer delegate = NumberDeserializers.BigDecimalDeserializer.instance;
 
   @Override
   public BigDecimal deserialize(JsonParser jp, DeserializationContext ctxt)

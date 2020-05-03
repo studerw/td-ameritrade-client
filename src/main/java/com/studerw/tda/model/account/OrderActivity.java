@@ -31,7 +31,7 @@ public class OrderActivity implements Serializable {
   @JsonProperty("orderRemainingQuantity")
   private BigDecimal orderRemainingQuantity;
   @JsonProperty("executionLegs")
-  private List<ExecutionLeg> executionLegs = new ArrayList<ExecutionLeg>();
+  private List<ExecutionLeg> executionLegs = new ArrayList<>();
   @JsonAnySetter
   private Map<String, Object> otherFields = new HashMap<>();
 

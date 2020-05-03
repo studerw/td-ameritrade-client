@@ -138,7 +138,7 @@ public class Option implements Serializable {
   private Boolean isNonStandard;
 
   @JsonProperty("optionDeliverablesList")
-  private List<OptionDeliverable> optionDeliverablesList = new ArrayList<OptionDeliverable>();
+  private List<OptionDeliverable> optionDeliverablesList = new ArrayList<>();
 
   @JsonProperty("strikePrice")
   private BigDecimal strikePrice;

@@ -59,9 +59,9 @@ public class SecuritiesAccount implements Serializable {
   @JsonProperty("isClosingOnlyRestricted")
   private Boolean isClosingOnlyRestricted;
   @JsonProperty("positions")
-  private List<Position> positions = new ArrayList<Position>();
+  private List<Position> positions = new ArrayList<>();
   @JsonProperty("orderStrategies")
-  private List<OrderStrategy> orderStrategies = new ArrayList<OrderStrategy>();
+  private List<OrderStrategy> orderStrategies = new ArrayList<>();
   @JsonAnySetter
   private Map<String, Object> otherFields = new HashMap<>();
 

@@ -23,9 +23,7 @@ public class FetchMoversTestIT extends BaseTestIT {
     final List<Mover> movers = httpTdaClient.fetchMovers(moversReq);
     assertThat(movers).isNotNull();
     assertThat(movers.size()).isIn(0, 10);
-    movers.forEach(m -> {
-      LOGGER.debug("{}", m);
-    });
+    movers.forEach(m -> LOGGER.debug("{}", m));
   }
 
   @Test
@@ -34,9 +32,7 @@ public class FetchMoversTestIT extends BaseTestIT {
     final List<Mover> movers = httpTdaClient.fetchMovers(moversReq);
     assertThat(movers).isNotNull();
     assertThat(movers.size()).isIn(0, 10);
-    movers.forEach(m -> {
-      LOGGER.debug("{}", m);
-    });
+    movers.forEach(m -> LOGGER.debug("{}", m));
   }
 
   @Test
@@ -45,9 +41,7 @@ public class FetchMoversTestIT extends BaseTestIT {
     final List<Mover> movers = httpTdaClient.fetchMovers(moversReq);
     assertThat(movers).isNotNull();
     assertThat(movers.size()).isIn(0, 10);
-    movers.forEach(m -> {
-      LOGGER.debug("{}", m);
-    });
+    movers.forEach(m -> LOGGER.debug("{}", m));
   }
 
 }
