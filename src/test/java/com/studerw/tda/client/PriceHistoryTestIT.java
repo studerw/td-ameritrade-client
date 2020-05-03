@@ -47,7 +47,7 @@ public class PriceHistoryTestIT extends BaseTestIT {
     long now = System.currentTimeMillis();
     PriceHistory priceHistory = httpTdaClient.priceHistory("VTSAX");
     assertThat(priceHistory).isNotNull();
-    assertThat(priceHistory.getCandles().size()).isGreaterThan(10);
+    assertThat(priceHistory.getCandles().size()).isGreaterThan(5);
     assertThat(priceHistory.getSymbol()).isEqualTo("VTSAX");
     assertThat(priceHistory.isEmpty()).isFalse();
     LOGGER.debug(priceHistory.toString());
