@@ -1,5 +1,10 @@
 jdk:
+  - oraclejdk8
+  - oraclejdk11
+  - oraclejdk14
   - openjdk8
+  - openjdk11
+  - openjdk14
 sudo: false
 script: mvn clean verify
 
