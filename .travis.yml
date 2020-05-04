@@ -1,5 +1,4 @@
 jdk:
-  - oraclejdk8
   - oraclejdk11
   - oraclejdk14
   - openjdk8
