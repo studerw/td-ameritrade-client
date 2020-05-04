@@ -20,27 +20,33 @@ See the [Getting Started](https://developer.tdameritrade.com/content/getting-sta
 
 ## Build
 
-To build the jar, checkout the source and run:
+To build the jar, checkout the sources and run:
 
 ```bash
 mvn clean install
 ```
 
 ## Usage
-Until the project is finished, you will need to have built this locally in order to put the necessary jars in your local Maven repo.
-Once we have a ~~1.0.0~~ 2.0.0 version, it will be submitted to Maven Central. 
-
 Add the following to your Maven build file:
 
 ```
   <dependency>
     <groupId>com.studerw.tda</groupId>
     <artifactId>td-ameritrade-client</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.0.0</version>
   </dependency>
 ```
+
+Or for Gradle:
+
+```
+dependencies {
+	compile "com.studerw.tda:td-ameritrade-client:2.0.0"
+}
+```
 ----
-You need to obtain a valid TDA Developer *refresh token* every 90 days. See TDA's [Simple Auth for Local Apps](https://developer.tdameritrade.com/content/simple-auth-local-apps).
+You need to obtain a valid TDA Developer *refresh token* every 90 days. 
+See TDA's [Simple Auth for Local Apps](https://developer.tdameritrade.com/content/simple-auth-local-apps).
 
 ```
   Properties props = new Properties();
@@ -133,7 +139,7 @@ Specific Loggers that you can tune:
 * `TDA_HTTP` - set this to _INFO_ for basic request / response info, or _DEBUG_ to see full headers and body.
 * `com.studerw.tda.client.OauthInterceptor` - detailed info on OAUTH can be seen using either _INFO_ or _DEBUG_
 * `com.studerw.tda` - basic API logging with either _INFO_ or _DEBUG_
-* `com.squareup.okhttp3` - low-level OKHTTP library.
+* `com.squareup.okhttp3` - lower level OKHTTP library.
 
 ### Logback
 Add `Logback` to your pom:
