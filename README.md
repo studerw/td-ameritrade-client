@@ -16,13 +16,16 @@ I'm happy to collaborate contractually or OSS with other developers.
 ## Required TDA Properties
 
 The client only requires a TDA client ID and current OAuth refresh token. The refresh token expires every 90 days.
-See the [Getting Started](https://developer.tdameritrade.com/content/getting-started) and [Simple Auth for Local Apps](https://developer.tdameritrade.com/content/simple-auth-local-apps) for help.
+See the [Getting Started](https://developer.tdameritrade.com/content/getting-started) 
+and [Simple Auth for Local Apps](https://developer.tdameritrade.com/content/simple-auth-local-apps) for help.
 
 ## Build
 
-To build the jar, checkout the sources and run:
+To build the jar, check out the source and run:
 
 ```bash
+git clone https://github.com/studerw/td-ameritrade-client.git
+cd td-ameritrade-client
 mvn clean install
 ```
 
@@ -41,7 +44,7 @@ Or for Gradle:
 
 ```
 dependencies {
-	compile "com.studerw.tda:td-ameritrade-client:2.0.0"
+  compile "com.studerw.tda:td-ameritrade-client:2.0.0"
 }
 ```
 ----
@@ -61,9 +64,9 @@ See TDA's [Simple Auth for Local Apps](https://developer.tdameritrade.com/conten
 ```
 
 ## Integration Tests
-Integration tests do require a Client App ID user and refresh token, though are not needed to build the jar.
+Integration tests do require a client app ID and refresh token to run.
 
-To run integration tests, you will need to rename this file *src/test/resources/my-test.properties.changeme* 
+To run integration tests, you will need to rename the file *src/test/resources/my-test.properties.changeme* 
 to *my-test.properties* and fill in the necessary TDA properties.
 
 Then run the following command.
@@ -73,7 +76,7 @@ mvn failsafe:integration-test
 ```
 
 ## POJO `otherfields` Property
-The TDA API seems to be in a constant state of change, and some of the documentation is out of sync with the actual responses.
+The TDA API seems to be in a constant state of change, and some documentation is out of sync with the actual responses.
 Thus, in order to ensure that all properties are deserialized from the returned JSON into our Java pojos,
 an `otherfields` Map is contained in most types. You can get any new or undocumented fields using code similar
 to the following:
@@ -83,7 +86,7 @@ Quote quote = tdaClient.fetchQuote("msft");
 String someField = (String)quote.getOtherFields().get("someField"))
 ```
 
-## DateTime Handling
+## Date and Time Handling
 Most TDA dates and times are returned as longs (i.e. milliseconds since the epoch UTC).
 An easy way to convert them to Java's new [DateTime](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) 
 is via the following:
@@ -109,7 +112,7 @@ System.out.println(formattedDate) //   2019-09-13T19:59-04:00[America/New_York]
 
 ## Error Handling
 
-Only **unchecked exceptions** are called to avoid having to litter your code with `try catch` blocks.
+Only **unchecked exceptions** are thrown to avoid littering your code with `try / catch` blocks.
 
 Before the call is made, request parameter validation exceptions can be thrown. Usually you won't have to catch these in your program, though they'll be helpful
 when testing.
@@ -132,7 +135,7 @@ client id or an expired refresh token, and this will throw an `IllegalStateExcep
  
 ## Logging
 The API uses [SLF4J](http://www.slf4j.org/) as does [OKHttp 3](https://github.com/square/okhttp).
-You can use any implementation like Logback or Log4j.
+You can use any implementation like [Logback](http://logback.qos.ch/) or [Log4j2](https://logging.apache.org/log4j/2.x/).
 
 Specific Loggers that you can tune:
 
@@ -151,7 +154,7 @@ Add `Logback` to your pom:
 </dependency>
 
 ```
-Add a `logback-config.xml` to you classpath (e.g. _src/main/resources/_)
+Add a `logback.xml` file to you classpath (e.g. _src/main/resources/_)
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration scan="false" scanPeriod="3 seconds" debug="false">
@@ -178,7 +181,7 @@ Add a `logback-config.xml` to you classpath (e.g. _src/main/resources/_)
 
 ```
 
-## 2019 Update - Old API Deprecated
+## Old API Deprecated
 
 See the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-xml-api) branch for the previous project based on the soon-to-be-deprecated TDA XML API.
 
