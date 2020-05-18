@@ -1,0 +1,293 @@
+[
+  {
+    "session": "NORMAL",
+    "duration": "GOOD_TILL_CANCEL",
+    "orderType": "STOP",
+    "cancelTime": "2020-11-13",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 360.0,
+    "filledQuantity": 0.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "AutoRoute",
+    "stopPrice": 6.0,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "345370860",
+          "symbol": "F"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 360.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1234567789,
+    "cancelable": false,
+    "editable": false,
+    "status": "REJECTED",
+    "enteredTime": "2020-05-18T04:22:45+0000",
+    "closeTime": "2020-05-18T04:22:45+0000",
+    "tag": "AA_billtda",
+    "accountId": 99999999,
+    "statusDescription": "The stop price must be above the current ask for buy stop orders and below the bid for sell stop orders."
+  },
+  {
+    "session": "NORMAL",
+    "duration": "DAY",
+    "orderType": "MARKET",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 360.0,
+    "filledQuantity": 0.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkNa9me": "AutoRoute",
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "345370860",
+          "symbol": "F"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 360.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1080436615,
+    "cancelable": false,
+    "editable": false,
+    "status": "CANCELED",
+    "enteredTime": "2020-05-18T03:46:46+0000",
+    "closeTime": "2020-05-18T03:49:30+0000",
+    "tag": "AA_billtda",
+    "accountId": 99999999
+  },
+  {
+    "session": "NORMAL",
+    "duration": "GOOD_TILL_CANCEL",
+    "orderType": "STOP",
+    "cancelTime": "2020-11-13",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 360.0,
+    "filledQuantity": 0.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "AutoRoute",
+    "stopPrice": 6.0,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "345370860",
+          "symbol": "F"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 360.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1080436644,
+    "cancelable": false,
+    "editable": false,
+    "status": "REJECTED",
+    "enteredTime": "2020-05-18T04:21:19+0000",
+    "closeTime": "2020-05-18T04:21:19+0000",
+    "tag": "AA_billtda",
+    "accountId": 99999999,
+    "statusDescription": "The stop price must be above the current ask for buy stop orders and below the bid for sell stop orders."
+  },
+  {
+    "session": "NORMAL",
+    "duration": "GOOD_TILL_CANCEL",
+    "orderType": "STOP",
+    "cancelTime": "2020-11-13",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 360.0,
+    "filledQuantity": 0.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "AutoRoute",
+    "stopPrice": 6.0,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "345370860",
+          "symbol": "F"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 360.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1080436642,
+    "cancelable": false,
+    "editable": false,
+    "status": "REJECTED",
+    "enteredTime": "2020-05-18T04:20:15+0000",
+    "closeTime": "2020-05-18T04:20:15+0000",
+    "tag": "AA_billtda",
+    "accountId": 99999999,
+    "statusDescription": "The stop price must be above the current ask for buy stop orders and below the bid for sell stop orders."
+  },
+  {
+    "session": "NORMAL",
+    "duration": "GOOD_TILL_CANCEL",
+    "orderType": "STOP",
+    "cancelTime": "2020-11-13",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 360.0,
+    "filledQuantity": 0.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "AutoRoute",
+    "stopPrice": 6.0,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "345370860",
+          "symbol": "F"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 360.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1080436643,
+    "cancelable": false,
+    "editable": false,
+    "status": "REJECTED",
+    "enteredTime": "2020-05-18T04:20:50+0000",
+    "closeTime": "2020-05-18T04:20:50+0000",
+    "tag": "AA_billtda",
+    "accountId": 99999999,
+    "statusDescription": "The stop price must be above the current ask for buy stop orders and below the bid for sell stop orders."
+  },
+  {
+    "session": "NORMAL",
+    "duration": "GOOD_TILL_CANCEL",
+    "orderType": "STOP",
+    "cancelTime": "2020-11-13",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 360.0,
+    "filledQuantity": 0.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "AutoRoute",
+    "stopPrice": 6.0,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "345370860",
+          "symbol": "F"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 360.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1080436654,
+    "cancelable": false,
+    "editable": false,
+    "status": "REJECTED",
+    "enteredTime": "2020-05-18T04:30:54+0000",
+    "closeTime": "2020-05-18T04:30:54+0000",
+    "tag": "AA_billtda",
+    "accountId": 99999999,
+    "statusDescription": "The stop price must be above the current ask for buy stop orders and below the bid for sell stop orders."
+  },
+  {
+    "session": "NORMAL",
+    "duration": "GOOD_TILL_CANCEL",
+    "orderType": "STOP",
+    "cancelTime": "2020-11-13",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 360.0,
+    "filledQuantity": 0.0,
+    "remainingQuantity": 360.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "AutoRoute",
+    "stopPrice": 4.7,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "345370860",
+          "symbol": "F"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 360.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1080436655,
+    "cancelable": true,
+    "editable": true,
+    "status": "WORKING",
+    "enteredTime": "2020-05-18T04:33:07+0000",
+    "tag": "AA_billtda",
+    "accountId": 99999999
+  },
+  {
+    "session": "NORMAL",
+    "duration": "GOOD_TILL_CANCEL",
+    "orderType": "STOP",
+    "cancelTime": "2020-11-13",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 360.0,
+    "filledQuantity": 0.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "AutoRoute",
+    "stopPrice": 6.0,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "345370860",
+          "symbol": "F"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 360.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1080436649,
+    "cancelable": false,
+    "editable": false,
+    "status": "REJECTED",
+    "enteredTime": "2020-05-18T04:23:16+0000",
+    "closeTime": "2020-05-18T04:23:16+0000",
+    "tag": "AA_billtda",
+    "accountId": 99999999,
+    "statusDescription": "The stop price must be above the current ask for buy stop orders and below the bid for sell stop orders."
+  }
+]

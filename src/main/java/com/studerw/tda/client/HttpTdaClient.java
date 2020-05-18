@@ -699,8 +699,17 @@ public class HttpTdaClient implements TdaClient {
    */
   private void checkResponse(Response response, boolean emptyJsonOk) {
     if (!response.isSuccessful()) {
+      String errorMsg = response.message();
+      if (StringUtils.isBlank(errorMsg)) {
+        try {
+          errorMsg = response.body().string();
+        } catch (Exception e) {
+          LOGGER.warn("No error message nor error body");
+          errorMsg = "UNKNOWN";
+        }
+      }
       String msg = String
-          .format("Non 200 response:  [%d - %s] - %s", response.code(), response.message(),
+          .format("Non 200 response:  [%d - %s] - %s", response.code(), errorMsg,
               response.request().url());
       throw new RuntimeException(msg);
     }

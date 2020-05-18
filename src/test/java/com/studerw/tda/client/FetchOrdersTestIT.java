@@ -9,6 +9,7 @@ import com.studerw.tda.model.account.Instrument;
 import com.studerw.tda.model.account.Order;
 import com.studerw.tda.model.account.OrderLegCollection;
 import com.studerw.tda.model.account.OrderLegCollection.Instruction;
+import com.studerw.tda.model.account.OrderLegCollection.QuantityType;
 import com.studerw.tda.model.account.OrderRequest;
 import com.studerw.tda.model.account.OrderStrategyType;
 import com.studerw.tda.model.account.OrderType;
@@ -43,6 +44,12 @@ public class FetchOrdersTestIT extends BaseTestIT {
   @Ignore
   public void testPlaceSimpleOrder() {
     this.httpTdaClient.placeOrder(getAccountId(), simpleOrder());
+  }
+
+  @Test
+  @Ignore
+  public void testPlaceSimpleOrder2() {
+    this.httpTdaClient.placeOrder(getAccountId(), simpleOrder2());
   }
 
   @Test
@@ -87,7 +94,7 @@ public class FetchOrdersTestIT extends BaseTestIT {
 
   @Test
   @Ignore
-  public void testCancelOrder() {
+    public void testCancelOrder() {
     OrderRequest orderRequest = new OrderRequest();
     this.httpTdaClient.cancelOrder(getAccountId(), "99999999");
   }
@@ -128,12 +135,33 @@ public class FetchOrdersTestIT extends BaseTestIT {
     order.setOrderStrategyType(OrderStrategyType.SINGLE);
 
     OrderLegCollection olc = new OrderLegCollection();
-    olc.setInstruction(Instruction.BUY);
-    olc.setQuantity(new BigDecimal("15.0"));
+    olc.setInstruction(Instruction.SELL);
+    olc.setQuantity(new BigDecimal("360.888"));
     order.getOrderLegCollection().add(olc);
 
     Instrument instrument = new EquityInstrument();
-    instrument.setSymbol("MSFT");
+    instrument.setSymbol("F");
+    olc.setInstrument(instrument);
+    LOGGER.debug(order.toString());
+    return order;
+  }
+
+  private Order simpleOrder2() {
+    Order order = new Order();
+    order.setOrderType(OrderType.STOP);
+    order.setSession(Session.NORMAL);
+    order.setDuration(Duration.GOOD_TILL_CANCEL);
+    order.setOrderStrategyType(OrderStrategyType.SINGLE);
+    order.setStopPrice(new BigDecimal("4.7"));
+
+    OrderLegCollection olc = new OrderLegCollection();
+    olc.setInstruction(Instruction.SELL);
+    olc.setQuantity(new BigDecimal("360.888"));
+    olc.setQuantityType(QuantityType.SHARES);
+    order.getOrderLegCollection().add(olc);
+
+    Instrument instrument = new EquityInstrument();
+    instrument.setSymbol("F");
     olc.setInstrument(instrument);
     LOGGER.debug(order.toString());
     return order;
