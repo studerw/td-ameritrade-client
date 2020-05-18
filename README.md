@@ -19,16 +19,6 @@ The client only requires a TDA client ID and current OAuth refresh token. The re
 See the [Getting Started](https://developer.tdameritrade.com/content/getting-started) 
 and [Simple Auth for Local Apps](https://developer.tdameritrade.com/content/simple-auth-local-apps) for help.
 
-## Build
-
-To build the jar, check out the source and run:
-
-```bash
-git clone https://github.com/studerw/td-ameritrade-client.git
-cd td-ameritrade-client
-mvn clean install
-```
-
 ## Usage
 Add the following to your Maven build file:
 
@@ -62,6 +52,18 @@ See TDA's [Simple Auth for Local Apps](https://developer.tdameritrade.com/conten
 
   System.out.println("Current price of MSFT: " + equityQuote.getAskPrice());
 ```
+
+## Build
+
+To build the jar, check out the source and run:
+
+```bash
+git clone https://github.com/studerw/td-ameritrade-client.git
+cd td-ameritrade-client
+mvn clean install
+```
+You do not need to build the project to use it. The latest release is available on Maven Central,
+so just include the dependency in your Maven pom or Gradle build file. 
 
 ## Integration Tests
 Integration tests do require a client app ID and refresh token to run.
