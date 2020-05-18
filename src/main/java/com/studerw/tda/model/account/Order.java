@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.studerw.tda.parse.LocalDateDeserializer;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,8 +37,9 @@ public class Order implements Serializable {
   @JsonProperty("orderType")
   private OrderType orderType;
 
+  @JsonDeserialize(using = LocalDateDeserializer.class)
   @JsonProperty("cancelTime")
-  private CancelTime cancelTime;
+  private LocalDate cancelTime;
 
   @JsonProperty("complexOrderStrategyType")
   private ComplexOrderStrategyType complexOrderStrategyType;
@@ -160,11 +164,11 @@ public class Order implements Serializable {
     this.orderType = orderType;
   }
 
-  public CancelTime getCancelTime() {
+  public LocalDate getCancelTime() {
     return cancelTime;
   }
 
-  public void setCancelTime(CancelTime cancelTime) {
+  public void setCancelTime(LocalDate cancelTime) {
     this.cancelTime = cancelTime;
   }
 

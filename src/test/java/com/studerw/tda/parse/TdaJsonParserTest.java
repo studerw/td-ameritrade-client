@@ -40,6 +40,7 @@ import com.studerw.tda.model.quote.Quote;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import org.junit.Test;
@@ -267,6 +268,33 @@ public class TdaJsonParserTest {
       LOGGER.debug(orders.toString());
     }
   }
+
+  @Test
+  public void testParseOrders2() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/orders-resp2.json")) {
+      final List<Order> orders = tdaJsonParser.parseOrders(in);
+      assertThat(orders).size().isEqualTo(8);
+      Order order = orders.get(0);
+      assertThat(order.getCancelTime()).isEqualTo(LocalDate.parse("2020-11-13"));
+      assertThat(order.getOrderStrategyType()).isEqualTo(OrderStrategyType.SINGLE);
+      assertThat(order.getOrderId()).isEqualTo(1234567789L);
+      assertThat(order.getEditable()).isFalse();
+      assertThat(order.getQuantity()).isEqualTo("360.0");
+
+
+      OrderLegCollection olc = order.getOrderLegCollection().get(0);
+      assertThat(olc.getOrderLegType()).isEqualTo(OrderLegType.EQUITY);
+      assertThat(olc.getInstruction()).isEqualTo(Instruction.SELL);
+      assertThat(olc.getQuantity()).isEqualTo("360.0");
+
+      assertThat(olc.getInstrument().getAssetType()).isEqualTo(Instrument.AssetType.EQUITY);
+      assertThat(olc.getInstrument().getSymbol()).isEqualToIgnoringCase("F");
+
+      LOGGER.debug(orders.toString());
+    }
+  }
+
 
   @Test
   public void testParseCusipResp() throws IOException {
