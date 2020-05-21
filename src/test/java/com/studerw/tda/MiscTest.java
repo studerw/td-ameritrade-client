@@ -88,7 +88,7 @@ public class MiscTest {
     String copy = doesCopy(someStr);
     LOGGER.debug("after the method: {}", someStr);
     assertThat(someStr).isEqualTo("abcde");
-    assertThat(copy == someStr).isFalse();
+    assertThat(copy.equals(someStr)).isFalse();
 
   }
 
