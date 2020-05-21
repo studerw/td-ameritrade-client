@@ -17,7 +17,7 @@ public class GzipInterceptor implements Interceptor {
   }
 
   // copied from okhttp3.internal.http.HttpEngine (because is private)
-  private Response unzip(final Response response) throws IOException {
+  private Response unzip(final Response response) {
     if (response.body() == null) {
       return response;
     }
@@ -27,7 +27,7 @@ public class GzipInterceptor implements Interceptor {
 
     //this is used to decompress gzipped responses
     if (contentEncoding != null && contentEncoding.equals("gzip")) {
-      Long contentLength = response.body().contentLength();
+      long contentLength = response.body().contentLength();
       GzipSource responseBody = new GzipSource(response.body().source());
       Headers strippedHeaders = response.headers().newBuilder().build();
       return response.newBuilder().headers(strippedHeaders)
