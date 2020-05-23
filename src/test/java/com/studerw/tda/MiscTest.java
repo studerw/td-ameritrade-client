@@ -118,7 +118,7 @@ public class MiscTest {
   public void testEnum() {
     MoversReq moversReq = new MoversReq(Index.DOW_JONES, Direction.up, Change.PERCENT);
     LOGGER.debug("Name: {}", moversReq.getIndex().name());
-    LOGGER.debug("values: {}", moversReq.getIndex().values());
+    LOGGER.debug("values: {}", (Object) moversReq.getIndex().values());
     LOGGER.debug("toStr: {}", moversReq.getIndex().toString());
     LOGGER.debug("getIndex: {}", moversReq.getIndex().getIndex());
     LOGGER.debug("direction: {}", moversReq.getDirection());
