@@ -16,7 +16,6 @@ public class UserAgentInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         Request userAgentReq = request.newBuilder().header("User-Agent", UA).build();
-        Response response = chain.proceed(userAgentReq);
-        return response;
+        return chain.proceed(userAgentReq);
     }
 }
