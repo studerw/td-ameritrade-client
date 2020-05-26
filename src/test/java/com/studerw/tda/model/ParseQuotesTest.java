@@ -34,11 +34,12 @@ public class ParseQuotesTest {
 
   //vtsax,msft,NOK/JPY,$SPX.X,msft_061821P65,spy,SIZ9
   private static final Logger LOGGER = LoggerFactory.getLogger(ParseQuotesTest.class);
-//  private TdaJsonParser parser = new TdaJsonParser();
 
+  @SuppressWarnings(value="unchecked")
   @Test
   @Ignore
   public void parseQuoteTest1() throws IOException {
+
     Map<String, EquityQuote> map = new HashMap<>();
     try (InputStream in = ParseQuotesTest.class.getClassLoader().
         getResourceAsStream("com/studerw/tda/parse/equity-quote-resp.json")) {
