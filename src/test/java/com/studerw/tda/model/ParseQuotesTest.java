@@ -116,10 +116,10 @@ public class ParseQuotesTest {
   public void parseMultiTest2() throws IOException {
     try (InputStream in = ParseQuotesTest.class.getClassLoader()
         .getResourceAsStream("com/studerw/tda/parse/quotes-resp.json")) {
+
       ObjectMapper mapper = new ObjectMapper();
-      LinkedHashMap<String, Quote> map;
-      map = mapper.readValue(in, new TypeReference<LinkedHashMap<String, Quote>>() {
-      });
+      Map<String, Quote> map = mapper.readValue(in,
+              new TypeReference<LinkedHashMap<String, Quote>>() {});
       LOGGER.debug("{}", map);
       List<Quote> quotes = new ArrayList<>();
       map.forEach((k, v) -> quotes.add(v));
