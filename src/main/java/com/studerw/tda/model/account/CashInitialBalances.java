@@ -11,9 +11,8 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-
 /**
- * Projected Balances of a Cash Account
+ * Initial Balances of a Cash Account
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class CashInitialBalances implements Serializable {
