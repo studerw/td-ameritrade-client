@@ -17,7 +17,7 @@ public class HttpTdaClientTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testNoProps() {
-    TdaClient client = new HttpTdaClient(new Properties());
+    new HttpTdaClient(new Properties());
     fail("should not get here");
   }
 

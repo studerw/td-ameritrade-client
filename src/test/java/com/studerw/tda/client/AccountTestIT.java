@@ -18,7 +18,7 @@ public class AccountTestIT extends BaseTestIT {
 
   @Test(expected = Exception.class)
   public void testAccountNoId() {
-    final SecuritiesAccount account = httpTdaClient.getAccount("", false, false);
+    httpTdaClient.getAccount("", false, false);
     fail("shouldn't get here");
   }
 
