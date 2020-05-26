@@ -73,35 +73,35 @@ public class ParseQuotesTest {
         switch (AT) {
           case EQUITY:
             EquityQuote eq = mapper.convertValue(jsonNode, EquityQuote.class);
-            quotes.add((EquityQuote) eq);
+            quotes.add(eq);
             break;
           case MUTUAL_FUND:
             MutualFundQuote mfq = mapper.convertValue(jsonNode, MutualFundQuote.class);
-            quotes.add((MutualFundQuote) mfq);
+            quotes.add(mfq);
             break;
           case INDEX:
             IndexQuote iq = mapper.convertValue(jsonNode, IndexQuote.class);
-            quotes.add((IndexQuote) iq);
+            quotes.add(iq);
             break;
           case ETF:
             EtfQuote etfq = mapper.convertValue(jsonNode, EtfQuote.class);
-            quotes.add((EtfQuote) etfq);
+            quotes.add(etfq);
             break;
           case FOREX:
             ForexQuote fq = mapper.convertValue(jsonNode, ForexQuote.class);
-            quotes.add((ForexQuote) fq);
+            quotes.add(fq);
             break;
           case OPTION:
             OptionQuote oq = mapper.convertValue(jsonNode, OptionQuote.class);
-            quotes.add((OptionQuote) oq);
+            quotes.add(oq);
             break;
           case FUTURE:
             FutureQuote fuq = mapper.convertValue(jsonNode, FutureQuote.class);
-            quotes.add((FutureQuote) fuq);
+            quotes.add(fuq);
             break;
           case FUTURE_OPTION:
             FutureOptionQuote foq = mapper.convertValue(jsonNode, FutureOptionQuote.class);
-            quotes.add((FutureOptionQuote) foq);
+            quotes.add(foq);
             break;
         }
       }
@@ -116,7 +116,7 @@ public class ParseQuotesTest {
     try (InputStream in = ParseQuotesTest.class.getClassLoader()
         .getResourceAsStream("com/studerw/tda/parse/quotes-resp.json")) {
       ObjectMapper mapper = new ObjectMapper();
-      LinkedHashMap<String, Quote> map = new LinkedHashMap<>();
+      LinkedHashMap<String, Quote> map;
       map = mapper.readValue(in, new TypeReference<LinkedHashMap<String, Quote>>() {
       });
       LOGGER.debug("{}", map);
