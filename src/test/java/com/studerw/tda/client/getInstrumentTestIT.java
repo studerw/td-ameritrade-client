@@ -84,7 +84,7 @@ public class getInstrumentTestIT extends BaseTestIT {
 
   @Test
   @Ignore
-  public void testUnknownCuisps() {
+  public void testUnknownCusips() {
     List<String> mfs = Collections.singletonList("EUR/SEK");
     mfs.forEach(symbol -> {
       Instrument instrument = httpTdaClient.getInstrumentByCUSIP(symbol);
