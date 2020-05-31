@@ -13,24 +13,34 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class TransactionItem implements Serializable {
 
   private final static long serialVersionUID = 5181974187922897164L;
+
   @JsonProperty("accountId")
   private Long accountId;
+
   @JsonProperty("amount")
   private BigDecimal amount;
+
   @JsonProperty("price")
   private BigDecimal price;
+
   @JsonProperty("cost")
   private BigDecimal cost;
+
   @JsonProperty("parentOrderKey")
   private Long parentOrderKey;
+
   @JsonProperty("parentChildIndicator")
   private String parentChildIndicator;
+
   @JsonProperty("instruction")
   private TransactionItem.Instruction instruction;
+
   @JsonProperty("positionEffect")
   private TransactionItem.PositionEffect positionEffect;
+
   @JsonProperty("instrument")
   private Instrument instrument;
+
   @JsonAnySetter
   private Map<String, Object> otherFields = new HashMap<>();
 

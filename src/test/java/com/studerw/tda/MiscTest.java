@@ -159,4 +159,11 @@ public class MiscTest {
       assertThat(deserialized).isEqualTo("0");
     }
   }
+
+  @Test
+  public void testIsoStringToInstant(){
+    String isoStr = "2019-12-05T06:00:01+0000";
+     ZonedDateTime zdt = Utils.fromTdaISO8601(isoStr);
+    LOGGER.debug("{}", zdt);
+  }
 }

@@ -15,18 +15,25 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class Instrument implements Serializable {
 
   private final static long serialVersionUID = -3728240577716458348L;
+
   @JsonProperty("symbol")
   private String symbol;
+
   @JsonProperty("underlyingSymbol")
   private String underlyingSymbol;
+
   @JsonProperty("optionExpirationDate")
   private Date optionExpirationDate;
+
   @JsonProperty("optionStrikePrice")
   private BigDecimal optionStrikePrice;
+
   @JsonProperty("putCall")
   private Instrument.PutCall putCall;
+
   @JsonProperty("cusip")
   private String cusip;
+
   @JsonProperty("description")
   private String description;
 
@@ -36,6 +43,7 @@ public class Instrument implements Serializable {
 
   @JsonProperty("bondMaturityDate")
   private Date bondMaturityDate;
+
   @JsonProperty("bondInterestRate")
   private BigDecimal bondInterestRate;
 
@@ -107,6 +115,7 @@ public class Instrument implements Serializable {
   public enum AssetType {
     EQUITY,
     MUTUAL_FUND,
+    MONEY_MARKET,
     OPTION,
     FIXED_INCOME,
     CASH_EQUIVALENT

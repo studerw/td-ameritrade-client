@@ -11,7 +11,7 @@
   </appender>
 
   <logger name="TDA_HTTP" level="info"/>
-  <logger name="com.studerw.tda" level="info"/>
+  <logger name="com.studerw.tda" level="DEBUG"/>
   <logger name="com.studerw.tda.client.OauthInterceptor" level="INFO"/>
   <logger name="com.squareup.okhttp3" level="INFO"/>
 

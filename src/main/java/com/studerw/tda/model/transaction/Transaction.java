@@ -1,14 +1,15 @@
 package com.studerw.tda.model.transaction;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.studerw.tda.parse.LocalDateDeserializer;
+import com.studerw.tda.parse.ZonedDateTimeDeserializer;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -31,6 +32,7 @@ public class Transaction implements Serializable {
   @JsonProperty("subAccount")
   private String subAccount;
 
+  @JsonDeserialize(using = LocalDateDeserializer.class)
   @JsonProperty("settlementDate")
   private LocalDate settlementDate;
 
@@ -49,9 +51,11 @@ public class Transaction implements Serializable {
   @JsonProperty("netAmount")
   private BigDecimal netAmount;
 
+  @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
   @JsonProperty("transactionDate")
   private ZonedDateTime transactionDate;
 
+  @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
   @JsonProperty("orderDate")
   private ZonedDateTime orderDate;
 
@@ -118,7 +122,6 @@ public class Transaction implements Serializable {
     return netAmount;
   }
 
-//  @@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ")
   public ZonedDateTime getTransactionDate() {
     return transactionDate;
   }

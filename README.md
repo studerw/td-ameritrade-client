@@ -196,3 +196,4 @@ original source code for this project has been moved to the [old-xml-api](https:
 * Transactions 
   - (date parsing in Jackson) - testParseTransactions is erroring
 * OptionChain query parameters are commented out in HttpTdaClient
+* Streaming API

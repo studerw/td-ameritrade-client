@@ -17,7 +17,7 @@ public class Utils {
 
   final private static ObjectMapper mapper = new ObjectMapper();
   final public static DateTimeFormatter TMD = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-  final public static DateTimeFormatter ISO = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssz");
+  final public static DateTimeFormatter ISO = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ");
 
   /**
    *
@@ -69,6 +69,15 @@ public class Utils {
     return zonedDateTime.format(ISO);
   }
 
+  /**
+   *
+   * @param isoString string formatted like {@code yyyy-MM-dd'T'HH:mm:ssz}.
+   * @return instant
+   */
+  public static ZonedDateTime fromTdaISO8601(String isoString){
+    return ZonedDateTime.parse(isoString, ISO);
+
+  }
   /**
    *
    * @param zonedDateTime the date to format
