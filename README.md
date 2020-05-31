@@ -26,7 +26,7 @@ Add the following to your Maven build file:
   <dependency>
     <groupId>com.studerw.tda</groupId>
     <artifactId>td-ameritrade-client</artifactId>
-    <version>2.0.1</version>
+    <version>2.1.0</version>
   </dependency>
 ```
 
@@ -34,7 +34,7 @@ Or for Gradle:
 
 ```
 dependencies {
-  compile "com.studerw.tda:td-ameritrade-client:2.0.1"
+  compile "com.studerw.tda:td-ameritrade-client:2.1.0"
 }
 ```
 ----
