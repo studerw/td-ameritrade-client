@@ -1,7 +1,6 @@
 package com.studerw.tda.model.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.studerw.tda.model.account.Instrument;
 import java.math.BigDecimal;
 import java.util.Date;
 import org.apache.commons.lang3.builder.ToStringBuilder;

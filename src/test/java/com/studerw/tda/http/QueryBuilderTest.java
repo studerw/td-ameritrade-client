@@ -19,7 +19,7 @@ public class QueryBuilderTest {
     Builder builder = new HttpUrl.Builder().scheme("https").host("www.google.com")
         .addPathSegment("foo");
 
-    params.stream().forEach(k -> builder.addQueryParameter("orderid", k));
+    params.forEach(k -> builder.addQueryParameter("orderid", k));
     HttpUrl url = builder.build();
     assertThat(url.toString()).isEqualTo("https://www.google.com/foo?orderid=a&orderid=b&orderid=c&orderid=d");
     LOGGER.debug(url.toString());

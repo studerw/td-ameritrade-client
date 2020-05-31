@@ -3,7 +3,6 @@ package com.studerw.tda.model.account;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.studerw.tda.model.account.Instrument;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

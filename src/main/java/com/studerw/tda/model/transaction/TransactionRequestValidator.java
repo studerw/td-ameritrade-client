@@ -2,9 +2,7 @@ package com.studerw.tda.model.transaction;
 
 import static java.util.stream.Collectors.toList;
 
-import com.studerw.tda.model.account.OrderRequest;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,9 +25,8 @@ public class TransactionRequestValidator {
    * @return a list of error messages or empty list if there are none.
    */
   public static List<String> validate(TransactionRequest transactionRequest) {
-    List<String> violations = new ArrayList<>();
 
-    violations.addAll(useJavaValidator(transactionRequest));
+    List<String> violations = new ArrayList<>(useJavaValidator(transactionRequest));
     if (violations.size() > 0) {
       return violations;
     }
@@ -53,16 +50,14 @@ public class TransactionRequestValidator {
     List<String> violations = new ArrayList<>();
 
     if (request.getStartDate() == null && request.getEndDate() != null) {
-      String msg = String
-          .format("Both startDate and endDate must be set if one or the other is set");
+      String msg = "Both startDate and endDate must be set if one or the other is set";
       LOGGER.warn(msg);
       violations.add(msg);
       return violations;
     }
 
     if (request.getEndDate() == null && request.getStartDate() != null) {
-      String msg = String
-          .format("Both startDate and endDate must be set if one or the other is set");
+      String msg = "Both startDate and endDate must be set if one or the other is set";
       LOGGER.warn(msg);
       violations.add(msg);
       return violations;
@@ -93,7 +88,7 @@ public class TransactionRequestValidator {
    */
   private static List<String> useJavaValidator(TransactionRequest request) {
     Set<ConstraintViolation<TransactionRequest>> violations = validator.validate(request);
-    return violations.stream().map(v -> v.getMessage()).collect(toList());
+    return violations.stream().map(ConstraintViolation::getMessage).collect(toList());
   }
 
 }

@@ -120,7 +120,7 @@ public class PriceHistReqValidator {
 
     List<String> violations = new ArrayList<>();
     // default for periodType is 'day', so I suppose you can have a period with null periodType
-    if (periodType == null || periodType == periodType.day) {
+    if (periodType == null || periodType == PeriodType.day) {
       List<Integer> valids = Arrays.asList(1, 2, 3, 4, 5, 10);
       if (!valids.contains(period)) {
         String msg = String
@@ -194,7 +194,7 @@ public class PriceHistReqValidator {
     }
 
     if (periodType == PeriodType.month) {
-      if (!Arrays.asList(FrequencyType.daily, frequencyType.weekly).contains(frequencyType)) {
+      if (!Arrays.asList(FrequencyType.daily, FrequencyType.weekly).contains(frequencyType)) {
         String msg = String
             .format(
                 "FrequencyType: %s can only use 'daily' or 'weekly' when PeriodType is set to 'month'",
@@ -205,7 +205,7 @@ public class PriceHistReqValidator {
     }
 
     if (periodType == PeriodType.year) {
-      if (!Arrays.asList(FrequencyType.daily, frequencyType.weekly, frequencyType.monthly).contains(frequencyType)) {
+      if (!Arrays.asList(FrequencyType.daily, FrequencyType.weekly, FrequencyType.monthly).contains(frequencyType)) {
         String msg = String
             .format(
                 "FrequencyType: %s can only use 'daily', 'weekly', or 'monthly' when PeriodType is set to 'year'",
@@ -216,7 +216,7 @@ public class PriceHistReqValidator {
     }
 
     if (periodType == PeriodType.ytd) {
-      if (!Arrays.asList(FrequencyType.daily, frequencyType.weekly).contains(frequencyType)) {
+      if (!Arrays.asList(FrequencyType.daily, FrequencyType.weekly).contains(frequencyType)) {
         String msg = String
             .format(
                 "FrequencyType: %s can only use 'daily', 'weekly', when PeriodType is set to 'ytd'",

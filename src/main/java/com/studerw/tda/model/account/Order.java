@@ -28,6 +28,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class Order implements Serializable {
 
   private final static long serialVersionUID = 8347583371582106837L;
+
   @JsonProperty("session")
   private Session session;
 

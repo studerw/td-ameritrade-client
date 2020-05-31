@@ -32,11 +32,7 @@ public class MemoryCookieStore implements CookieStore {
 
     @Override
     public List<Cookie> get(HttpUrl uri) {
-        List<Cookie> cookies = allCookies.get(uri.host());
-        if (cookies == null) {
-            cookies = new ArrayList<>();
-            allCookies.put(uri.host(), cookies);
-        }
+        List<Cookie> cookies = allCookies.computeIfAbsent(uri.host(), k -> new ArrayList<>());
         return cookies;
 
     }

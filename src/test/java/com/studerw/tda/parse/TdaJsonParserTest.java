@@ -317,7 +317,7 @@ public class TdaJsonParserTest {
       final List<com.studerw.tda.model.instrument.Instrument> instruments = tdaJsonParser
           .parseInstrumentMap(in);
       assertThat(instruments).hasSize(54);
-      instruments.stream().forEach(instrument -> {
+      instruments.forEach(instrument -> {
         assertThat(instrument.getAssetType()).isNotNull();
         assertThat(instrument.getBondPrice()).isNull();
         assertThat(instrument.getSymbol()).isNotNull();

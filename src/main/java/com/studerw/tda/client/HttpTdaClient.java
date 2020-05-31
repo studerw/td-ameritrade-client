@@ -420,7 +420,6 @@ public class HttpTdaClient implements TdaClient {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-
   }
 
   @Override

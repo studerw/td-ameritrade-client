@@ -116,7 +116,7 @@ public class ParseQuotesTest {
     try (InputStream in = ParseQuotesTest.class.getClassLoader()
         .getResourceAsStream("com/studerw/tda/parse/quotes-resp.json")) {
       ObjectMapper mapper = new ObjectMapper();
-      LinkedHashMap<String, Quote> map = new LinkedHashMap<>();
+      LinkedHashMap<String, Quote> map;
       map = mapper.readValue(in, new TypeReference<LinkedHashMap<String, Quote>>() {
       });
       LOGGER.debug("{}", map);

@@ -131,7 +131,7 @@ client id or an expired refresh token, and this will throw an `IllegalStateExcep
 
 * All non 200 HTTP responses throw unchecked `RuntimeExceptions` since there is no way for the API to recover.
 
-* Responses that are completely empty but should have returned a full json body throw a `RunTimeException` also.
+* Responses that are completely empty but should have returned a full json body throw a `RunTimeException` as well.
 
 * If there is an error parsing the JSON into a Java pojo, the `RuntimeException` wrapping the `IOException` from Jackson will be thrown.
  
