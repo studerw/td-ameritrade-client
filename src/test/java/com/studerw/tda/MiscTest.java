@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -81,6 +82,14 @@ public class MiscTest {
     LOGGER.debug(isoFormatted);
 
   }
+
+  @Test
+  public void testYmdForm() {
+    LocalDate now = LocalDate.now();
+    final String formatted = Utils.toTdaYMD(now);
+    LOGGER.debug(formatted);
+  }
+
 
   @Test
   public void testCopyVsRef() {
@@ -149,5 +158,12 @@ public class MiscTest {
       LOGGER.debug("NAN -> {}", deserialized);
       assertThat(deserialized).isEqualTo("0");
     }
+  }
+
+  @Test
+  public void testIsoStringToInstant(){
+    String isoStr = "2019-12-05T06:00:01+0000";
+     ZonedDateTime zdt = Utils.fromTdaISO8601(isoStr);
+    LOGGER.debug("{}", zdt);
   }
 }

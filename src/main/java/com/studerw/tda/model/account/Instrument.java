@@ -13,7 +13,6 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonTypeInfo(
     use = Id.NAME,
     property = "assetType",
