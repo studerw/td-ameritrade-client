@@ -86,7 +86,7 @@ public interface TdaClient {
    * prefixed with a <em>$</em>, e.g. <em>$INX</em> or <em>$SPX.X</em>. Options are in a format like
    * the following:
    * <em>MSFT_061518P60</em> for a put, or <em>MSFT_061518C60</em> for a call. This is the
-   * Microsoft June 6, 2018 Put/Call at $60.
+   * Microsoft June 15, 2018 Put/Call at $60.
    * @return list of quotes. The {@link Quote} is the base class, but all objects in the list can be
    * cast to their actual types by looking at the {@link com.studerw.tda.model.AssetType} attribute.
    * field.
@@ -118,7 +118,7 @@ public interface TdaClient {
    * prefixed with a <em>$</em>, e.g. <em>$INX</em> or <em>$SPX.X</em>. Options are in a format like
    * the following:
    * <em>MSFT_061518P60</em> for a put, or <em>MSFT_061518C60</em> for a call. This is the
-   * Microsoft June 6, 2018 Put/Call at $60.
+   * Microsoft June 15, 2018 Put/Call at $60.
    * @return a quote. The {@link Quote} is the base class, but all quotes can be cast to their
    * actual types by looking at the {@code com.studerw.tda.model.quote.Quote.assetType} field.
    */
@@ -147,7 +147,7 @@ public interface TdaClient {
 
   /**
    * Partially complete....
-   * @param symbol in TDA format (e.g. {@code MSFT_061821C120} which denotes MSFT for June 18, 2021 Call at $20.
+   * @param symbol in TDA format (e.g. {@code MSFT_061821C120} which denotes MSFT for June 18, 2021 Call at $120.
    * @return {@link com.studerw.tda.model.OptionChain}
    */
 //  OptionChain fetchOptionChain(String symbol);

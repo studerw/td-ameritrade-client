@@ -192,8 +192,10 @@ Unfortunately the old API is being [deprecated in 2020](https://apiforums.tdamer
 original source code for this project has been moved to the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-xml-api) branch and is now known as version 1.0.0.
 
 ## TODO
-
-* Transactions 
-  - (date parsing in Jackson) - testParseTransactions is erroring
+* Junit 5
 * OptionChain query parameters are commented out in HttpTdaClient
 * Streaming API
+* convert to jakarta packages for validation / javax (or maybe get rid of it completely)
+* Maybe get rid of Commons IO and Commons Lang to pare down dependencies
+* Add EZ order abstraction (e.g. simple buy and sell equity)
+* JSON Client
