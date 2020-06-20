@@ -39,7 +39,7 @@ public class getInstrumentTestIT extends BaseTestIT {
   }
 
 //  @Test
-//  public void testBondInstrumenets() {
+//  public void testBondInstruments() {
 //    List<String>  = Arrays.asList("70153RJT6", "33616CGC8", "06405VDP1", "06405VDP1", "61690UNX4", "7954505R2");
 //    List<String> mfs = Arrays.asList("VFIAX", "VTSAX");
 //    mfs.forEach(symbol -> {
@@ -84,7 +84,7 @@ public class getInstrumentTestIT extends BaseTestIT {
 
   @Test
   @Ignore
-  public void testUnknownCuisps() {
+  public void testUnknownCusips() {
     List<String> mfs = Collections.singletonList("EUR/SEK");
     mfs.forEach(symbol -> {
       Instrument instrument = httpTdaClient.getInstrumentByCUSIP(symbol);

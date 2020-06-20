@@ -44,6 +44,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +53,7 @@ import org.slf4j.LoggerFactory;
 public class TdaJsonParserTest {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TdaJsonParserTest.class);
-  private TdaJsonParser tdaJsonParser = new TdaJsonParser();
+  private final TdaJsonParser tdaJsonParser = new TdaJsonParser();
 
   @Test
   public void parseQuoteTest() throws IOException {
@@ -158,7 +160,7 @@ public class TdaJsonParserTest {
       Instrument inst1 = pos1.getInstrument();
       assertThat(inst1 != null);
       assertThat(inst1 instanceof CashEquivalentInstrument);
-      assertThat(inst1.getAssetType().equals(Instrument.AssetType.CASH_EQUIVALENT));
+      assertThat(Objects.requireNonNull(inst1).getAssetType().equals(Instrument.AssetType.CASH_EQUIVALENT));
 
       Position pos2 = account.getPositions().get(1);
       assertThat(pos2.getAveragePrice()).isEqualTo("10.05625");
@@ -225,7 +227,7 @@ public class TdaJsonParserTest {
       Instrument inst1 = pos1.getInstrument();
       assertThat(inst1 != null);
       assertThat(inst1 instanceof CashEquivalentInstrument);
-      assertThat(inst1.getAssetType().equals(Instrument.AssetType.CASH_EQUIVALENT));
+      assertThat(Objects.requireNonNull(inst1).getAssetType().equals(Instrument.AssetType.CASH_EQUIVALENT));
 
       Position pos2 = account.getPositions().get(1);
       assertThat(pos2.getAveragePrice()).isEqualTo("10.05625");

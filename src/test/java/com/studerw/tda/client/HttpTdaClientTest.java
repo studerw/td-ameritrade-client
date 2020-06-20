@@ -17,7 +17,7 @@ public class HttpTdaClientTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testNoProps() {
-    TdaClient client = new HttpTdaClient(new Properties());
+    new HttpTdaClient(new Properties());
     fail("should not get here");
   }
 
@@ -26,7 +26,7 @@ public class HttpTdaClientTest {
     HttpTdaClient client = new HttpTdaClient();
     assertThat(client.tdaProps.getProperty("tda.token.refresh")).isEqualTo("<REFRESH_TOKEN>");
     assertThat(client.tdaProps.getProperty("tda.client_id")).isEqualTo("<CLIENT_ID>");
-    assertThat(client.tdaProps.getProperty("tda.url")).isEqualTo(client.DEFAULT_PATH);
+    assertThat(client.tdaProps.getProperty("tda.url")).isEqualTo(HttpTdaClient.DEFAULT_PATH);
     assertThat(client.tdaProps.getProperty("tda.debug.bytes.length")).isEqualTo("-1");
 
   }
@@ -40,7 +40,7 @@ public class HttpTdaClientTest {
     HttpTdaClient client = new HttpTdaClient(props);
     assertThat(client.tdaProps.getProperty("tda.token.refresh")).isEqualTo("abd");
     assertThat(client.tdaProps.getProperty("tda.client_id")).isEqualTo("abd");
-    assertThat(client.tdaProps.getProperty("tda.url")).isEqualTo(client.DEFAULT_PATH);
+    assertThat(client.tdaProps.getProperty("tda.url")).isEqualTo(HttpTdaClient.DEFAULT_PATH);
     assertThat(client.tdaProps.getProperty("tda.debug.bytes.length")).isEqualTo("-1");
   }
 }

@@ -47,7 +47,6 @@ public class FetchQuotesTestIT extends BaseTestIT {
     assertThat(quotes.get(2).getAssetType()).isEqualTo(AssetType.FOREX);
     assertThat(quotes.get(2)).isInstanceOf(ForexQuote.class);
     assertThat(quotes.get(3)).isInstanceOf(IndexQuote.class);
-    IndexQuote indexQuote = (IndexQuote) quotes.get(3);
     assertThat(quotes.get(4)).isInstanceOf(OptionQuote.class);
     assertThat(quotes.get(5)).isInstanceOf(EtfQuote.class);
   }
@@ -73,6 +72,7 @@ public class FetchQuotesTestIT extends BaseTestIT {
   public void testIndexQuotes() {
     Quote quote = httpTdaClient.fetchQuote("$SPX.X");
     assertThat(quote instanceof IndexQuote);
+    assert quote instanceof IndexQuote;
     IndexQuote indexQuote = (IndexQuote) quote;
     assertThat(indexQuote.getSymbol()).isEqualTo("$SPX.X");
     assertThat(indexQuote.getAssetType()).isEqualTo(AssetType.INDEX);
@@ -84,6 +84,7 @@ public class FetchQuotesTestIT extends BaseTestIT {
   public void testOptionQuote() {
     final Quote quote = httpTdaClient.fetchQuote("MSFT_061821C120");
     assertThat(quote instanceof OptionQuote);
+    assert quote instanceof OptionQuote;
     OptionQuote optionQuote = (OptionQuote) quote;
     assertThat(optionQuote.getSymbol()).isEqualTo("MSFT_061821C120");
     assertThat(optionQuote.getAssetType()).isEqualTo(AssetType.OPTION);
@@ -94,6 +95,7 @@ public class FetchQuotesTestIT extends BaseTestIT {
   public void testEtfQuote() {
     final Quote quote = httpTdaClient.fetchQuote("SPY");
     assertThat(quote instanceof EtfQuote);
+    assert quote instanceof EtfQuote;
     EtfQuote etfQuote= (EtfQuote) quote;
     assertThat(etfQuote.getSymbol()).isEqualTo("SPY");
     assertThat(etfQuote.getAssetType()).isEqualTo(AssetType.ETF);
