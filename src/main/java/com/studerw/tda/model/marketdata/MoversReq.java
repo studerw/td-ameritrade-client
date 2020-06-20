@@ -13,9 +13,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class MoversReq implements Serializable {
 
   private final static long serialVersionUID = 9021846294309705175L;
-  private Index index;
-  private Mover.Direction direction;
-  private Change change;
+  private final Index index;
+  private final Mover.Direction direction;
+  private final Change change;
 
   public MoversReq(Index index, Mover.Direction direction, Change change) {
     this.index = index;
@@ -49,7 +49,7 @@ public class MoversReq implements Serializable {
     DOW_JONES("$DJI"),
     S_P_500("$SPX.X");
 
-    private String index;
+    private final String index;
 
     Index(String index) {
       this.index = index;
@@ -64,7 +64,7 @@ public class MoversReq implements Serializable {
     VALUE("value"),
     PERCENT("percent");
 
-    private String change;
+    private final String change;
 
     Change(String change) {
       this.change = change;

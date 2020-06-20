@@ -8,7 +8,7 @@ import okhttp3.HttpUrl;
 import java.util.List;
 
 public class CookieJarImpl implements CookieJar {
-    private CookieStore cookieStore;
+    private final CookieStore cookieStore;
 
     public CookieJarImpl(CookieStore cookieStore) {
         if (cookieStore == null) throw new IllegalArgumentException("Cookie store cannot be null");

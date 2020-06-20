@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+@SuppressWarnings("ConstantConditions")
 public class FetchQuotesTestIT extends BaseTestIT {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(FetchQuotesTestIT.class);

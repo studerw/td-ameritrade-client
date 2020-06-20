@@ -7,6 +7,7 @@ import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.parse.Utils;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,16 @@ public class AccountTestIT extends BaseTestIT {
       }
     }
     accounts.forEach(a -> LOGGER.debug("{}", a));
+  }
+
+  @Test
+  @Ignore
+  public void testGetMainAccountId() {
+    String fromProps = getAccountId();
+    final List<SecuritiesAccount> accounts = httpTdaClient.getAccounts(false, false);
+    String fromClient = accounts.get(0).getAccountId();
+    assertThat(fromProps).isEqualTo(fromClient);
+    LOGGER.debug("{} should equal {}", fromProps, fromClient);
   }
 
 

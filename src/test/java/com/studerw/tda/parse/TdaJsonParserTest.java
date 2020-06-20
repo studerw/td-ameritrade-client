@@ -37,6 +37,7 @@ import com.studerw.tda.model.quote.IndexQuote;
 import com.studerw.tda.model.quote.MutualFundQuote;
 import com.studerw.tda.model.quote.OptionQuote;
 import com.studerw.tda.model.quote.Quote;
+import com.studerw.tda.model.transaction.Transaction;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -257,7 +258,6 @@ public class TdaJsonParserTest {
       assertThat(order.getEditable()).isFalse();
       assertThat(order.getQuantity()).isEqualTo("15.0");
 
-
       OrderLegCollection olc = order.getOrderLegCollection().get(0);
       assertThat(olc.getOrderLegType()).isEqualTo(OrderLegType.EQUITY);
       assertThat(olc.getInstruction()).isEqualTo(Instruction.BUY);
@@ -265,7 +265,6 @@ public class TdaJsonParserTest {
 
       assertThat(olc.getInstrument().getAssetType()).isEqualTo(Instrument.AssetType.EQUITY);
       assertThat(olc.getInstrument().getSymbol()).isEqualToIgnoringCase("msft");
-
 
       LOGGER.debug(orders.toString());
     }
@@ -297,14 +296,14 @@ public class TdaJsonParserTest {
     }
   }
 
-
   @Test
   public void testParseCusipResp() throws IOException {
     try (InputStream in = ParseQuotesTest.class.getClassLoader().
         getResourceAsStream("com/studerw/tda/parse/cusip-resp.json")) {
       final com.studerw.tda.model.instrument.Instrument instrument = tdaJsonParser
           .parseInstrumentArraySingle(in);
-      assertThat(instrument.getAssetType()).isEqualTo(com.studerw.tda.model.instrument.Instrument.AssetType.BOND);
+      assertThat(instrument.getAssetType())
+          .isEqualTo(com.studerw.tda.model.instrument.Instrument.AssetType.BOND);
       assertThat(instrument.getBondPrice()).isEqualTo("99.86");
       assertThat(instrument.getSymbol()).isEqualTo("7954505R2");
       assertThat(instrument.getCusip()).isEqualTo("7954505R2");
@@ -337,7 +336,8 @@ public class TdaJsonParserTest {
     try (InputStream in = ParseQuotesTest.class.getClassLoader().
         getResourceAsStream("com/studerw/tda/parse/instrument-fundamental-resp.json")) {
       final FullInstrument instrument = tdaJsonParser.parseFullInstrumentMap(in).get(0);
-      assertThat(instrument.getAssetType()).isEqualTo(com.studerw.tda.model.instrument.Instrument.AssetType.EQUITY);
+      assertThat(instrument.getAssetType())
+          .isEqualTo(com.studerw.tda.model.instrument.Instrument.AssetType.EQUITY);
       assertThat(instrument.getSymbol()).isEqualTo("MSFT");
       assertThat(instrument.getCusip()).isEqualTo("594918104");
       assertThat(instrument.getExchange()).isEqualTo("NASDAQ");
@@ -438,6 +438,18 @@ public class TdaJsonParserTest {
       assertThat(option.getInTheMoney()).isFalse();
       assertThat(option.getOtherFields()).isNotEmpty();
       LOGGER.debug(optionChain.toString());
+    }
+  }
+
+  @Test
+  public void testParseTransactions() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/transactions-resp.json")) {
+      final List<Transaction> transactions = tdaJsonParser.parseTransactions(in);
+      assertThat(transactions).size().isEqualTo(27);
+      for (Transaction transaction : transactions) {
+        LOGGER.debug("{}", transaction);
+      }
     }
   }
 }

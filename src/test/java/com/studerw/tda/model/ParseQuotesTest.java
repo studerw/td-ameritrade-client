@@ -120,6 +120,7 @@ public class ParseQuotesTest {
       ObjectMapper mapper = new ObjectMapper();
       Map<String, Quote> map = mapper.readValue(in,
               new TypeReference<LinkedHashMap<String, Quote>>() {});
+
       LOGGER.debug("{}", map);
       List<Quote> quotes = new ArrayList<>();
       map.forEach((k, v) -> quotes.add(v));

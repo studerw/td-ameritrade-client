@@ -11,6 +11,7 @@ import com.studerw.tda.model.instrument.Instrument;
 import com.studerw.tda.model.marketdata.Mover;
 import com.studerw.tda.model.option.OptionChain;
 import com.studerw.tda.model.quote.Quote;
+import com.studerw.tda.model.transaction.Transaction;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -219,6 +220,34 @@ public class TdaJsonParser {
       throw new RuntimeException(e);
     }
   }
+
+  public List<Transaction> parseTransactions(InputStream in) {
+    LOGGER.trace("parsing transactions...");
+    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
+      TypeReference<List<Transaction>> typeReference = new TypeReference<List<Transaction>>() {};
+      final List<Transaction> transactions = DefaultMapper.fromJson(bIn, typeReference);
+      LOGGER.debug("Returned transactions: {}", transactions);
+      return transactions;
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+  }
+
+  public Transaction parseTransaction(InputStream in) {
+    LOGGER.trace("parsing transaction...");
+    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
+      TypeReference<Transaction> typeReference = new TypeReference<Transaction>() {};
+      final Transaction transaction = DefaultMapper.fromJson(bIn, typeReference);
+      LOGGER.debug("Returned transaction: {}", transaction);
+      return transaction;
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+  }
+
+
 
 //  public <T> T parseTdaJson(InputStream in, Class<T> type){
 //    try (BufferedInputStream bIn = new BufferedInputStream(in)) {

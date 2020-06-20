@@ -26,7 +26,7 @@ Add the following to your Maven build file:
   <dependency>
     <groupId>com.studerw.tda</groupId>
     <artifactId>td-ameritrade-client</artifactId>
-    <version>2.0.1</version>
+    <version>2.1.0</version>
   </dependency>
 ```
 
@@ -34,7 +34,7 @@ Or for Gradle:
 
 ```
 dependencies {
-  compile "com.studerw.tda:td-ameritrade-client:2.0.1"
+  compile "com.studerw.tda:td-ameritrade-client:2.1.0"
 }
 ```
 ----
@@ -131,7 +131,7 @@ client id or an expired refresh token, and this will throw an `IllegalStateExcep
 
 * All non 200 HTTP responses throw unchecked `RuntimeExceptions` since there is no way for the API to recover.
 
-* Responses that are completely empty but should have returned a full json body throw a `RunTimeException` also.
+* Responses that are completely empty but should have returned a full json body throw a `RunTimeException` as well.
 
 * If there is an error parsing the JSON into a Java pojo, the `RuntimeException` wrapping the `IOException` from Jackson will be thrown.
  
@@ -190,3 +190,12 @@ See the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-x
 Sometime in-between the beginning of this project (based on TDA's older XML API) and now, TDA released a restful [API](https://developer.tdameritrade.com/). 
 Unfortunately the old API is being [deprecated in 2020](https://apiforums.tdameritrade.com/tda-board/ubbthreads.php) and so the
 original source code for this project has been moved to the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-xml-api) branch and is now known as version 1.0.0.
+
+## TODO
+* Junit 5
+* OptionChain query parameters are commented out in HttpTdaClient
+* Streaming API
+* convert to jakarta packages for validation / javax (or maybe get rid of it completely)
+* Maybe get rid of Commons IO and Commons Lang to pare down dependencies
+* Add EZ order abstraction (e.g. simple buy and sell equity)
+* JSON Client

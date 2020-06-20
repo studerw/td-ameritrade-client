@@ -17,6 +17,9 @@ import com.studerw.tda.model.marketdata.Mover;
 import com.studerw.tda.model.marketdata.MoversReq;
 import com.studerw.tda.model.option.OptionChain;
 import com.studerw.tda.model.quote.Quote;
+import com.studerw.tda.model.transaction.Transaction;
+import com.studerw.tda.model.transaction.TransactionRequest;
+import com.studerw.tda.model.transaction.TransactionRequestValidator;
 import com.studerw.tda.parse.DefaultMapper;
 import com.studerw.tda.parse.TdaJsonParser;
 import com.studerw.tda.parse.Utils;
@@ -49,10 +52,12 @@ public class HttpTdaClient implements TdaClient {
 
   protected static final int LOGGING_BYTES = -1;
   protected static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE;
-  static final String DEFAULT_PATH = "https://api.tdameritrade.com/v1";
+  protected static final String DEFAULT_PATH = "https://api.tdameritrade.com/v1";
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpTdaClient.class);
+
   final TdaJsonParser tdaJsonParser = new TdaJsonParser();
   final OkHttpClient httpClient;
+
   Properties tdaProps;
   private HttpUrl httpUrl;
 
@@ -216,7 +221,8 @@ public class HttpTdaClient implements TdaClient {
         .addQueryParameter("symbol", String.join(",", symbols))
         .build();
 
-    Request request = new Request.Builder().url(url).headers(defaultHeaders())
+    Request request = new Request.Builder().url(url)
+        .headers(defaultHeaders())
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
@@ -252,7 +258,8 @@ public class HttpTdaClient implements TdaClient {
       accountsBldr.addQueryParameter("fields", String.join(",", args));
     }
     final URL url = accountsBldr.build().url();
-    final Request request = new Request.Builder().url(url).headers(defaultHeaders())
+    final Request request = new Request.Builder().url(url)
+        .headers(defaultHeaders())
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
@@ -279,7 +286,8 @@ public class HttpTdaClient implements TdaClient {
       accountsBldr.addQueryParameter("fields", String.join(",", args));
     }
     final URL url = accountsBldr.build().url();
-    final Request request = new Request.Builder().url(url).headers(defaultHeaders())
+    final Request request = new Request.Builder().url(url)
+        .headers(defaultHeaders())
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
@@ -348,7 +356,8 @@ public class HttpTdaClient implements TdaClient {
       urlBuilder.addQueryParameter("status", orderRequest.getStatus().name());
     }
 
-    Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
+    Request request = new Request.Builder().url(urlBuilder.build())
+        .headers(defaultHeaders())
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
@@ -384,7 +393,8 @@ public class HttpTdaClient implements TdaClient {
       urlBuilder.addQueryParameter("status", orderRequest.getStatus().name());
     }
 
-    Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
+    Request request = new Request.Builder().url(urlBuilder.build())
+        .headers(defaultHeaders())
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
@@ -400,7 +410,8 @@ public class HttpTdaClient implements TdaClient {
     LOGGER.info("FetchOrders all orders.");
 
     Builder urlBuilder = baseUrl("orders");
-    Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
+    Request request = new Request.Builder().url(urlBuilder.build())
+        .headers(defaultHeaders())
         .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
@@ -409,7 +420,6 @@ public class HttpTdaClient implements TdaClient {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-
   }
 
   @Override
@@ -579,6 +589,84 @@ public class HttpTdaClient implements TdaClient {
       throw new RuntimeException(e);
     }
 
+  }
+
+  @Override
+  public List<Transaction> fetchTransactions(String accountId, TransactionRequest request) {
+    LOGGER.info("FetchTransactions for account[{}]", accountId);
+
+    if (StringUtils.isBlank(accountId)) {
+      throw new IllegalArgumentException("accountId cannot be blank.");
+    }
+
+    if (request == null) {
+      request = new TransactionRequest();
+    }
+
+    List<String> violations = TransactionRequestValidator.validate(request);
+    if (violations.size() > 0) {
+      throw new IllegalArgumentException(violations.toString());
+    }
+
+    Builder urlBuilder = baseUrl("accounts", accountId, "transactions");
+
+    if (StringUtils.isNotEmpty(request.getSymbol())) {
+      urlBuilder.addQueryParameter("symbol", StringUtils.upperCase(request.getSymbol()));
+    }
+    if (request.getStartDate() != null) {
+      urlBuilder.addQueryParameter("startDate", Utils.toTdaYMD(request.getStartDate()));
+    }
+    if (request.getEndDate() != null) {
+      urlBuilder.addQueryParameter("endDate", Utils.toTdaYMD(request.getEndDate()));
+    }
+    if (request.getType() != null) {
+      urlBuilder.addQueryParameter("type", request.getType().name());
+    }
+
+    Request httpReq = new Request.Builder()
+        .url(urlBuilder.build()).headers(defaultHeaders())
+        .build();
+
+    try (Response response = this.httpClient.newCall(httpReq).execute()) {
+      checkResponse(response, true);
+      return tdaJsonParser.parseTransactions(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+  }
+
+  @Override
+  public Transaction getTransaction(String accountId, Long transactionId) {
+    LOGGER.info("getTransaction by id: {} for account[{}]", transactionId, accountId);
+
+    if (StringUtils.isBlank(accountId)) {
+      throw new IllegalArgumentException("accountId cannot be blank.");
+    }
+
+    if (transactionId == null) {
+      throw new IllegalArgumentException("transaction id cannot be null.");
+    }
+
+    Builder urlBuilder = baseUrl("accounts",
+        accountId,
+        "transactions",
+        String.valueOf(transactionId));
+
+    Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response, false);
+      return tdaJsonParser.parseTransaction(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public List<Transaction> fetchTransactions(String accountId) {
+    return fetchTransactions(accountId, null);
   }
 
   @Override
