@@ -22,7 +22,7 @@ public class FetchMoversTestIT extends BaseTestIT {
     MoversReq moversReq = new MoversReq(Index.DOW_JONES, Direction.up, Change.PERCENT);
     final List<Mover> movers = httpTdaClient.fetchMovers(moversReq);
     assertThat(movers).isNotNull();
-    assertThat(movers.size()).isIn(0, 10);
+    assertThat(movers.size()).isBetween(0, 10);
     movers.forEach(m -> LOGGER.debug("{}", m));
   }
 
@@ -31,7 +31,7 @@ public class FetchMoversTestIT extends BaseTestIT {
     MoversReq moversReq = new MoversReq(Index.NASDAQ, Direction.down, Change.VALUE);
     final List<Mover> movers = httpTdaClient.fetchMovers(moversReq);
     assertThat(movers).isNotNull();
-    assertThat(movers.size()).isIn(0, 10);
+    assertThat(movers.size()).isBetween(0, 10);
     movers.forEach(m -> LOGGER.debug("{}", m));
   }
 
@@ -40,7 +40,7 @@ public class FetchMoversTestIT extends BaseTestIT {
     MoversReq moversReq = new MoversReq(Index.S_P_500, Direction.up, Change.PERCENT);
     final List<Mover> movers = httpTdaClient.fetchMovers(moversReq);
     assertThat(movers).isNotNull();
-    assertThat(movers.size()).isIn(0, 10);
+    assertThat(movers.size()).isBetween(0, 10);
     movers.forEach(m -> LOGGER.debug("{}", m));
   }
 
