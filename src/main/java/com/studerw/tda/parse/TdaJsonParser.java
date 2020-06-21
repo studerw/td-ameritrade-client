@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.studerw.tda.model.account.Order;
+import com.studerw.tda.model.account.Preferences;
 import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.instrument.FullInstrument;
@@ -247,7 +248,18 @@ public class TdaJsonParser {
     }
   }
 
-
+  public Preferences parsePreferences(InputStream in) {
+    LOGGER.trace("parsing preferences...");
+    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
+      TypeReference<Preferences> typeReference = new TypeReference<Preferences>() {};
+      final Preferences preferences = DefaultMapper.fromJson(bIn, typeReference);
+      LOGGER.debug("Returned preferences: {}", preferences);
+      return preferences;
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+  }
 
 //  public <T> T parseTdaJson(InputStream in, Class<T> type){
 //    try (BufferedInputStream bIn = new BufferedInputStream(in)) {

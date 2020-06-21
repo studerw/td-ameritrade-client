@@ -17,6 +17,10 @@ import com.studerw.tda.model.account.OrderLegCollection.Instruction;
 import com.studerw.tda.model.account.OrderLegCollection.OrderLegType;
 import com.studerw.tda.model.account.OrderStrategyType;
 import com.studerw.tda.model.account.Position;
+import com.studerw.tda.model.account.Preferences;
+import com.studerw.tda.model.account.Preferences.AuthTokenTimeout;
+import com.studerw.tda.model.account.Preferences.DefaultEquityOrderDuration;
+import com.studerw.tda.model.account.Preferences.EquityTaxLotMethod;
 import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.account.SecuritiesAccount.Type;
 import com.studerw.tda.model.history.Candle;
@@ -450,6 +454,23 @@ public class TdaJsonParserTest {
       for (Transaction transaction : transactions) {
         LOGGER.debug("{}", transaction);
       }
+    }
+  }
+
+  @Test
+  public void testParsePreferences() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/preferences-resp.json")) {
+      final Preferences preferences = tdaJsonParser.parsePreferences(in);
+      assertThat(preferences).isNotNull();
+      assertThat(preferences.isExpressTrading()).isEqualTo(false);
+      assertThat(preferences.isDirectOptionsRouting()).isEqualTo(false);
+      assertThat(preferences.isDirectEquityRouting()).isEqualTo(false);
+      assertThat(preferences.getDefaultEquityOrderDuration()).isEqualTo(DefaultEquityOrderDuration.DAY);
+      assertThat(preferences.getDefaultEquityQuantity()).isEqualTo(0);
+      assertThat(preferences.getEquityTaxLotMethod()).isEqualTo(EquityTaxLotMethod.FIFO);
+      assertThat(preferences.getAuthTokenTimeout()).isEqualTo(AuthTokenTimeout.FIFTY_FIVE_MINUTES);
+      LOGGER.debug("{}", preferences);
     }
   }
 }

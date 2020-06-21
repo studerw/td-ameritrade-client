@@ -6,6 +6,7 @@ import com.studerw.tda.http.cookie.store.MemoryCookieStore;
 import com.studerw.tda.model.account.Order;
 import com.studerw.tda.model.account.OrderRequest;
 import com.studerw.tda.model.account.OrderRequestValidator;
+import com.studerw.tda.model.account.Preferences;
 import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.history.PriceHistReq;
 import com.studerw.tda.model.history.PriceHistReqValidator;
@@ -659,6 +660,29 @@ public class HttpTdaClient implements TdaClient {
     try (Response response = this.httpClient.newCall(request).execute()) {
       checkResponse(response, false);
       return tdaJsonParser.parseTransaction(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public Preferences getPreferences(String accountId) {
+    LOGGER.info("getPreferences for account[{}]", accountId);
+
+    if (StringUtils.isBlank(accountId)) {
+      throw new IllegalArgumentException("accountId cannot be blank.");
+    }
+
+    Builder urlBuilder = baseUrl("accounts", accountId, "preferences");
+
+    Request request = new Request.Builder()
+        .url(urlBuilder.build())
+        .headers(defaultHeaders())
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response, false);
+      return tdaJsonParser.parsePreferences(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

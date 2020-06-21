@@ -2,6 +2,7 @@ package com.studerw.tda.client;
 
 import com.studerw.tda.model.account.Order;
 import com.studerw.tda.model.account.OrderRequest;
+import com.studerw.tda.model.account.Preferences;
 import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.history.PriceHistReq;
 import com.studerw.tda.model.history.PriceHistory;
@@ -336,4 +337,10 @@ public interface TdaClient {
    */
   Transaction getTransaction(String accountId, Long transactionId);
 
+  /**
+   * Get preferences for a specific account
+   * @param accountId user's account id
+   * @return user's preferences
+   */
+  Preferences getPreferences(String accountId);
 }

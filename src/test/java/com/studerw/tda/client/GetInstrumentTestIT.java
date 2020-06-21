@@ -19,9 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class getInstrumentTestIT extends BaseTestIT {
+public class GetInstrumentTestIT extends BaseTestIT {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(getInstrumentTestIT.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(GetInstrumentTestIT.class);
 
   @Test
   public void testEquityInstrument() {
