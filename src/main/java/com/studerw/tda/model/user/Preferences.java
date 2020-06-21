@@ -1,4 +1,4 @@
-package com.studerw.tda.model.account;
+package com.studerw.tda.model.user;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;

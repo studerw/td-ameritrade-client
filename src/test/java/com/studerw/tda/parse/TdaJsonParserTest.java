@@ -17,10 +17,6 @@ import com.studerw.tda.model.account.OrderLegCollection.Instruction;
 import com.studerw.tda.model.account.OrderLegCollection.OrderLegType;
 import com.studerw.tda.model.account.OrderStrategyType;
 import com.studerw.tda.model.account.Position;
-import com.studerw.tda.model.account.Preferences;
-import com.studerw.tda.model.account.Preferences.AuthTokenTimeout;
-import com.studerw.tda.model.account.Preferences.DefaultEquityOrderDuration;
-import com.studerw.tda.model.account.Preferences.EquityTaxLotMethod;
 import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.account.SecuritiesAccount.Type;
 import com.studerw.tda.model.history.Candle;
@@ -42,6 +38,15 @@ import com.studerw.tda.model.quote.MutualFundQuote;
 import com.studerw.tda.model.quote.OptionQuote;
 import com.studerw.tda.model.quote.Quote;
 import com.studerw.tda.model.transaction.Transaction;
+import com.studerw.tda.model.user.Account;
+import com.studerw.tda.model.user.Authorizations;
+import com.studerw.tda.model.user.Authorizations.OptionTradingLevel;
+import com.studerw.tda.model.user.Preferences;
+import com.studerw.tda.model.user.Preferences.AuthTokenTimeout;
+import com.studerw.tda.model.user.Preferences.DefaultEquityOrderDuration;
+import com.studerw.tda.model.user.Preferences.EquityTaxLotMethod;
+import com.studerw.tda.model.user.Quotes;
+import com.studerw.tda.model.user.UserPrincipals;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -49,7 +54,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -471,6 +475,36 @@ public class TdaJsonParserTest {
       assertThat(preferences.getEquityTaxLotMethod()).isEqualTo(EquityTaxLotMethod.FIFO);
       assertThat(preferences.getAuthTokenTimeout()).isEqualTo(AuthTokenTimeout.FIFTY_FIVE_MINUTES);
       LOGGER.debug("{}", preferences);
+    }
+  }
+
+  @Test
+  public void testParseUserPrincipals() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/userPrincipals-resp.json")) {
+      final UserPrincipals userPrincipals = tdaJsonParser.parseUserPrincipals(in);
+      assertThat(userPrincipals).isNotNull();
+      assertThat(userPrincipals.getUserId()).isEqualTo("foobaruser");
+      assertThat(userPrincipals.getStalePassword()).isFalse();
+      assertThat(userPrincipals.getProfessionalStatus())
+          .isEqualTo(UserPrincipals.ProfessionalStatus.NON_PROFESSIONAL);
+
+      Quotes quotes = userPrincipals.getQuotes();
+      assertThat(quotes.getIsAmexDelayed()).isFalse();
+      assertThat(quotes.getIsForexDelayed()).isTrue();
+
+      final List<Account> accounts = userPrincipals.getAccounts();
+      assertThat(accounts).hasSize(1);
+      Account account = accounts.get(0);
+      assertThat(account.getAccountCdDomainId()).isEqualTo("A123123461714799");
+      assertThat(account.getAcl()).isEqualTo("AAABBBBEEEESF7G1G3G5G7GKH1H3H5M1MANSOSPNQ2QSRFSDTETFTOTTUAUZZZZZZO");
+
+      final Authorizations authorizations = account.getAuthorizations();
+      assertThat(authorizations).isNotNull();
+      assertThat(authorizations.getLevelTwoQuotes()).isTrue();
+      assertThat(authorizations.getOptionTradingLevel()).isEqualTo(OptionTradingLevel.SPREAD);
+
+      LOGGER.debug("{}", userPrincipals);
     }
   }
 }

@@ -2,7 +2,7 @@ package com.studerw.tda.client;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.studerw.tda.model.account.Preferences;
+import com.studerw.tda.model.user.Preferences;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

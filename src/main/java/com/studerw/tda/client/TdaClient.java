@@ -2,7 +2,6 @@ package com.studerw.tda.client;
 
 import com.studerw.tda.model.account.Order;
 import com.studerw.tda.model.account.OrderRequest;
-import com.studerw.tda.model.account.Preferences;
 import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.history.PriceHistReq;
 import com.studerw.tda.model.history.PriceHistory;
@@ -15,6 +14,8 @@ import com.studerw.tda.model.option.OptionChain;
 import com.studerw.tda.model.quote.Quote;
 import com.studerw.tda.model.transaction.Transaction;
 import com.studerw.tda.model.transaction.TransactionRequest;
+import com.studerw.tda.model.user.Preferences;
+import com.studerw.tda.model.user.UserPrincipals;
 import java.util.List;
 
 /**
@@ -343,4 +344,10 @@ public interface TdaClient {
    * @return user's preferences
    */
   Preferences getPreferences(String accountId);
+
+  /**
+   *
+   * @return user principals
+   */
+  UserPrincipals getUserPrincipals();
 }

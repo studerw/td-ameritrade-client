@@ -6,7 +6,6 @@ import com.studerw.tda.http.cookie.store.MemoryCookieStore;
 import com.studerw.tda.model.account.Order;
 import com.studerw.tda.model.account.OrderRequest;
 import com.studerw.tda.model.account.OrderRequestValidator;
-import com.studerw.tda.model.account.Preferences;
 import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.history.PriceHistReq;
 import com.studerw.tda.model.history.PriceHistReqValidator;
@@ -21,6 +20,8 @@ import com.studerw.tda.model.quote.Quote;
 import com.studerw.tda.model.transaction.Transaction;
 import com.studerw.tda.model.transaction.TransactionRequest;
 import com.studerw.tda.model.transaction.TransactionRequestValidator;
+import com.studerw.tda.model.user.Preferences;
+import com.studerw.tda.model.user.UserPrincipals;
 import com.studerw.tda.parse.DefaultMapper;
 import com.studerw.tda.parse.TdaJsonParser;
 import com.studerw.tda.parse.Utils;
@@ -683,6 +684,25 @@ public class HttpTdaClient implements TdaClient {
     try (Response response = this.httpClient.newCall(request).execute()) {
       checkResponse(response, false);
       return tdaJsonParser.parsePreferences(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public UserPrincipals getUserPrincipals() {
+    LOGGER.info("getUserPrincipals");
+
+    Builder urlBuilder = baseUrl("userprincipals");
+
+    Request request = new Request.Builder()
+        .url(urlBuilder.build())
+        .headers(defaultHeaders())
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response, false);
+      return tdaJsonParser.parseUserPrincipals(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

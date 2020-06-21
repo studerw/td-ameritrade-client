@@ -1,0 +1,42 @@
+{
+  "authToken": "z51+RsJ7NhyNBVe/drBh90kb2aFMsKY9AV9q9/9TVU6WsEQRvuXY6rJtIHCLlTfAcUu7Yf9eI3f7k256na7ca8HY+r3NKfECjrYzW5FQpvTI/TZBEJWKjNG7lwprXMlgv2u0+b2jLjOySw93xyWA5EXm8lgg1T7oSLjRm4NB/5NnZCGcDfpVuWpWW/uRoBs2ATxsMW4ZbSb5uGkmnwVktl8iAwZtx0olwppqxMW1MM+9EMNdYwpTYnLYr6Gdvrq7dS311d3MY0cqi5FnWU0CpO6drR2z7dYdkSolTbiJXa883BBdvZgfK/RtOPtQPLTUiiPS2KS+O3/gyxmUxwUl8560H8OBPvZv7lro+Dh9iTp+mPyZA6whNfOYVEDktd8gkJi1LD30zh93ORrbzI62OmzCCuxZ4JzkyIyBMXJC2wDL8arXoBueiJdeyaBJIuataIXxkS1nL2M/7ilx74CLQTruhZiobEH4Bh63cgjRDD6HzCm64bt9PpRSUVcTpNdZJ3vs5EdObylOOkgzBc1hdx/GBOzELipn5yGDv1kvdenoDJIP5100MQuG4LYrgoVi/JHHvlCFRuvsBUP2qjrEu7DUNwp4W4IK7Ok/egNcqYV5zZ9ecya7XhusTw99h0+j1xMuTf2bZkgvb+eQlIrNd/kRc0mLrxrrHHgMsKhTZ1xuE9HJh/FogioXpoir3xi9DTG7A4Bd6hbn8KNXEPq8nV+YWhzQnOuBG3S2VbnJMyuMczDHl+nfr5xYNevvTcUKBh7xzDgT4cxCn8fwrUTOQRpWGx5Xu7C0g0GyaFZyW8DO5XsROerYno7+dAZKgfhvvLDdkaHR4DTQfUoPel3MsIUhgJIrULqAF50KGccSPxuO3xI860eRk39JSZlkvBBgbPkNttJLQWAii/v1MfsYWyVar/ujuoxsx7A36QsGrS2P1/UELjPujf6jJE3U2g3Z150iMedNLFGfd2jcHTcFo2Bpc9Irdb3w2OCC5XcA+X7PsOVbvAkzsmGFnwFpM6xp4WmkGJYtwbsLb90x4o2xD1/PXKqcGgKwjunuI7+4zmICVuXr3USXFnGZl+0X63DM0eFkzCUsLzdBXaFEv2DBhqL38GcmH6pXy4C1OubJvr8bckMBov/D+w==212FD3x19z9sWBHDJADbD00B75E",
+  "userId": "foobaruser",
+  "userCdDomainId": "A123123461714799",
+  "primaryAccountId": "123456789",
+  "lastLoginTime": "2020-06-21T00:10:24+0000",
+  "tokenExpirationTime": "2020-06-21T01:05:16+0000",
+  "loginTime": "2020-06-21T00:35:16+0000",
+  "accessLevel": "CUS",
+  "stalePassword": false,
+  "professionalStatus": "NON_PROFESSIONAL",
+  "quotes": {
+    "isNyseDelayed": false,
+    "isNasdaqDelayed": false,
+    "isOpraDelayed": false,
+    "isAmexDelayed": false,
+    "isCmeDelayed": true,
+    "isIceDelayed": true,
+    "isForexDelayed": true
+  },
+  "accounts": [
+    {
+      "accountId": "123456789",
+      "displayName": "foobaruser",
+      "accountCdDomainId": "A123123461714799",
+      "company": "AMER",
+      "segment": "AMER",
+      "acl": "AAABBBBEEEESF7G1G3G5G7GKH1H3H5M1MANSOSPNQ2QSRFSDTETFTOTTUAUZZZZZZO",
+      "authorizations": {
+        "apex": false,
+        "levelTwoQuotes": true,
+        "stockTrading": true,
+        "marginTrading": true,
+        "streamingNews": true,
+        "optionTradingLevel": "SPREAD",
+        "streamerAccess": true,
+        "advancedMargin": true,
+        "scottradeAccount": false
+      }
+    }
+  ]
+}

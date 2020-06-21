@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.studerw.tda.model.account.Order;
-import com.studerw.tda.model.account.Preferences;
 import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.instrument.FullInstrument;
@@ -13,6 +12,8 @@ import com.studerw.tda.model.marketdata.Mover;
 import com.studerw.tda.model.option.OptionChain;
 import com.studerw.tda.model.quote.Quote;
 import com.studerw.tda.model.transaction.Transaction;
+import com.studerw.tda.model.user.Preferences;
+import com.studerw.tda.model.user.UserPrincipals;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -255,6 +256,19 @@ public class TdaJsonParser {
       final Preferences preferences = DefaultMapper.fromJson(bIn, typeReference);
       LOGGER.debug("Returned preferences: {}", preferences);
       return preferences;
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+  }
+
+  public UserPrincipals parseUserPrincipals(InputStream in) {
+    LOGGER.trace("parsing userPrincipals...");
+    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
+      TypeReference<UserPrincipals> typeReference = new TypeReference<UserPrincipals>() {};
+      final UserPrincipals userPrincipals = DefaultMapper.fromJson(bIn, typeReference);
+      LOGGER.debug("Returned userPrincipals: {}", userPrincipals);
+      return userPrincipals;
     } catch (IOException e) {
       e.printStackTrace();
       throw new RuntimeException(e);
