@@ -80,6 +80,14 @@
       <version>2.7</version>
     </dependency>
 
+    <!-- Lombok -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.16.16</version>
+      <scope>provided</scope>
+    </dependency>
+
     <!--    <dependency>-->
     <!--      <groupId>com.google.code.findbugs</groupId>-->
     <!--      <artifactId>jsr305</artifactId>-->
