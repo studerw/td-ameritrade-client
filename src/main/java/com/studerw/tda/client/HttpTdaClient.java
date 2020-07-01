@@ -21,6 +21,7 @@ import com.studerw.tda.model.transaction.Transaction;
 import com.studerw.tda.model.transaction.TransactionRequest;
 import com.studerw.tda.model.transaction.TransactionRequestValidator;
 import com.studerw.tda.model.user.Preferences;
+import com.studerw.tda.model.user.StreamerSubscriptionKeys;
 import com.studerw.tda.model.user.UserPrincipals;
 import com.studerw.tda.parse.DefaultMapper;
 import com.studerw.tda.parse.TdaJsonParser;
@@ -68,13 +69,16 @@ public class HttpTdaClient implements TdaClient {
    * classpath:/tda-api.properties}. This props file can include:
    * <ul>
    *   <li>tda.token.refresh</li>
-   *   <li>tda.client_id</li>
+   *   <li>tda.client_id (or sometimes referenced as <em>Consumer Key</em> and it should not have <em>@AMER.OAUTHAP</em> appended</li>
    *   <li>tda.url=<em>https://api.tdameritrade.com/v1</em></li>
    *   <li>tda.debug.bytes.length=<em>-1</em> (How many bytes of logging interceptor debug to print, -1 is unlimited)</li>
    * </ul>
    *
-   * <p>There are no defaults for the <em>tda.token.refresh</em> and <em>tda.client_id</em>. If they
-   * are not set, an exception will be thrown</p>
+   * <p>There are no defaults for the <em>tda.token.refresh</em> and <em>tda.client_id</em> (your consumer key).
+   * If they are not set, an exception will be thrown
+   * Note that the client id should not have appended the <em>@AMER.OAUTHAP</em> part
+   * that is used when refreshing your OAuth token.
+   * </p>
    */
   public HttpTdaClient() {
     this(null);
@@ -93,8 +97,10 @@ public class HttpTdaClient implements TdaClient {
    *   <li>tda.debug.bytes.length=<em>-1</em> (How many bytes of logging interceptor debug to print, -1 is unlimited)</li>
    * </ul>
    *
-   * <p>There are no defaults for <em>tda.token.refresh</em> and <em>tda.client_id</em>. If they
-   * are not set, an exception will be thrown</p>
+   * <p>There are no defaults for <em>tda.token.refresh</em> and <em>tda.client_id</em> (<em>consumer key)</em>. If they
+   * are not set, an exception will be thrown. Note that sometimes TDA uses <em>Consumer Key</em>
+   * instead of the term <em>client id</em>. They are the same.
+   * The client id should not have appended the <em>@AMER.OAUTHAP</em> part that is used when refreshing your OAuth token</p>
    *
    * @param props required properties
    */
@@ -125,7 +131,7 @@ public class HttpTdaClient implements TdaClient {
   }
 
   /**
-   * validates the necessary props like refresh token and client id. If others are missing, just use
+   * validates the necessary props like refresh token and client id (consumer key). If others are missing, just use
    * friendly defaults.
    *
    * @param tdaProps the required props to validate
@@ -703,6 +709,28 @@ public class HttpTdaClient implements TdaClient {
     try (Response response = this.httpClient.newCall(request).execute()) {
       checkResponse(response, false);
       return tdaJsonParser.parseUserPrincipals(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  protected StreamerSubscriptionKeys getSubscriptionKeys(List<String> accountsIds) {
+    LOGGER.info("getSubscriptionKeys: {}", accountsIds);
+    if(Utils.isNullOrEmpty(accountsIds)){
+      throw new IllegalArgumentException("AccountIds list must contain at least one account id");
+    }
+
+    Builder urlBuilder = baseUrl("userprincipals", "streamersubscriptionkeys")
+        .addQueryParameter("accountIds", String.join(",", accountsIds));
+
+    Request request = new Request.Builder()
+        .url(urlBuilder.build())
+        .headers(defaultHeaders())
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response, false);
+      return tdaJsonParser.parseSubscriptionKeys(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

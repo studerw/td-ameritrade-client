@@ -1,0 +1,2038 @@
+[
+  {
+    "session": "NORMAL",
+    "duration": "DAY",
+    "orderType": "MARKET",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 1000.0,
+    "filledQuantity": 1000.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "CDRG",
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "02155X106",
+          "symbol": "ATHE"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 1000.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1234567890,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T14:30:15+0000",
+    "closeTime": "2020-07-01T14:30:15+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 1000.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 1000.0,
+            "mismarkedQuantity": 0.0,
+            "price": 2.1101,
+            "time": "2020-07-01T14:30:15+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "NORMAL",
+    "duration": "DAY",
+    "orderType": "MARKET",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 500.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "ETMM",
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231368737,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T13:56:54+0000",
+    "closeTime": "2020-07-01T13:56:54+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 500.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 500.0,
+            "mismarkedQuantity": 0.0,
+            "price": 5.8499,
+            "time": "2020-07-01T13:56:54+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "NORMAL",
+    "duration": "DAY",
+    "orderType": "MARKET",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 1000.0,
+    "filledQuantity": 1000.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "CDRG",
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "62857P108",
+          "symbol": "MYOS"
+        },
+        "instruction": "BUY",
+        "positionEffect": "OPENING",
+        "quantity": 1000.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231709423,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T14:11:58+0000",
+    "closeTime": "2020-07-01T14:11:58+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 200.0,
+        "orderRemainingQuantity": 800.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 200.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.3999,
+            "time": "2020-07-01T14:11:58+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 700.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.3999,
+            "time": "2020-07-01T14:11:58+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 600.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.3999,
+            "time": "2020-07-01T14:11:58+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 500.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.3999,
+            "time": "2020-07-01T14:11:58+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 200.0,
+        "orderRemainingQuantity": 300.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 200.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.3999,
+            "time": "2020-07-01T14:11:58+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 200.0,
+        "orderRemainingQuantity": 100.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 200.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.3999,
+            "time": "2020-07-01T14:11:58+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.393,
+            "time": "2020-07-01T14:11:58+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "NORMAL",
+    "duration": "DAY",
+    "orderType": "MARKET",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 500.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "CDRG",
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231023513,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T13:35:44+0000",
+    "closeTime": "2020-07-01T13:35:44+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 400.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 7.41,
+            "time": "2020-07-01T13:35:44+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 200.0,
+        "orderRemainingQuantity": 200.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 200.0,
+            "mismarkedQuantity": 0.0,
+            "price": 7.41,
+            "time": "2020-07-01T13:35:44+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 100.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 7.4101,
+            "time": "2020-07-01T13:35:44+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 73.0,
+        "orderRemainingQuantity": 27.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 73.0,
+            "mismarkedQuantity": 0.0,
+            "price": 7.4101,
+            "time": "2020-07-01T13:35:44+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 27.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 27.0,
+            "mismarkedQuantity": 0.0,
+            "price": 7.4101,
+            "time": "2020-07-01T13:35:44+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "NORMAL",
+    "duration": "DAY",
+    "orderType": "MARKET",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 500.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "CDRG",
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "BUY",
+        "positionEffect": "OPENING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231023257,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T13:32:04+0000",
+    "closeTime": "2020-07-01T13:32:05+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 98.0,
+        "orderRemainingQuantity": 402.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 98.0,
+            "mismarkedQuantity": 0.0,
+            "price": 7.1099,
+            "time": "2020-07-01T13:32:05+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 402.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 402.0,
+            "mismarkedQuantity": 0.0,
+            "price": 7.096,
+            "time": "2020-07-01T13:32:05+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "NORMAL",
+    "duration": "DAY",
+    "orderType": "MARKET",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 1000.0,
+    "filledQuantity": 1000.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "CDRG",
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "62857P108",
+          "symbol": "MYOS"
+        },
+        "instruction": "BUY",
+        "positionEffect": "OPENING",
+        "quantity": 1000.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231368428,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T13:51:04+0000",
+    "closeTime": "2020-07-01T13:51:05+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 900.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 2.9999,
+            "time": "2020-07-01T13:51:04+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 800.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 2.9999,
+            "time": "2020-07-01T13:51:04+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 300.0,
+        "orderRemainingQuantity": 500.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 300.0,
+            "mismarkedQuantity": 0.0,
+            "price": 2.9999,
+            "time": "2020-07-01T13:51:05+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 400.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 2.9999,
+            "time": "2020-07-01T13:51:05+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 200.0,
+        "orderRemainingQuantity": 200.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 200.0,
+            "mismarkedQuantity": 0.0,
+            "price": 2.9999,
+            "time": "2020-07-01T13:51:05+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 200.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 200.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.01,
+            "time": "2020-07-01T13:51:05+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "SEAMLESS",
+    "duration": "DAY",
+    "orderType": "LIMIT",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 500.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "CDRG",
+    "price": 6.46,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231023062,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T13:25:08+0000",
+    "closeTime": "2020-07-01T13:25:08+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 25.0,
+        "orderRemainingQuantity": 475.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 25.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.47,
+            "time": "2020-07-01T13:25:08+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 360.0,
+        "orderRemainingQuantity": 115.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 360.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.46,
+            "time": "2020-07-01T13:25:08+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 115.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 115.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.46,
+            "time": "2020-07-01T13:25:08+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "SEAMLESS",
+    "duration": "DAY",
+    "orderType": "LIMIT",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 0.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "NITE",
+    "price": 6.55,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231023059,
+    "cancelable": false,
+    "editable": false,
+    "status": "CANCELED",
+    "enteredTime": "2020-07-01T13:25:05+0000",
+    "closeTime": "2020-07-01T13:25:07+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373
+  },
+  {
+    "session": "SEAMLESS",
+    "duration": "DAY",
+    "orderType": "LIMIT",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 500.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "CDRG",
+    "price": 6.11,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "BUY",
+        "positionEffect": "OPENING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1230669974,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T13:17:33+0000",
+    "closeTime": "2020-07-01T13:17:37+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 169.0,
+        "orderRemainingQuantity": 331.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 169.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.11,
+            "time": "2020-07-01T13:17:33+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 200.0,
+        "orderRemainingQuantity": 131.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 200.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.11,
+            "time": "2020-07-01T13:17:34+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 20.0,
+        "orderRemainingQuantity": 111.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 20.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.11,
+            "time": "2020-07-01T13:17:36+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 111.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 111.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.11,
+            "time": "2020-07-01T13:17:37+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "SEAMLESS",
+    "duration": "DAY",
+    "orderType": "LIMIT",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 0.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "CDRG",
+    "price": 6.6,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231023056,
+    "cancelable": false,
+    "editable": false,
+    "status": "CANCELED",
+    "enteredTime": "2020-07-01T13:25:00+0000",
+    "closeTime": "2020-07-01T13:25:04+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373
+  },
+  {
+    "session": "SEAMLESS",
+    "duration": "DAY",
+    "orderType": "LIMIT",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 500.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "NITE",
+    "price": 6.08,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1230669899,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T13:10:59+0000",
+    "closeTime": "2020-07-01T13:10:59+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 374.0,
+        "orderRemainingQuantity": 126.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 374.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.08,
+            "time": "2020-07-01T13:10:59+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 126.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 126.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.08,
+            "time": "2020-07-01T13:10:59+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "NORMAL",
+    "duration": "DAY",
+    "orderType": "MARKET",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 1000.0,
+    "filledQuantity": 1000.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "ETMM",
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "62857P108",
+          "symbol": "MYOS"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 1000.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231368433,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T13:51:08+0000",
+    "closeTime": "2020-07-01T13:51:08+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 200.0,
+        "orderRemainingQuantity": 800.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 200.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.0,
+            "time": "2020-07-01T13:51:08+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 200.0,
+        "orderRemainingQuantity": 600.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 200.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.0,
+            "time": "2020-07-01T13:51:08+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 200.0,
+        "orderRemainingQuantity": 400.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 200.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.0,
+            "time": "2020-07-01T13:51:08+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 200.0,
+        "orderRemainingQuantity": 200.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 200.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.0,
+            "time": "2020-07-01T13:51:08+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 100.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.0,
+            "time": "2020-07-01T13:51:08+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.0,
+            "time": "2020-07-01T13:51:08+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "NORMAL",
+    "duration": "DAY",
+    "orderType": "MARKET",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 500.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "CDRG",
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "BUY",
+        "positionEffect": "OPENING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231023498,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T13:35:34+0000",
+    "closeTime": "2020-07-01T13:35:34+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 400.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 7.26,
+            "time": "2020-07-01T13:35:34+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 300.0,
+        "orderRemainingQuantity": 100.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 300.0,
+            "mismarkedQuantity": 0.0,
+            "price": 7.2699,
+            "time": "2020-07-01T13:35:34+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 7.256,
+            "time": "2020-07-01T13:35:34+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "NORMAL",
+    "duration": "DAY",
+    "orderType": "MARKET",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 1000.0,
+    "filledQuantity": 1000.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "CDRG",
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "62857P108",
+          "symbol": "MYOS"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 1000.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231709430,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T14:12:11+0000",
+    "closeTime": "2020-07-01T14:12:11+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 300.0,
+        "orderRemainingQuantity": 700.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 300.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.327,
+            "time": "2020-07-01T14:12:11+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 200.0,
+        "orderRemainingQuantity": 500.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 200.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.3201,
+            "time": "2020-07-01T14:12:11+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 400.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.3201,
+            "time": "2020-07-01T14:12:11+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 300.0,
+        "orderRemainingQuantity": 100.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 300.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.3202,
+            "time": "2020-07-01T14:12:11+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 3.3201,
+            "time": "2020-07-01T14:12:11+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "SEAMLESS",
+    "duration": "DAY",
+    "orderType": "LIMIT",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 500.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "CDRG",
+    "price": 6.6,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "BUY",
+        "positionEffect": "OPENING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231023041,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T13:24:09+0000",
+    "closeTime": "2020-07-01T13:24:09+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 500.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 500.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.6,
+            "time": "2020-07-01T13:24:09+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "SEAMLESS",
+    "duration": "DAY",
+    "orderType": "LIMIT",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 500.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "NITE",
+    "price": 5.97,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "BUY",
+        "positionEffect": "OPENING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1230669893,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T13:10:12+0000",
+    "closeTime": "2020-07-01T13:10:12+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 400.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 5.97,
+            "time": "2020-07-01T13:10:12+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 200.0,
+        "orderRemainingQuantity": 200.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 200.0,
+            "mismarkedQuantity": 0.0,
+            "price": 5.97,
+            "time": "2020-07-01T13:10:12+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 100.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 5.97,
+            "time": "2020-07-01T13:10:12+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 86.0,
+        "orderRemainingQuantity": 14.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 86.0,
+            "mismarkedQuantity": 0.0,
+            "price": 5.97,
+            "time": "2020-07-01T13:10:12+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 14.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 14.0,
+            "mismarkedQuantity": 0.0,
+            "price": 5.97,
+            "time": "2020-07-01T13:10:12+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "NORMAL",
+    "duration": "DAY",
+    "orderType": "MARKET",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 500.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "CDRG",
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231368900,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T14:00:09+0000",
+    "closeTime": "2020-07-01T14:00:09+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 163.0,
+        "orderRemainingQuantity": 337.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 163.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.07,
+            "time": "2020-07-01T14:00:09+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 337.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 337.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.07,
+            "time": "2020-07-01T14:00:09+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "NORMAL",
+    "duration": "DAY",
+    "orderType": "MARKET",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 500.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "NITE",
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "BUY",
+        "positionEffect": "OPENING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231368706,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T13:56:15+0000",
+    "closeTime": "2020-07-01T13:56:15+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 500.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 500.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.04,
+            "time": "2020-07-01T13:56:15+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "SEAMLESS",
+    "duration": "DAY",
+    "orderType": "LIMIT",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 500.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "NITE",
+    "price": 6.57,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231023022,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T13:23:01+0000",
+    "closeTime": "2020-07-01T13:23:02+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 10.0,
+        "orderRemainingQuantity": 490.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 10.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.57,
+            "time": "2020-07-01T13:23:01+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 390.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.57,
+            "time": "2020-07-01T13:23:02+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 390.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 390.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.57,
+            "time": "2020-07-01T13:23:02+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "SEAMLESS",
+    "duration": "DAY",
+    "orderType": "LIMIT",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 500.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "CDRG",
+    "price": 6.4,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1230669999,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T13:20:32+0000",
+    "closeTime": "2020-07-01T13:20:32+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 400.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.42,
+            "time": "2020-07-01T13:20:32+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 300.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.42,
+            "time": "2020-07-01T13:20:32+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 225.0,
+        "orderRemainingQuantity": 75.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 225.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.41,
+            "time": "2020-07-01T13:20:32+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 75.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 75.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.41,
+            "time": "2020-07-01T13:20:32+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "NORMAL",
+    "duration": "DAY",
+    "orderType": "MARKET",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 500.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "ETMM",
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "SELL",
+        "positionEffect": "CLOSING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231023273,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T13:32:12+0000",
+    "closeTime": "2020-07-01T13:32:12+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 500.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 500.0,
+            "mismarkedQuantity": 0.0,
+            "price": 7.0612,
+            "time": "2020-07-01T13:32:12+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "SEAMLESS",
+    "duration": "DAY",
+    "orderType": "LIMIT",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 500.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "CDRG",
+    "price": 6.5,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "BUY",
+        "positionEffect": "OPENING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231023015,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T13:22:31+0000",
+    "closeTime": "2020-07-01T13:22:31+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 195.0,
+        "orderRemainingQuantity": 305.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 195.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.5,
+            "time": "2020-07-01T13:22:31+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 1.0,
+        "orderRemainingQuantity": 304.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 1.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.5,
+            "time": "2020-07-01T13:22:31+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 204.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.5,
+            "time": "2020-07-01T13:22:31+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 104.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.5,
+            "time": "2020-07-01T13:22:31+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 2.0,
+        "orderRemainingQuantity": 102.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 2.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.5,
+            "time": "2020-07-01T13:22:31+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 50.0,
+        "orderRemainingQuantity": 52.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 50.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.5,
+            "time": "2020-07-01T13:22:31+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 52.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 52.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.5,
+            "time": "2020-07-01T13:22:31+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "SEAMLESS",
+    "duration": "DAY",
+    "orderType": "LIMIT",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 1.0,
+    "filledQuantity": 0.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "CDRG",
+    "price": 2.92,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "73102V105",
+          "symbol": "POLA"
+        },
+        "instruction": "BUY",
+        "positionEffect": "OPENING",
+        "quantity": 1.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1230669730,
+    "cancelable": false,
+    "editable": false,
+    "status": "CANCELED",
+    "enteredTime": "2020-07-01T12:59:50+0000",
+    "closeTime": "2020-07-01T12:59:55+0000",
+    "tag": "API_TOS:AT_LADDER_AS",
+    "accountId": 944160373
+  },
+  {
+    "session": "NORMAL",
+    "duration": "DAY",
+    "orderType": "LIMIT",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 0.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "CDRG",
+    "price": 6.74,
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "BUY",
+        "positionEffect": "OPENING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231023139,
+    "cancelable": false,
+    "editable": false,
+    "status": "CANCELED",
+    "enteredTime": "2020-07-01T13:30:17+0000",
+    "closeTime": "2020-07-01T13:31:42+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373
+  },
+  {
+    "session": "NORMAL",
+    "duration": "DAY",
+    "orderType": "MARKET",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 1000.0,
+    "filledQuantity": 1000.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "CDRG",
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "02155X106",
+          "symbol": "ATHE"
+        },
+        "instruction": "BUY",
+        "positionEffect": "OPENING",
+        "quantity": 1000.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231709911,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T14:27:19+0000",
+    "closeTime": "2020-07-01T14:27:19+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 900.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 2.0399,
+            "time": "2020-07-01T14:27:19+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 800.0,
+        "orderRemainingQuantity": 100.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 800.0,
+            "mismarkedQuantity": 0.0,
+            "price": 2.05,
+            "time": "2020-07-01T14:27:19+0000"
+          }
+        ]
+      },
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 100.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 100.0,
+            "mismarkedQuantity": 0.0,
+            "price": 2.05,
+            "time": "2020-07-01T14:27:19+0000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "session": "NORMAL",
+    "duration": "DAY",
+    "orderType": "MARKET",
+    "complexOrderStrategyType": "NONE",
+    "quantity": 500.0,
+    "filledQuantity": 500.0,
+    "remainingQuantity": 0.0,
+    "requestedDestination": "AUTO",
+    "destinationLinkName": "NITE",
+    "orderLegCollection": [
+      {
+        "orderLegType": "EQUITY",
+        "legId": 1,
+        "instrument": {
+          "assetType": "EQUITY",
+          "cusip": "74754R103",
+          "symbol": "QLGN"
+        },
+        "instruction": "BUY",
+        "positionEffect": "OPENING",
+        "quantity": 500.0
+      }
+    ],
+    "orderStrategyType": "SINGLE",
+    "orderId": 1231368859,
+    "cancelable": false,
+    "editable": false,
+    "status": "FILLED",
+    "enteredTime": "2020-07-01T13:59:21+0000",
+    "closeTime": "2020-07-01T13:59:22+0000",
+    "tag": "API_TOS:CHART",
+    "accountId": 944160373,
+    "orderActivityCollection": [
+      {
+        "activityType": "EXECUTION",
+        "executionType": "FILL",
+        "quantity": 500.0,
+        "orderRemainingQuantity": 0.0,
+        "executionLegs": [
+          {
+            "legId": 1,
+            "quantity": 500.0,
+            "mismarkedQuantity": 0.0,
+            "price": 6.17,
+            "time": "2020-07-01T13:59:22+0000"
+          }
+        ]
+      }
+    ]
+  }
+]
+

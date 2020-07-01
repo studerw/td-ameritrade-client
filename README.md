@@ -14,7 +14,10 @@ Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
 
 ## Required TDA Properties
 
-The client only requires a TDA client ID and current OAuth refresh token. The refresh token expires every 90 days.
+The client only requires a TDA client ID (<em>consumer key</em>) and current OAuth refresh token. 
+The refresh token expires every 90 days.
+Note that the client id should not have appended the _@AMER.OAUTHAP_ which is used only when refreshing your OAuth token.
+
 See the [Getting Started](https://developer.tdameritrade.com/content/getting-started) 
 and [Simple Auth for Local Apps](https://developer.tdameritrade.com/content/simple-auth-local-apps) for help.
 
@@ -107,7 +110,7 @@ Date date = new Date(someDateTime);
 To convert a long to human readable ISO 8601 String, use the following:
 ```java
 long currentTime = System.currentTimeMillis();
-String formattedDate = FormatUtils.epochToStr(currentTime);
+String formattedDate = Utils.epochToStr(currentTime);
 System.out.println(formattedDate) //   2019-09-13T19:59-04:00[America/New_York]
 ```
 
@@ -124,7 +127,7 @@ or set of parameters. Often this means the body is an empty JSON string.
 The rules are this:
 
 * OAuth authentication problems, explicitly signalled by a 401 response codes, usually mean an invalid TDA 
-client id or an expired refresh token, and this will throw an `IllegalStateException`.
+client id (consumer key) or an expired refresh token, and this will throw an `IllegalStateException`.
 
 * Validation issues that are known before the call is made, e.g. null or empty required parameters, will throw unchecked `IllegalArgumentException`.
 

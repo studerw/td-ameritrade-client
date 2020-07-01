@@ -1,7 +1,8 @@
 /**
  * <p>The {@link com.studerw.tda.client.TdaClient TdaClient} is your main interface into the API.</p>
  * <pre class="code">
- *   //create tda-api.properties in your classpath with your TDA client id and refresh token set.
+ *   //create tda-api.properties in your classpath with your TDA client id (consumer key) and refresh token set.
+ *   // Note that the client id should not have the '@AMER.OAUTHAP' part that is used when refreshing your OAuth token.
  *
  *   TdaClient tdaClient = new HttpTdaClient();
  *   final Quote quote = tdaClient.fetchQuote("msft");

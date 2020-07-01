@@ -13,6 +13,7 @@ import com.studerw.tda.model.option.OptionChain;
 import com.studerw.tda.model.quote.Quote;
 import com.studerw.tda.model.transaction.Transaction;
 import com.studerw.tda.model.user.Preferences;
+import com.studerw.tda.model.user.StreamerSubscriptionKeys;
 import com.studerw.tda.model.user.UserPrincipals;
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -269,6 +270,20 @@ public class TdaJsonParser {
       final UserPrincipals userPrincipals = DefaultMapper.fromJson(bIn, typeReference);
       LOGGER.debug("Returned userPrincipals: {}", userPrincipals);
       return userPrincipals;
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+  }
+
+  public StreamerSubscriptionKeys parseSubscriptionKeys(InputStream in) {
+    LOGGER.trace("parsing subscription keys...");
+    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
+      TypeReference<StreamerSubscriptionKeys> typeReference = new TypeReference<StreamerSubscriptionKeys>() {};
+      final StreamerSubscriptionKeys streamerSubscriptionKeys = DefaultMapper
+          .fromJson(bIn, typeReference);
+      LOGGER.debug("Returned subscription keys: {}", streamerSubscriptionKeys);
+      return streamerSubscriptionKeys;
     } catch (IOException e) {
       e.printStackTrace();
       throw new RuntimeException(e);

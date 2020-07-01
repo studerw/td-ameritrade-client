@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.studerw.tda.parse.ZonedDateTimeDeserializer;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -18,14 +21,20 @@ public class ExecutionLeg implements Serializable {
 
   @JsonProperty("legId")
   private Long legId;
+
   @JsonProperty("quantity")
   private BigDecimal quantity;
+
   @JsonProperty("mismarkedQuantity")
   private BigDecimal mismarkedQuantity;
+
   @JsonProperty("price")
   private BigDecimal price;
+
+  @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
   @JsonProperty("time")
-  private String time;
+  private ZonedDateTime time;
+
   @JsonAnySetter
   private Map<String, Object> otherFields = new HashMap<>();
 
@@ -45,7 +54,7 @@ public class ExecutionLeg implements Serializable {
     return price;
   }
 
-  public String getTime() {
+  public ZonedDateTime getTime() {
     return time;
   }
 

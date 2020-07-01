@@ -4,14 +4,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.studerw.tda.model.AssetType;
 import com.studerw.tda.model.ParseQuotesTest;
+import com.studerw.tda.model.account.ActivityType;
 import com.studerw.tda.model.account.CashEquivalentInstrument;
 import com.studerw.tda.model.account.EquityInstrument;
+import com.studerw.tda.model.account.ExecutionLeg;
 import com.studerw.tda.model.account.Instrument;
 import com.studerw.tda.model.account.MarginAccount;
 import com.studerw.tda.model.account.MarginCurrentBalances;
 import com.studerw.tda.model.account.MarginInitialBalances;
 import com.studerw.tda.model.account.MarginProjectedBalances;
 import com.studerw.tda.model.account.Order;
+import com.studerw.tda.model.account.OrderActivity;
+import com.studerw.tda.model.account.OrderActivity.ExecutionType;
 import com.studerw.tda.model.account.OrderLegCollection;
 import com.studerw.tda.model.account.OrderLegCollection.Instruction;
 import com.studerw.tda.model.account.OrderLegCollection.OrderLegType;
@@ -303,6 +307,49 @@ public class TdaJsonParserTest {
       LOGGER.debug(orders.toString());
     }
   }
+
+  @Test
+  public void testParseOrders3() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/orders-resp3.json")) {
+      final List<Order> orders = tdaJsonParser.parseOrders(in);
+      assertThat(orders).size().isEqualTo(26);
+      Order order = orders.get(0);
+      assertThat(order.getEnteredTime()).isEqualTo(Utils.fromTdaISO8601("2020-07-01T14:30:15+0000"));
+      assertThat(order.getCloseTime()).isEqualTo(Utils.fromTdaISO8601("2020-07-01T14:30:15+0000"));
+      assertThat(order.getTag()).isEqualTo("API_TOS:CHART");
+
+      List<OrderActivity> orderActivities = order.getOrderActivityCollection();
+      assertThat(orderActivities).hasSize(1);
+      OrderActivity orderActivity = orderActivities.get(0);
+      assertThat(orderActivity.getActivityType()).isEqualTo(ActivityType.EXECUTION);
+      assertThat(orderActivity.getQuantity()).isEqualTo("1000.0");
+      assertThat(orderActivity.getOrderRemainingQuantity()).isEqualTo("0.0");
+      assertThat(orderActivity.getOrderRemainingQuantity()).isEqualTo("0.0");
+      assertThat(orderActivity.getExecutionType()).isEqualTo(ExecutionType.FILL);
+
+      final List<ExecutionLeg> executionLegs = orderActivity.getExecutionLegs();
+      assertThat(executionLegs).hasSize(1);
+      ExecutionLeg executionLeg = executionLegs.get(0);
+      assertThat(executionLeg.getTime()).isEqualTo(Utils.fromTdaISO8601("2020-07-01T14:30:15+0000"));
+      assertThat(executionLeg.getMismarkedQuantity()).isEqualTo("0.0");
+      assertThat(executionLeg.getPrice()).isEqualTo("2.1101");
+      assertThat(executionLeg.getLegId()).isEqualTo(1L);
+      assertThat(executionLeg.getQuantity()).isEqualTo("1000.0");
+//
+//
+//      OrderLegCollection olc = order.getOrderLegCollection().get(0);
+//      assertThat(olc.getOrderLegType()).isEqualTo(OrderLegType.EQUITY);
+//      assertThat(olc.getInstruction()).isEqualTo(Instruction.SELL);
+//      assertThat(olc.getQuantity()).isEqualTo("360.0");
+//
+//      assertThat(olc.getInstrument().getAssetType()).isEqualTo(Instrument.AssetType.EQUITY);
+//      assertThat(olc.getInstrument().getSymbol()).isEqualToIgnoringCase("F");
+
+      LOGGER.debug(orders.toString());
+    }
+  }
+
 
   @Test
   public void testParseCusipResp() throws IOException {

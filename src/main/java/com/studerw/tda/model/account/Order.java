@@ -6,9 +6,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.studerw.tda.parse.LocalDateDeserializer;
+import com.studerw.tda.parse.ZonedDateTimeDeserializer;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -114,11 +116,13 @@ public class Order implements Serializable {
   @JsonProperty("status")
   private Status status;
 
+  @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
   @JsonProperty("enteredTime")
-  private Date enteredTime;
+  private ZonedDateTime enteredTime;
 
+  @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
   @JsonProperty("closeTime")
-  private Date closeTime;
+  private ZonedDateTime closeTime;
 
   @JsonProperty("tag")
   private String tag;
@@ -127,7 +131,7 @@ public class Order implements Serializable {
   private Long accountId;
 
   @JsonProperty("orderActivityCollection")
-  private List<OrderActivityCollection> orderActivityCollection = new ArrayList<>();
+  private List<OrderActivity> orderActivityCollection = new ArrayList<>();
 
   @JsonProperty("replacingOrderCollection")
   private List<Object> replacingOrderCollection = new ArrayList<>();
@@ -369,19 +373,19 @@ public class Order implements Serializable {
     this.status = status;
   }
 
-  public Date getEnteredTime() {
+  public ZonedDateTime getEnteredTime() {
     return enteredTime;
   }
 
-  public void setEnteredTime(Date enteredTime) {
+  public void setEnteredTime(ZonedDateTime enteredTime) {
     this.enteredTime = enteredTime;
   }
 
-  public Date getCloseTime() {
+  public ZonedDateTime getCloseTime() {
     return closeTime;
   }
 
-  public void setCloseTime(Date closeTime) {
+  public void setCloseTime(ZonedDateTime closeTime) {
     this.closeTime = closeTime;
   }
 
@@ -401,12 +405,12 @@ public class Order implements Serializable {
     this.accountId = accountId;
   }
 
-  public List<OrderActivityCollection> getOrderActivityCollection() {
+  public List<OrderActivity> getOrderActivityCollection() {
     return orderActivityCollection;
   }
 
   public void setOrderActivityCollection(
-      List<OrderActivityCollection> orderActivityCollection) {
+      List<OrderActivity> orderActivityCollection) {
     this.orderActivityCollection = orderActivityCollection;
   }
 

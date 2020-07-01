@@ -1,0 +1,37 @@
+package com.studerw.tda.model.stream;
+
+/**
+ * Service Data Types for Streaming Request
+ * @see <a href="https://developer.tdameritrade.com/content/streaming-data#_Toc504640570">Data Service Table</a>
+ */
+public enum Service {
+  ADMIN,
+  ACCT_ACTIVITY,
+  ACTIVES_NASDAQ,
+  ACTIVES_NYSE,
+  ACTIVES_OTCBB,
+  ACTIVES_OPTIONS,
+  FOREX_BOOK,
+  FUTURES_BOOK,
+  LISTED_BOOK,
+  NASDAQ_BOOK,
+  OPTIONS_BOOK,
+  FUTURES_OPTIONS_BOOK,
+  CHART_EQUITY,
+  CHART_FUTURES,
+  CHART_HISTORY_FUTURES,
+  QUOTE,
+  LEVELONE_FUTURES,
+  LEVELONE_FOREX,
+  LEVELONE_FUTURES_OPTIONS,
+  OPTION,
+  LEVELTWO_FUTURES,
+  NEWS_HEADLINE,
+  NEWS_STORY,
+  NEWS_HEADLINE_LIST,
+  STREAMER_SERVER,
+  TIMESALE_EQUITY,
+  TIMESALE_FUTURES,
+  TIMESALE_FOREX,
+  TIMESALE_OPTIONS
+}
