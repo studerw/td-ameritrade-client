@@ -11,7 +11,6 @@ Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
 * [Javadoc API](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/)
 * [How-To](https://github.com/studerw/td-ameritrade-client/wiki/how-to) on the Wiki.
 * [TDA-Client-Example](https://github.com/studerw/tda-client-example) - Simple Java and Maven example project.
-I'm happy to collaborate contractually or OSS with other developers. 
 
 ## Required TDA Properties
 
