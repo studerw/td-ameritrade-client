@@ -10,12 +10,14 @@ Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
 
 * [Javadoc API](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/)
 * [How-To](https://github.com/studerw/td-ameritrade-client/wiki/how-to) on the Wiki.
-
-I'm happy to collaborate contractually or OSS with other developers. 
+* [TDA-Client-Example](https://github.com/studerw/tda-client-example) - Simple Java and Maven example project.
 
 ## Required TDA Properties
 
-The client only requires a TDA client ID and current OAuth refresh token. The refresh token expires every 90 days.
+The client only requires a TDA client ID (<em>consumer key</em>) and current OAuth refresh token. 
+The refresh token expires every 90 days.
+Note that the client id should not have appended the _@AMER.OAUTHAP_ which is used only when refreshing your OAuth token.
+
 See the [Getting Started](https://developer.tdameritrade.com/content/getting-started) 
 and [Simple Auth for Local Apps](https://developer.tdameritrade.com/content/simple-auth-local-apps) for help.
 
@@ -26,7 +28,7 @@ Add the following to your Maven build file:
   <dependency>
     <groupId>com.studerw.tda</groupId>
     <artifactId>td-ameritrade-client</artifactId>
-    <version>2.1.0</version>
+    <version>2.2.0</version>
   </dependency>
 ```
 
@@ -34,7 +36,7 @@ Or for Gradle:
 
 ```
 dependencies {
-  compile "com.studerw.tda:td-ameritrade-client:2.1.0"
+  compile "com.studerw.tda:td-ameritrade-client:2.2.0"
 }
 ```
 ----
@@ -108,7 +110,7 @@ Date date = new Date(someDateTime);
 To convert a long to human readable ISO 8601 String, use the following:
 ```java
 long currentTime = System.currentTimeMillis();
-String formattedDate = FormatUtils.epochToStr(currentTime);
+String formattedDate = Utils.epochToStr(currentTime);
 System.out.println(formattedDate) //   2019-09-13T19:59-04:00[America/New_York]
 ```
 
@@ -125,7 +127,7 @@ or set of parameters. Often this means the body is an empty JSON string.
 The rules are this:
 
 * OAuth authentication problems, explicitly signalled by a 401 response codes, usually mean an invalid TDA 
-client id or an expired refresh token, and this will throw an `IllegalStateException`.
+client id (consumer key) or an expired refresh token, and this will throw an `IllegalStateException`.
 
 * Validation issues that are known before the call is made, e.g. null or empty required parameters, will throw unchecked `IllegalArgumentException`.
 

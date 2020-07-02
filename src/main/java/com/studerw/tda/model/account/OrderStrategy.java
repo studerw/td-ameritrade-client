@@ -119,7 +119,7 @@ public class OrderStrategy implements Serializable {
   private Long accountId;
 
   @JsonProperty("orderActivityCollection")
-  private List<OrderActivityCollection> orderActivityCollection = new ArrayList<>();
+  private List<OrderActivity> orderActivityCollection = new ArrayList<>();
 
   @JsonProperty("replacingOrderCollection")
   private List<Object> replacingOrderCollection = new ArrayList<>();
@@ -261,7 +261,7 @@ public class OrderStrategy implements Serializable {
     return accountId;
   }
 
-  public List<OrderActivityCollection> getOrderActivityCollection() {
+  public List<OrderActivity> getOrderActivityCollection() {
     return orderActivityCollection;
   }
 

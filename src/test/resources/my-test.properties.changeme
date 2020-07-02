@@ -1,9 +1,10 @@
-#To run integration tests, run mvn:verify
-#You will need to rename this file to 'my-test.properties' and add the TDA client_id, refresh_token,
-# and one account.id
+# To run integration tests, run mvn:verify
+# You will need to rename this file to 'my-test.properties' and add the TDA client_id, refresh_token,
+# and one account.id. The client id should not have the '@AMER.OAUTHAP' part appended that is
+# used when refreshing your OAuth token.
 
 tda.token.refresh=<ADD a refresh_token>
-tda.client_id=<ADD Your App / Client ID>
+tda.client_id=<ADD Your Application Client ID (consumer key)>
 tda.account.id=<Your account ID>
 tda.url=https://api.tdameritrade.com/v1
 #how many bytes in the logging interceptor to actually print out. -1 is unlimited

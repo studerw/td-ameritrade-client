@@ -6,11 +6,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.studerw.tda.parse.LocalDateDeserializer;
+import com.studerw.tda.parse.ZonedDateTimeDeserializer;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 
@@ -82,15 +84,17 @@ public class Order implements Serializable {
 
   Status status;
 
-  Date enteredTime;
+  @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
+  ZonedDateTime enteredTime;
 
-  Date closeTime;
+  @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
+  ZonedDateTime closeTime;
 
   String tag;
 
   Long accountId;
 
-  List<OrderActivityCollection> orderActivityCollection = new ArrayList<>();
+  List<OrderActivity> orderActivityCollection = new ArrayList<>();
 
   List<Object> replacingOrderCollection = new ArrayList<>();
 

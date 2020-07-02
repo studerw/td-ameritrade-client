@@ -4,7 +4,12 @@
   <TITLE>API Overview</TITLE>
 </head>
 <body>
-The <strong>TdaClient</strong> is your main interface into the API.
+<p>
+The <strong>TdaClient</strong> is your main interface into the API. Note that in TDA's documentation,
+sometimes the term <em>client id</em> is used and other times <em>consumer key</em> is used.
+They are the same. You should not have <em>@AMER.OAUTHAP</em> appended to the client id. That
+is only used when creating a new refresh token.
+</p>
 
 <p>Create a <em>tda-api.properties</em> in your classpath with the following properties:</p>
 <ul>
@@ -13,9 +18,9 @@ The <strong>TdaClient</strong> is your main interface into the API.
 </ul>
 
 <pre class="code">
-  TdaClient tdaClient = new HttpTdaClient();
+  TdaClient client = new HttpTdaClient();
 
-  Quote quote = tdaClient.fetchQuote("msft");
+  Quote quote = client.fetchQuote("msft");
   EquityQuote equityQuote = (EquityQuote) quote;
 
   System.out.println("Current ask price of MSFT: " + equityQuote.getAskPrice());
