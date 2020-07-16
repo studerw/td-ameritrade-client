@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class OrderLegCollection implements Serializable {
+public class OrderLeg implements Serializable {
 
   private final static long serialVersionUID = -6019542088004898750L;
 

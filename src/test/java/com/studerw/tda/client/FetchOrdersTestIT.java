@@ -7,9 +7,9 @@ import com.studerw.tda.model.account.Duration;
 import com.studerw.tda.model.account.EquityInstrument;
 import com.studerw.tda.model.account.Instrument;
 import com.studerw.tda.model.account.Order;
-import com.studerw.tda.model.account.OrderLegCollection;
-import com.studerw.tda.model.account.OrderLegCollection.Instruction;
-import com.studerw.tda.model.account.OrderLegCollection.QuantityType;
+import com.studerw.tda.model.account.OrderLeg;
+import com.studerw.tda.model.account.OrderLeg.Instruction;
+import com.studerw.tda.model.account.OrderLeg.QuantityType;
 import com.studerw.tda.model.account.OrderRequest;
 import com.studerw.tda.model.account.OrderStrategyType;
 import com.studerw.tda.model.account.OrderType;
@@ -134,10 +134,10 @@ public class FetchOrdersTestIT extends BaseTestIT {
     order.setDuration(Duration.DAY);
     order.setOrderStrategyType(OrderStrategyType.SINGLE);
 
-    OrderLegCollection olc = new OrderLegCollection();
+    OrderLeg olc = new OrderLeg();
     olc.setInstruction(Instruction.SELL);
     olc.setQuantity(new BigDecimal("360.888"));
-    order.getOrderLegCollection().add(olc);
+    order.getOrderLegs().add(olc);
 
     Instrument instrument = new EquityInstrument();
     instrument.setSymbol("F");
@@ -154,11 +154,11 @@ public class FetchOrdersTestIT extends BaseTestIT {
     order.setOrderStrategyType(OrderStrategyType.SINGLE);
     order.setStopPrice(new BigDecimal("4.7"));
 
-    OrderLegCollection olc = new OrderLegCollection();
+    OrderLeg olc = new OrderLeg();
     olc.setInstruction(Instruction.SELL);
     olc.setQuantity(new BigDecimal("360.888"));
     olc.setQuantityType(QuantityType.SHARES);
-    order.getOrderLegCollection().add(olc);
+    order.getOrderLegs().add(olc);
 
     Instrument instrument = new EquityInstrument();
     instrument.setSymbol("F");

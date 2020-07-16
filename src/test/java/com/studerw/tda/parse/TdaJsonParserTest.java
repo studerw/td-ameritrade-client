@@ -16,9 +16,9 @@ import com.studerw.tda.model.account.MarginProjectedBalances;
 import com.studerw.tda.model.account.Order;
 import com.studerw.tda.model.account.OrderActivity;
 import com.studerw.tda.model.account.OrderActivity.ExecutionType;
-import com.studerw.tda.model.account.OrderLegCollection;
-import com.studerw.tda.model.account.OrderLegCollection.Instruction;
-import com.studerw.tda.model.account.OrderLegCollection.OrderLegType;
+import com.studerw.tda.model.account.OrderLeg;
+import com.studerw.tda.model.account.OrderLeg.Instruction;
+import com.studerw.tda.model.account.OrderLeg.OrderLegType;
 import com.studerw.tda.model.account.OrderStrategyType;
 import com.studerw.tda.model.account.Position;
 import com.studerw.tda.model.account.SecuritiesAccount;
@@ -270,7 +270,7 @@ public class TdaJsonParserTest {
       assertThat(order.getEditable()).isFalse();
       assertThat(order.getQuantity()).isEqualTo("15.0");
 
-      OrderLegCollection olc = order.getOrderLegCollection().get(0);
+      OrderLeg olc = order.getOrderLegs().get(0);
       assertThat(olc.getOrderLegType()).isEqualTo(OrderLegType.EQUITY);
       assertThat(olc.getInstruction()).isEqualTo(Instruction.BUY);
       assertThat(olc.getQuantity()).isEqualTo("15.0");
@@ -296,7 +296,7 @@ public class TdaJsonParserTest {
       assertThat(order.getQuantity()).isEqualTo("360.0");
 
 
-      OrderLegCollection olc = order.getOrderLegCollection().get(0);
+      OrderLeg olc = order.getOrderLegs().get(0);
       assertThat(olc.getOrderLegType()).isEqualTo(OrderLegType.EQUITY);
       assertThat(olc.getInstruction()).isEqualTo(Instruction.SELL);
       assertThat(olc.getQuantity()).isEqualTo("360.0");
