@@ -9,7 +9,7 @@ Java rest client for [OAuth2 TD Ameritrade Api](https://developer.tdameritrade.c
 Uses [OKHttp 3](https://github.com/square/okhttp) under the hood.
 
 * [Javadoc API](http://td-ameritrade-client.studerw.com.s3-website-us-east-1.amazonaws.com/)
-* [How-To](https://github.com/studerw/td-ameritrade-client/wiki/how-to) on the Wiki.
+* [How-To](https://github.com/studerw/td-ameritrade-client/wiki/how-to) on the Wiki shows how to use this Java API.
 * [TDA-Client-Example](https://github.com/studerw/tda-client-example) - Simple Java and Maven example project.
 
 ## Required TDA Properties
@@ -18,8 +18,8 @@ The client only requires a TDA client ID (<em>consumer key</em>) and current OAu
 The refresh token expires every 90 days.
 Note that the client id should not have appended the _@AMER.OAUTHAP_ which is used only when refreshing your OAuth token.
 
-See the [Getting Started](https://developer.tdameritrade.com/content/getting-started) 
-and [Simple Auth for Local Apps](https://developer.tdameritrade.com/content/simple-auth-local-apps) for help.
+See the [Getting Started](https://developer.tdameritrade.com/content/getting-started) to set up the developer account itself.  
+and the wiki has directions on how to [generate a refresh token](https://github.com/studerw/td-ameritrade-client/wiki/Create-a-TDA-Refresh-Token).
 
 ## Usage
 Add the following to your Maven build file:
