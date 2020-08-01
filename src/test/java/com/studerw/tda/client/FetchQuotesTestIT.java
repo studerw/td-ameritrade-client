@@ -13,6 +13,7 @@ import com.studerw.tda.model.quote.Quote;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,6 +101,31 @@ public class FetchQuotesTestIT extends BaseTestIT {
     assertThat(etfQuote.getSymbol()).isEqualTo("SPY");
     assertThat(etfQuote.getAssetType()).isEqualTo(AssetType.ETF);
     LOGGER.debug(etfQuote.toString());
+  }
+
+  @Test
+  public void testIssueQuote(){
+    final List<Quote> quotes = httpTdaClient.fetchQuotes(Arrays.asList("FNDF", "FNDE"));
+    assertThat(quotes).hasSize(2);
+    quotes.forEach(q -> LOGGER.debug("{}", q));
+  }
+
+  @Test
+  @Ignore
+  //https://github.com/studerw/td-ameritrade-client/issues/24
+  public void testOptionChainMarkVsTov(){
+    String chain = "WYNN_080720P73.5";
+    final Quote quote = httpTdaClient.fetchQuote(
+        chain);
+    assertThat(quote instanceof OptionQuote);
+    OptionQuote optionQuote = (OptionQuote)quote;
+
+    BigDecimal askPrice = optionQuote.getAskPrice();
+    BigDecimal bidPrice = optionQuote.getBidPrice();
+    LOGGER.debug("Bid: {}, Ask: {}", bidPrice, askPrice);
+
+    LOGGER.debug("Mark: {}, theoreticalOptionValue: {}", optionQuote.getMark(),
+        optionQuote.getTheoreticalOptionValue());
   }
 
 }

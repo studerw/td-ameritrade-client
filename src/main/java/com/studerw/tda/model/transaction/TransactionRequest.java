@@ -11,9 +11,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * If an empty request is sent, then all transactions from all valid dates will be returned for the
  * account, as allowed by TDA.
  *
- * If a start date is used, and end date is required. End date cannot be before start date, of
- * course.
- *
  * If a {@code startDate} is used, an {@code endDate} must also be used, and vice versa. The maximum
  * date range is one year, according to TDA's documents.
  */
