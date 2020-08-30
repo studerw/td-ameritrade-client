@@ -1,10 +1,11 @@
-package com.studerw.tda.model;
+package com.studerw.tda.parse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.studerw.tda.model.AssetType;
 import com.studerw.tda.model.quote.EquityQuote;
 import com.studerw.tda.model.quote.EtfQuote;
 import com.studerw.tda.model.quote.ForexQuote;
@@ -14,7 +15,6 @@ import com.studerw.tda.model.quote.IndexQuote;
 import com.studerw.tda.model.quote.MutualFundQuote;
 import com.studerw.tda.model.quote.OptionQuote;
 import com.studerw.tda.model.quote.Quote;
-import com.studerw.tda.parse.DefaultMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;

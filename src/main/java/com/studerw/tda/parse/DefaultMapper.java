@@ -1,11 +1,14 @@
 package com.studerw.tda.parse;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 
 /**
  * Convert between Java pojos and JSON. This class is thread safe.
@@ -16,6 +19,11 @@ public class DefaultMapper {
 
   static {
     defaultMapper = new ObjectMapper();
+
+    SimpleModule module =
+        new SimpleModule("BigDecimalNanDeserializer", new Version(1, 0, 0, null, null, null));
+    module.addDeserializer(BigDecimal.class, new BigDecimalNanDeserializer());
+    defaultMapper.registerModule(module);
 //    defaultMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
 //    defaultMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
   }

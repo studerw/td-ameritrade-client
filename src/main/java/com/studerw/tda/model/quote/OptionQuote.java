@@ -2,8 +2,6 @@ package com.studerw.tda.model.quote;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.studerw.tda.parse.BigDecimalNanDeserializer;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -35,7 +33,6 @@ public class OptionQuote extends Quote implements Serializable {
   @JsonProperty("deliverables")
   private String deliverables;
 
-  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("delta")
   private BigDecimal delta;
 
@@ -45,7 +42,6 @@ public class OptionQuote extends Quote implements Serializable {
   @JsonProperty("exchangeName")
   private String exchangeName;
 
-  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("gamma")
   private BigDecimal gamma;
 
@@ -82,7 +78,6 @@ public class OptionQuote extends Quote implements Serializable {
   @JsonProperty("quoteTimeInLong")
   private Long quoteTimeInLong;
 
-  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("rho")
   private BigDecimal rho;
 
@@ -98,7 +93,6 @@ public class OptionQuote extends Quote implements Serializable {
   @JsonProperty("timeValue")
   private BigDecimal timeValue;
 
-  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("theta")
   private BigDecimal theta;
 
@@ -117,7 +111,6 @@ public class OptionQuote extends Quote implements Serializable {
   @JsonProperty("underlying")
   private String underlying;
 
-  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("vega")
   private BigDecimal vega;
 

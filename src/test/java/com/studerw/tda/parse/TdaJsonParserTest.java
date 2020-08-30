@@ -3,7 +3,6 @@ package com.studerw.tda.parse;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.studerw.tda.model.AssetType;
-import com.studerw.tda.model.ParseQuotesTest;
 import com.studerw.tda.model.account.ActivityType;
 import com.studerw.tda.model.account.CashEquivalentInstrument;
 import com.studerw.tda.model.account.EquityInstrument;
@@ -495,6 +494,21 @@ public class TdaJsonParserTest {
       LOGGER.debug(optionChain.toString());
     }
   }
+
+  @Test
+  //we're removing the explicit BigDecimalNanSeserializer annotations from specific types,
+  //and just forcing the DefaultParser to always use it for all BigDecimals
+  public void testParseOptionChainNAN() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/option-chain-resp.json")) {
+      final OptionChain optionChain = tdaJsonParser.parseOptionChain(in);
+      assertThat(optionChain).isNotNull();
+      assertThat(optionChain.getSymbol()).isEqualTo("MSFT");
+
+      LOGGER.debug(optionChain.toString());
+    }
+  }
+
 
   @Test
   public void testParseTransactions() throws IOException {

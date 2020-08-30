@@ -3,9 +3,11 @@ package com.studerw.tda.client;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+import com.studerw.tda.model.account.ComplexOrderStrategyType;
 import com.studerw.tda.model.account.Duration;
 import com.studerw.tda.model.account.EquityInstrument;
 import com.studerw.tda.model.account.Instrument;
+import com.studerw.tda.model.account.Instrument.AssetType;
 import com.studerw.tda.model.account.Order;
 import com.studerw.tda.model.account.OrderLegCollection;
 import com.studerw.tda.model.account.OrderLegCollection.Instruction;
@@ -15,6 +17,8 @@ import com.studerw.tda.model.account.OrderStrategyType;
 import com.studerw.tda.model.account.OrderType;
 import com.studerw.tda.model.account.Session;
 import com.studerw.tda.model.account.Status;
+import com.studerw.tda.model.account.StopPriceLinkBasis;
+import com.studerw.tda.model.account.StopPriceLinkType;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -165,5 +169,31 @@ public class FetchOrdersTestIT extends BaseTestIT {
     olc.setInstrument(instrument);
     LOGGER.debug(order.toString());
     return order;
+  }
+
+  private Order orderTrailingStopBuy() {
+    Order order = new Order();
+    order.setOrderType(OrderType.TRAILING_STOP);
+    order.setSession(Session.NORMAL);
+    order.setStopPriceLinkBasis(StopPriceLinkBasis.BID);
+    order.setStopPriceLinkType(StopPriceLinkType.PERCENT);
+    order.setStopPriceOffset(new BigDecimal("1"));
+    order.setDuration(Duration.DAY);
+    order.setOrderStrategyType(OrderStrategyType.SINGLE);
+    order.setComplexOrderStrategyType(ComplexOrderStrategyType.NONE);
+
+    OrderLegCollection olc = new OrderLegCollection();
+    olc.setInstruction(Instruction.BUY);
+    olc.setQuantity(new BigDecimal("100"));
+    olc.setQuantityType(QuantityType.SHARES);
+    order.getOrderLegCollection().add(olc);
+
+    Instrument instrument = new EquityInstrument();
+    instrument.setSymbol("F");
+    instrument.setAssetType(AssetType.EQUITY);
+    olc.setInstrument(instrument);
+    LOGGER.debug(order.toString());
+    return order;
+
   }
 }

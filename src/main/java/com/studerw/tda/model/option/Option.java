@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.studerw.tda.model.account.OptionDeliverable;
-import com.studerw.tda.parse.BigDecimalNanDeserializer;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -16,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
 
 /**
  * Option
@@ -93,24 +90,19 @@ public class Option implements Serializable {
   @JsonProperty("volatility")
   private BigDecimal volatility;
 
-  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("delta")
   private BigDecimal delta;
 
-  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("gamma")
   private BigDecimal gamma;
 
-  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("theta")
   private BigDecimal theta;
 
-  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   @JsonProperty("vega")
   private BigDecimal vega;
 
   @JsonProperty("rho")
-  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
   private BigDecimal rho;
 
   @JsonProperty("timeValue")

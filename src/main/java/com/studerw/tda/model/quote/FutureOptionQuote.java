@@ -72,23 +72,23 @@ public class FutureOptionQuote extends Quote implements Serializable {
   private BigDecimal timeValueInDouble;
 
   @JsonProperty("deltaInDouble")
-  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
+
   private BigDecimal deltaInDouble;
 
   @JsonProperty("gammaInDouble")
-  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
+
   private BigDecimal gammaInDouble;
 
   @JsonProperty("thetaInDouble")
-  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
+
   private BigDecimal thetaInDouble;
 
   @JsonProperty("vegaInDouble")
-  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
+
   private BigDecimal vegaInDouble;
 
   @JsonProperty("rhoInDouble")
-  @JsonDeserialize(using = BigDecimalNanDeserializer.class)
+
   private BigDecimal rhoInDouble;
 
   @JsonProperty("mark")
