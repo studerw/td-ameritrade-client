@@ -27,9 +27,10 @@
  * </pre>
  *
  * <p>If you only need to fetch quotes and do not want to deal with generating OAuth tokens,
- * you can do so with just a valid TDA Client ID (customer key). The interface to this
+ * you can do so with just a valid Client ID (customer key). The interface to this
  * is the {@link com.studerw.tda.client.TdaQuoteClient}.
  * </p>
+ *
  * <pre class="code">
  *
  *   TdaQuoteClient quoteClient = new HttpTdaQuoteClient("123456789ABCDEF")

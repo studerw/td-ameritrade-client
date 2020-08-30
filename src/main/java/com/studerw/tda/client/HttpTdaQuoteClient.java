@@ -40,7 +40,8 @@ public class HttpTdaQuoteClient implements TdaQuoteClient {
   private final HttpUrl httpUrl;
 
   /**
-   * Create a client using the default base URL: https://api.tdameritrade.com/v1
+   * Create a client using the default base URL: <a href="https://api.tdameritrade.com/v1">https://api.tdameritrade.com/v1</a>
+   *
    * @param clientId a non-blank client id (customer key).
    */
   public HttpTdaQuoteClient(String clientId) {
@@ -48,26 +49,28 @@ public class HttpTdaQuoteClient implements TdaQuoteClient {
   }
 
   /**
-   *
    * @param clientId a non-blank client id (customer key).
-   * @param baseUrl override the TDA base url. Currently, the default is "https://api.tdameritrade.com/v1"
+   * @param baseUrl override the TDA base url. Currently, the default is
+   * "https://api.tdameritrade.com/v1"
    */
-  public HttpTdaQuoteClient(String clientId, String baseUrl){
-    LOGGER.info("Instantiating new client with client id: {}, baseURL: {}", clientId, baseUrl);
+  public HttpTdaQuoteClient(String clientId, String baseUrl) {
+    LOGGER.info("Instantiating new Quote Client with client id: {} at baseURL: {}", clientId,
+        baseUrl);
 
     if (StringUtils.isBlank(clientId)) {
       throw new IllegalArgumentException("A valid TDA API Client ID (consumer key) is required.");
     }
 
     if (StringUtils.isBlank(baseUrl)) {
-      throw new IllegalArgumentException("A base URL to the TDA API is required.");
+      throw new IllegalArgumentException(
+          "A base URL to the TDA API is required. If you just want to use the default, don't include this parameter");
     }
     this.clientId = clientId;
     this.httpUrl = HttpUrl.parse(baseUrl);
 
     this.httpClient = new OkHttpClient.Builder().
         cookieJar(new CookieJarImpl(new MemoryCookieStore())).
-        addInterceptor(new LoggingInterceptor("TDA_HTTP",-1)).
+        addInterceptor(new LoggingInterceptor("TDA_HTTP", -1)).
         build();
   }
 
@@ -97,7 +100,6 @@ public class HttpTdaQuoteClient implements TdaQuoteClient {
     List<Quote> quotes = fetchQuotes(Collections.singletonList(symbol));
     return quotes.get(0);
   }
-
 
   /**
    * @param response the tda response
