@@ -1,0 +1,14 @@
+{
+  "forex": {
+    "forex": {
+      "date": "2020-12-31",
+      "marketType": "FOREX",
+      "exchange": null,
+      "category": null,
+      "product": "forex",
+      "productName": null,
+      "isOpen": false,
+      "sessionHours": null
+    }
+  }
+}

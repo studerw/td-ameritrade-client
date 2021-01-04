@@ -8,6 +8,8 @@ import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.instrument.FullInstrument;
 import com.studerw.tda.model.instrument.Instrument;
 import com.studerw.tda.model.instrument.Query;
+import com.studerw.tda.model.marketdata.Hours;
+import com.studerw.tda.model.marketdata.MarketHoursReq;
 import com.studerw.tda.model.marketdata.Mover;
 import com.studerw.tda.model.marketdata.MoversReq;
 import com.studerw.tda.model.option.OptionChain;
@@ -350,4 +352,11 @@ public interface TdaClient {
    * @return user principals
    */
   UserPrincipals getUserPrincipals();
+
+  /**
+   * Retrieve market hours for specified markets
+   * @param marketHoursReq the request market type and date format
+   * @return hours
+   */
+  Hours fetchMarketHours(MarketHoursReq marketHoursReq);
 }

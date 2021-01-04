@@ -1,5 +1,7 @@
 package com.studerw.tda.client;
 
+import static java.util.stream.Collectors.toList;
+
 import com.studerw.tda.http.LoggingInterceptor;
 import com.studerw.tda.http.cookie.CookieJarImpl;
 import com.studerw.tda.http.cookie.store.MemoryCookieStore;
@@ -13,6 +15,8 @@ import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.instrument.FullInstrument;
 import com.studerw.tda.model.instrument.Instrument;
 import com.studerw.tda.model.instrument.Query;
+import com.studerw.tda.model.marketdata.Hours;
+import com.studerw.tda.model.marketdata.MarketHoursReq;
 import com.studerw.tda.model.marketdata.Mover;
 import com.studerw.tda.model.marketdata.MoversReq;
 import com.studerw.tda.model.option.OptionChain;
@@ -30,8 +34,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.HttpUrl.Builder;
@@ -131,8 +139,8 @@ public class HttpTdaClient implements TdaClient {
   }
 
   /**
-   * validates the necessary props like refresh token and client id (consumer key). If others are missing, just use
-   * friendly defaults.
+   * validates the necessary props like refresh token and client id (consumer key). If others are
+   * missing, just use friendly defaults.
    *
    * @param tdaProps the required props to validate
    */
@@ -714,9 +722,36 @@ public class HttpTdaClient implements TdaClient {
     }
   }
 
+  @Override
+  public Hours fetchMarketHours(MarketHoursReq marketHoursReq) {
+    LOGGER.info("fetchMarketHours");
+    if (marketHoursReq == null) {
+      throw new IllegalArgumentException("Must pass a non-null MarketHoursRequest object");
+    }
+
+    Builder urlBuilder = baseUrl("marketdata", "hours");
+
+    urlBuilder.addQueryParameter("markets", String.join(",",
+        marketHoursReq.getMarketTypes().stream().map(type -> type.toString()).collect(toList())));
+
+    urlBuilder.addQueryParameter("date", marketHoursReq.getDateType().getFormat());
+
+    Request request = new Request.Builder()
+        .url(urlBuilder.build())
+        .headers(defaultHeaders())
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response, false);
+      return tdaJsonParser.parseMarketHours(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   protected StreamerSubscriptionKeys getSubscriptionKeys(List<String> accountsIds) {
     LOGGER.info("getSubscriptionKeys: {}", accountsIds);
-    if(Utils.isNullOrEmpty(accountsIds)){
+    if (Utils.isNullOrEmpty(accountsIds)) {
       throw new IllegalArgumentException("AccountIds list must contain at least one account id");
     }
 

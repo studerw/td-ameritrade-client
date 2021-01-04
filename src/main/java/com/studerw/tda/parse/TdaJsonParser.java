@@ -8,6 +8,7 @@ import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.instrument.FullInstrument;
 import com.studerw.tda.model.instrument.Instrument;
+import com.studerw.tda.model.marketdata.Hours;
 import com.studerw.tda.model.marketdata.Mover;
 import com.studerw.tda.model.option.OptionChain;
 import com.studerw.tda.model.quote.Quote;
@@ -284,6 +285,19 @@ public class TdaJsonParser {
           .fromJson(bIn, typeReference);
       LOGGER.debug("Returned subscription keys: {}", streamerSubscriptionKeys);
       return streamerSubscriptionKeys;
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+  }
+
+  public Hours parseMarketHours(InputStream in) {
+    LOGGER.trace("parsing market hours...");
+    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
+      TypeReference<Hours> typeReference = new TypeReference<Hours>() {};
+      final Hours hours = DefaultMapper.fromJson(bIn, typeReference);
+      LOGGER.debug("Returned market hours: {}", hours);
+      return hours;
     } catch (IOException e) {
       e.printStackTrace();
       throw new RuntimeException(e);
