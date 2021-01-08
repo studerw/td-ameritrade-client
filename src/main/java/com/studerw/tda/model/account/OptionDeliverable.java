@@ -42,7 +42,8 @@ public class OptionDeliverable implements Serializable {
     FIXED_INCOME,
     INDEX,
     MUTUAL_FUND,
-    OPTION
+    OPTION,
+    STOCK
   }
 
   public enum CurrencyType {
