@@ -34,7 +34,7 @@ public class Account implements Serializable {
   private String segment;
 
   @JsonProperty("surrogateIds")
-  private SurrogateIds surrogateIds;
+  private Map<String, String> surrogateIds;
 
   @JsonProperty("preferences")
   private Preferences preferences;
@@ -72,7 +72,7 @@ public class Account implements Serializable {
     return segment;
   }
 
-  public SurrogateIds getSurrogateIds() {
+  public Map<String, String> getSurrogateIds() {
     return surrogateIds;
   }
 

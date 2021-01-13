@@ -48,6 +48,7 @@ import com.studerw.tda.model.user.Authorizations.OptionTradingLevel;
 import com.studerw.tda.model.user.Preferences;
 import com.studerw.tda.model.user.Preferences.AuthTokenTimeout;
 import com.studerw.tda.model.user.Preferences.DefaultEquityOrderDuration;
+import com.studerw.tda.model.user.Preferences.DefaultEquityOrderLegInstruction;
 import com.studerw.tda.model.user.Preferences.EquityTaxLotMethod;
 import com.studerw.tda.model.user.Quotes;
 import com.studerw.tda.model.user.UserPrincipals;
@@ -556,7 +557,6 @@ public class TdaJsonParserTest {
     }
   }
 
-
   @Test
   public void testParseTransactions() throws IOException {
     try (InputStream in = ParseQuotesTest.class.getClassLoader().
@@ -612,6 +612,44 @@ public class TdaJsonParserTest {
       assertThat(authorizations.getLevelTwoQuotes()).isTrue();
       assertThat(authorizations.getOptionTradingLevel()).isEqualTo(OptionTradingLevel.SPREAD);
 
+      LOGGER.debug("{}", userPrincipals);
+    }
+  }
+
+  @Test
+  public void testParseUserPrincipalsPrefs() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/userPrincipals-prefs-resp.json")) {
+      final UserPrincipals userPrincipals = tdaJsonParser.parseUserPrincipals(in);
+      assertThat(userPrincipals).isNotNull();
+      assertThat(userPrincipals.getStreamerSubscriptionKeys()).isNull();
+      assertThat(userPrincipals.getStreamerInfo()).isNull();
+      final Map<String, String> surrogateIds = userPrincipals.getAccounts().get(0)
+          .getSurrogateIds();
+      assertThat(surrogateIds).isNull();
+      assertThat(userPrincipals.getAccounts().get(0).getPreferences()).isNotNull();
+      final Preferences preferences = userPrincipals.getAccounts().get(0).getPreferences();
+      assertThat(preferences.isExpressTrading()).isFalse();
+      assertThat(preferences.getDefaultEquityOrderLegInstruction()).isEqualTo(
+          DefaultEquityOrderLegInstruction.NONE);
+      assertThat(preferences.getAuthTokenTimeout()).isEqualTo(
+          AuthTokenTimeout.FIFTY_FIVE_MINUTES);
+    }
+  }
+
+  @Test
+  public void testParseUserPrincipalsNoPrefs() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/userPrincipals-noprefs-resp.json")) {
+      final UserPrincipals userPrincipals = tdaJsonParser.parseUserPrincipals(in);
+      assertThat(userPrincipals).isNotNull();
+      assertThat(userPrincipals.getStreamerSubscriptionKeys()).isNotNull();
+      assertThat(userPrincipals.getStreamerInfo()).isNotNull();
+      assertThat(userPrincipals.getAccounts().get(0).getPreferences()).isNull();
+      final Map<String, String> surrogateIds = userPrincipals.getAccounts().get(0)
+          .getSurrogateIds();
+      assertThat(surrogateIds).hasSize(3);
+      assertThat(surrogateIds.get("Market Edge")).isEqualTo("111111");
       LOGGER.debug("{}", userPrincipals);
     }
   }

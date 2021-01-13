@@ -23,6 +23,7 @@ import com.studerw.tda.model.transaction.TransactionRequestValidator;
 import com.studerw.tda.model.user.Preferences;
 import com.studerw.tda.model.user.StreamerSubscriptionKeys;
 import com.studerw.tda.model.user.UserPrincipals;
+import com.studerw.tda.model.user.UserPrincipals.Field;
 import com.studerw.tda.parse.DefaultMapper;
 import com.studerw.tda.parse.TdaJsonParser;
 import com.studerw.tda.parse.Utils;
@@ -696,10 +697,19 @@ public class HttpTdaClient implements TdaClient {
   }
 
   @Override
-  public UserPrincipals getUserPrincipals() {
-    LOGGER.info("getUserPrincipals");
+  public UserPrincipals getUserPrincipals(Field... fields) {
+    LOGGER.info("getUserPrincipals with additional fields: {}", fields);
 
     Builder urlBuilder = baseUrl("userprincipals");
+
+    List<String> fieldsStr = new ArrayList();
+    for (Field field : fields) {
+      fieldsStr.add(field.toString());
+    }
+
+    if (fieldsStr.size() > 0) {
+      urlBuilder.addQueryParameter("fields", String.join(",", fieldsStr));
+    }
 
     Request request = new Request.Builder()
         .url(urlBuilder.build())
@@ -709,28 +719,6 @@ public class HttpTdaClient implements TdaClient {
     try (Response response = this.httpClient.newCall(request).execute()) {
       checkResponse(response, false);
       return tdaJsonParser.parseUserPrincipals(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  protected StreamerSubscriptionKeys getSubscriptionKeys(List<String> accountsIds) {
-    LOGGER.info("getSubscriptionKeys: {}", accountsIds);
-    if(Utils.isNullOrEmpty(accountsIds)){
-      throw new IllegalArgumentException("AccountIds list must contain at least one account id");
-    }
-
-    Builder urlBuilder = baseUrl("userprincipals", "streamersubscriptionkeys")
-        .addQueryParameter("accountIds", String.join(",", accountsIds));
-
-    Request request = new Request.Builder()
-        .url(urlBuilder.build())
-        .headers(defaultHeaders())
-        .build();
-
-    try (Response response = this.httpClient.newCall(request).execute()) {
-      checkResponse(response, false);
-      return tdaJsonParser.parseSubscriptionKeys(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -759,6 +747,28 @@ public class HttpTdaClient implements TdaClient {
     try (Response response = this.httpClient.newCall(request).execute()) {
       checkResponse(response, false);
       return tdaJsonParser.parseInstrumentArraySingle(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  protected StreamerSubscriptionKeys getSubscriptionKeys(List<String> accountsIds) {
+    LOGGER.info("getSubscriptionKeys: {}", accountsIds);
+    if(Utils.isNullOrEmpty(accountsIds)){
+      throw new IllegalArgumentException("AccountIds list must contain at least one account id");
+    }
+
+    Builder urlBuilder = baseUrl("userprincipals", "streamersubscriptionkeys")
+        .addQueryParameter("accountIds", String.join(",", accountsIds));
+
+    Request request = new Request.Builder()
+        .url(urlBuilder.build())
+        .headers(defaultHeaders())
+        .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response, false);
+      return tdaJsonParser.parseSubscriptionKeys(response.body().byteStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

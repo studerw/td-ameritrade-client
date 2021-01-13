@@ -16,6 +16,7 @@ import com.studerw.tda.model.transaction.Transaction;
 import com.studerw.tda.model.transaction.TransactionRequest;
 import com.studerw.tda.model.user.Preferences;
 import com.studerw.tda.model.user.UserPrincipals;
+import com.studerw.tda.model.user.UserPrincipals.Field;
 import java.util.List;
 
 /**
@@ -346,8 +347,8 @@ public interface TdaClient {
   Preferences getPreferences(String accountId);
 
   /**
-   *
+   * @param fields zero or more additonal {@link UserPrincipals.Field} fields to return.
    * @return user principals
    */
-  UserPrincipals getUserPrincipals();
+  UserPrincipals getUserPrincipals(Field ... fields);
 }

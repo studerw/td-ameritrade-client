@@ -1,0 +1,64 @@
+{
+  "userId" : "foobar",
+  "userCdDomainId" : "A0123456789123456",
+  "primaryAccountId" : "123456789",
+  "lastLoginTime" : "2021-01-13T03:25:00+0000",
+  "tokenExpirationTime" : "2021-01-13T03:58:40+0000",
+  "loginTime" : "2021-01-13T03:28:40+0000",
+  "accessLevel" : "CUS",
+  "stalePassword" : false,
+  "streamerInfo" : {
+    "streamerBinaryUrl" : "streamer-bin.tdameritrade.com",
+    "streamerSocketUrl" : "streamer-ws.tdameritrade.com",
+    "token" : "12345",
+    "tokenTimestamp" : "2021-01-13T03:28:41+0000",
+    "userGroup" : "ACCT",
+    "accessLevel" : "ACCT",
+    "acl" : "12345",
+    "appId" : "billtda"
+  },
+  "professionalStatus" : "NON_PROFESSIONAL",
+  "quotes" : {
+    "isNyseDelayed" : false,
+    "isNasdaqDelayed" : false,
+    "isOpraDelayed" : false,
+    "isAmexDelayed" : false,
+    "isCmeDelayed" : true,
+    "isIceDelayed" : true,
+    "isForexDelayed" : true
+  },
+  "streamerSubscriptionKeys" : {
+    "keys" : [ {
+      "key" : "1234abcdefffffff4fbd6b8f893858f513cc9c8d682c"
+    } ]
+  },
+  "exchangeAgreements" : {
+    "NYSE_EXCHANGE_AGREEMENT" : "ACCEPTED",
+    "OPRA_EXCHANGE_AGREEMENT" : "ACCEPTED",
+    "NASDAQ_EXCHANGE_AGREEMENT" : "ACCEPTED"
+  },
+  "accounts" : [ {
+    "accountId" : "123456789",
+    "displayName" : "foobar",
+    "accountCdDomainId" : "A0123456789123456",
+    "company" : "AMER",
+    "segment" : "AMER",
+    "surrogateIds" : {
+      "SCARR" : "000000000000",
+      "Market Edge" : "111111",
+      "Zacks" : "111111"
+    },
+    "acl" : "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXAAAAAAAAAAAAABBBBBBBBCCCCCCCDDDDDRRRR",
+    "authorizations" : {
+      "apex" : false,
+      "levelTwoQuotes" : true,
+      "stockTrading" : true,
+      "marginTrading" : true,
+      "streamingNews" : true,
+      "optionTradingLevel" : "SPREAD",
+      "streamerAccess" : true,
+      "advancedMargin" : true,
+      "scottradeAccount" : false
+    }
+  } ]
+}

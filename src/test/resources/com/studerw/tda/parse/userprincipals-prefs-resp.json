@@ -1,0 +1,60 @@
+{
+  "userId" : "foobar",
+  "userCdDomainId" : "A0123456789123456",
+  "primaryAccountId" : "123456789",
+  "lastLoginTime" : "2021-01-13T03:10:26+0000",
+  "tokenExpirationTime" : "2021-01-13T03:54:59+0000",
+  "loginTime" : "2021-01-13T03:24:59+0000",
+  "accessLevel" : "CUS",
+  "stalePassword" : false,
+  "professionalStatus" : "NON_PROFESSIONAL",
+  "quotes" : {
+    "isNyseDelayed" : false,
+    "isNasdaqDelayed" : false,
+    "isOpraDelayed" : false,
+    "isAmexDelayed" : false,
+    "isCmeDelayed" : true,
+    "isIceDelayed" : true,
+    "isForexDelayed" : true
+  },
+  "exchangeAgreements" : {
+    "NYSE_EXCHANGE_AGREEMENT" : "ACCEPTED",
+    "OPRA_EXCHANGE_AGREEMENT" : "ACCEPTED",
+    "NASDAQ_EXCHANGE_AGREEMENT" : "ACCEPTED"
+  },
+  "accounts" : [ {
+    "accountId" : "123456789",
+    "displayName" : "foobar",
+    "accountCdDomainId" : "A0123456789123456",
+    "company" : "AMER",
+    "segment" : "AMER",
+    "preferences" : {
+      "expressTrading" : false,
+      "directOptionsRouting" : false,
+      "directEquityRouting" : false,
+      "defaultEquityOrderLegInstruction" : "NONE",
+      "defaultEquityOrderType" : "LIMIT",
+      "defaultEquityOrderPriceLinkType" : "NONE",
+      "defaultEquityOrderDuration" : "DAY",
+      "defaultEquityOrderMarketSession" : "NORMAL",
+      "defaultEquityQuantity" : 0,
+      "mutualFundTaxLotMethod" : "FIFO",
+      "optionTaxLotMethod" : "FIFO",
+      "equityTaxLotMethod" : "FIFO",
+      "defaultAdvancedToolLaunch" : "NONE",
+      "authTokenTimeout" : "FIFTY_FIVE_MINUTES"
+    },
+    "acl" : "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXAAAAAAAAAAAAABBBBBBBBCCCCCCCDDDDDRRRR",
+    "authorizations" : {
+      "apex" : false,
+      "levelTwoQuotes" : true,
+      "stockTrading" : true,
+      "marginTrading" : true,
+      "streamingNews" : true,
+      "optionTradingLevel" : "SPREAD",
+      "streamerAccess" : true,
+      "advancedMargin" : true,
+      "scottradeAccount" : false
+    }
+  } ]
+}

@@ -28,7 +28,6 @@ public class HttpTdaClientTest {
     assertThat(client.tdaProps.getProperty("tda.client_id")).isEqualTo("<CLIENT_ID>");
     assertThat(client.tdaProps.getProperty("tda.url")).isEqualTo(HttpTdaClient.DEFAULT_PATH);
     assertThat(client.tdaProps.getProperty("tda.debug.bytes.length")).isEqualTo("-1");
-
   }
 
   @Test

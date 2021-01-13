@@ -69,6 +69,9 @@ public class UserPrincipals implements Serializable {
   @JsonProperty("accounts")
   private List<Account> accounts = new ArrayList<Account>();
 
+  @JsonProperty("exchangeAgreements")
+  private Map<String, String> exchangeAgreements = new HashMap<>();
+
   @JsonAnySetter
   private Map<String, Object> otherFields = new HashMap<>();
 
@@ -128,6 +131,10 @@ public class UserPrincipals implements Serializable {
     return accounts;
   }
 
+  public Map<String, String> getExchangeAgreements() {
+    return exchangeAgreements;
+  }
+
   @JsonIgnore
   public Map<String, Object> getOtherFields() {
     return otherFields;
@@ -149,6 +156,7 @@ public class UserPrincipals implements Serializable {
         .append("professionalStatus", professionalStatus)
         .append("quotes", quotes)
         .append("streamerSubscriptionKeys", streamerSubscriptionKeys)
+        .append("exchangeAgreements", exchangeAgreements)
         .append("accounts", accounts)
         .append("otherFields", otherFields)
         .toString();
@@ -158,5 +166,12 @@ public class UserPrincipals implements Serializable {
     PROFESSIONAL,
     NON_PROFESSIONAL,
     UNKNOWN_STATUS
+  }
+
+  public enum Field {
+    streamerSubscriptionKeys,
+    streamerConnectionInfo,
+    preferences,
+    surrogateIds
   }
 }
