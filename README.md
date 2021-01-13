@@ -1,8 +1,7 @@
 # TD Ameritrade Java Client
 ![TDA_LOGO](https://github.com/studerw/td-ameritrade-client/blob/master/td_logo.png)
 
-![travisci-passing](https://api.travis-ci.org/studerw/td-ameritrade-client.svg?branch=master)
-![Java CI with Maven](https://github.com/actions/td-ameritrade-client/workflows/Java%20CI%20with%20Maven/badge.svg)
+![.github/workflows/maven.yml](https://github.com/studerw/td-ameritrade-client/workflows/.github/workflows/maven.yml/badge.svg)
 [![APL v2](https://img.shields.io/badge/license-Apache%202-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 ----
