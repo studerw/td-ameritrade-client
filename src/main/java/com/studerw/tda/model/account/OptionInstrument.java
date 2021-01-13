@@ -58,6 +58,31 @@ public class OptionInstrument extends Instrument {
     return otherFields;
   }
 
+  public void setType(Type type) {
+    this.type = type;
+  }
+
+  public void setPutCall(PutCall putCall) {
+    this.putCall = putCall;
+  }
+
+  public void setUnderlyingSymbol(String underlyingSymbol) {
+    this.underlyingSymbol = underlyingSymbol;
+  }
+
+  public void setOptionMultiplier(Long optionMultiplier) {
+    this.optionMultiplier = optionMultiplier;
+  }
+
+  public void setOptionDeliverables(
+      List<OptionDeliverable> optionDeliverables) {
+    this.optionDeliverables = optionDeliverables;
+  }
+
+  public void setOtherFields(Map<String, Object> otherFields) {
+    this.otherFields = otherFields;
+  }
+
   @Override
   public String toString() {
     return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
