@@ -619,7 +619,7 @@ public class TdaJsonParserTest {
   @Test
   public void testParseUserPrincipalsPrefs() throws IOException {
     try (InputStream in = ParseQuotesTest.class.getClassLoader().
-        getResourceAsStream("com/studerw/tda/parse/userPrincipals-prefs-resp.json")) {
+        getResourceAsStream("com/studerw/tda/parse/userprincipals-prefs-resp.json")) {
       final UserPrincipals userPrincipals = tdaJsonParser.parseUserPrincipals(in);
       assertThat(userPrincipals).isNotNull();
       assertThat(userPrincipals.getStreamerSubscriptionKeys()).isNull();
@@ -640,7 +640,7 @@ public class TdaJsonParserTest {
   @Test
   public void testParseUserPrincipalsNoPrefs() throws IOException {
     try (InputStream in = ParseQuotesTest.class.getClassLoader().
-        getResourceAsStream("com/studerw/tda/parse/userPrincipals-noprefs-resp.json")) {
+        getResourceAsStream("com/studerw/tda/parse/userprincipals-noprefs-resp.json")) {
       final UserPrincipals userPrincipals = tdaJsonParser.parseUserPrincipals(in);
       assertThat(userPrincipals).isNotNull();
       assertThat(userPrincipals.getStreamerSubscriptionKeys()).isNotNull();
