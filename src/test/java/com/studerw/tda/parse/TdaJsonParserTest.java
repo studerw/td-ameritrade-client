@@ -12,6 +12,7 @@ import com.studerw.tda.model.account.MarginAccount;
 import com.studerw.tda.model.account.MarginCurrentBalances;
 import com.studerw.tda.model.account.MarginInitialBalances;
 import com.studerw.tda.model.account.MarginProjectedBalances;
+import com.studerw.tda.model.account.OptionDeliverable;
 import com.studerw.tda.model.account.Order;
 import com.studerw.tda.model.account.OrderActivity;
 import com.studerw.tda.model.account.OrderActivity.ExecutionType;
@@ -504,6 +505,52 @@ public class TdaJsonParserTest {
       final OptionChain optionChain = tdaJsonParser.parseOptionChain(in);
       assertThat(optionChain).isNotNull();
       assertThat(optionChain.getSymbol()).isEqualTo("MSFT");
+
+      LOGGER.debug(optionChain.toString());
+    }
+  }
+
+
+  /**
+   * Issue 35 - originally used EQUITY, but now using STOCK for some (e.g. DIS)
+   * So changing the AssetType to String from enum because the TDA site now says it's just a generic string
+   * with no Enum list to chose from.
+   */
+  @Test
+  public void testParseOptionChainStock() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/optionChain-stock-resp.json")) {
+      final OptionChain optionChain = tdaJsonParser.parseOptionChain(in);
+      assertThat(optionChain.getSymbol()).isEqualToIgnoringCase("DIS");
+      assertThat(optionChain.getStatus()).isEqualTo("SUCCESS");
+      assertThat(optionChain.getStrategy()).isEqualTo(Strategy.SINGLE);
+      assertThat(optionChain.getIndex()).isFalse();
+      assertThat(optionChain.getDelayed()).isFalse();
+      assertThat(optionChain.getOtherFields()).isEmpty();
+
+      assertThat(optionChain.getUnderlying()).isNull();
+
+
+      final Map<String, Map<BigDecimal, List<Option>>> callExpDateMap = optionChain
+          .getCallExpDateMap();
+      final Map<BigDecimal, List<Option>> bigDecimalListMap = callExpDateMap.get("2021-01-15:3");
+      final List<Option> options = bigDecimalListMap.get(new BigDecimal("23.0"));
+      assertThat(options.size()).isEqualTo(2);
+      Option option = options.get(0);
+      assertThat(option.getPutCall()).isEqualTo(PutCall.CALL);
+      assertThat(option.getBidPrice()).isEqualTo("44.75");
+      assertThat(option.getTradeTimeInLong()).isEqualTo(0L);
+      assertThat(option.getRho()).isEqualTo("-999.0");
+      assertThat(option.getMini()).isFalse();
+      assertThat(option.getInTheMoney()).isTrue();
+      assertThat(option.getOtherFields()).isNotEmpty();
+
+      final OptionDeliverable optionDeliverable = option.getOptionDeliverablesList().get(1);
+      assertThat(optionDeliverable).isNotNull();
+      assertThat(optionDeliverable.getSymbol()).isEqualTo("DIS");
+      assertThat(optionDeliverable.getAssetType()).isEqualTo("STOCK");
+      assertThat(optionDeliverable.getCurrencyType()).isNull();
+      assertThat(optionDeliverable.getDeliverableUnits()).isEqualTo(new BigDecimal("33.0"));
 
       LOGGER.debug(optionChain.toString());
     }
