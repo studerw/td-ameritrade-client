@@ -42,6 +42,7 @@ import com.studerw.tda.model.quote.MutualFundQuote;
 import com.studerw.tda.model.quote.OptionQuote;
 import com.studerw.tda.model.quote.Quote;
 import com.studerw.tda.model.transaction.Transaction;
+import com.studerw.tda.model.transaction.Transaction.AchStatus;
 import com.studerw.tda.model.user.Account;
 import com.studerw.tda.model.user.Authorizations;
 import com.studerw.tda.model.user.Authorizations.OptionTradingLevel;
@@ -566,6 +567,8 @@ public class TdaJsonParserTest {
       for (Transaction transaction : transactions) {
         LOGGER.debug("{}", transaction);
       }
+      final Transaction transaction = transactions.get(6);
+      assertThat(transaction.getAchStatus()).isEqualTo(AchStatus.APPROVED);
     }
   }
 

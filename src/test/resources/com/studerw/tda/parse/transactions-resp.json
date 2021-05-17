@@ -184,6 +184,7 @@
     "transactionDate": "2019-10-01T02:34:38+0000",
     "transactionSubType": "MI",
     "transactionId": 23453328663,
+    "achStatus": "Approved",
     "cashBalanceEffectFlag": true,
     "description": "CASH ALTERNATIVES INTEREST",
     "fees": {
