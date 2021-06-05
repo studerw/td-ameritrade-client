@@ -15,6 +15,7 @@ import com.studerw.tda.model.instrument.Instrument;
 import com.studerw.tda.model.instrument.Query;
 import com.studerw.tda.model.marketdata.Mover;
 import com.studerw.tda.model.marketdata.MoversReq;
+import com.studerw.tda.model.markethours.Hours;
 import com.studerw.tda.model.option.OptionChain;
 import com.studerw.tda.model.quote.Quote;
 import com.studerw.tda.model.transaction.Transaction;
@@ -30,6 +31,8 @@ import com.studerw.tda.parse.Utils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -306,6 +309,51 @@ public class HttpTdaClient implements TdaClient {
       throw new RuntimeException(e);
     }
 
+  }
+
+  @Override
+  public List<Hours> getMarketHours(List<Hours.MarketType> marketTypes) {
+    return getMarketHours(marketTypes, null);
+  }
+
+  @Override
+  public List<Hours> getMarketHours(List<Hours.MarketType> marketTypes, LocalDateTime date) {
+    if(marketTypes == null || (marketTypes != null && marketTypes.size() == 0)) {
+      throw new IllegalArgumentException("One or more Hours.MarketType(s) are required");
+    }
+    if(date != null && date.isBefore(LocalDateTime.now())) {
+      throw new IllegalArgumentException("Date must be a future date.");
+    }
+    String stringMarketTypes = "";
+    for(Hours.MarketType mt: marketTypes) {
+      if(stringMarketTypes.length() > 0) {
+        stringMarketTypes += ",";
+      }
+      stringMarketTypes += mt.toString();
+    }
+    LOGGER.info("GetMarketHours[marketType={}]", stringMarketTypes);
+    List<String> args = new ArrayList<>();
+
+    final Builder hoursBldr = baseUrl("marketdata", "hours");
+    if(stringMarketTypes.length() > 0) {
+      hoursBldr.addQueryParameter("markets", stringMarketTypes);
+    } else {
+      throw new IllegalArgumentException("One or more Hours.MarketType(s) are required");
+    }
+    if(date != null) {
+      hoursBldr.addQueryParameter("date", date.format(DateTimeFormatter.ISO_DATE_TIME));
+    }
+    final URL url = hoursBldr.build().url();
+    final Request request = new Request.Builder().url(url)
+            .headers(defaultHeaders())
+            .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response, false);
+      return tdaJsonParser.parseMarketHours(response.body().byteStream());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
