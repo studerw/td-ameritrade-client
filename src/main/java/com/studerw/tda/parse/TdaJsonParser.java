@@ -2,6 +2,7 @@ package com.studerw.tda.parse;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.studerw.tda.model.account.Order;
 import com.studerw.tda.model.account.SecuritiesAccount;
@@ -9,19 +10,17 @@ import com.studerw.tda.model.history.PriceHistory;
 import com.studerw.tda.model.instrument.FullInstrument;
 import com.studerw.tda.model.instrument.Instrument;
 import com.studerw.tda.model.marketdata.Mover;
+import com.studerw.tda.model.markethours.Hours;
 import com.studerw.tda.model.option.OptionChain;
 import com.studerw.tda.model.quote.Quote;
 import com.studerw.tda.model.transaction.Transaction;
 import com.studerw.tda.model.user.Preferences;
 import com.studerw.tda.model.user.StreamerSubscriptionKeys;
 import com.studerw.tda.model.user.UserPrincipals;
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.io.*;
+import java.util.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,6 +92,14 @@ public class TdaJsonParser {
   public List<SecuritiesAccount> parseAccounts(InputStream in) {
     LOGGER.trace("parsing securitiesAccounts...");
     try (BufferedInputStream bIn = new BufferedInputStream(in)) {
+
+      byte[] contents = new byte[1024];
+
+      int bytesRead = 0;
+      String strFileContents = "";
+      while((bytesRead = bIn.read(contents)) != -1) {
+        strFileContents += new String(contents, 0, bytesRead);
+      }
 
       TypeReference<List<Map<String, SecuritiesAccount>>> typeReference = new TypeReference<List<Map<String, SecuritiesAccount>>>() {
       };
@@ -289,6 +296,30 @@ public class TdaJsonParser {
       throw new RuntimeException(e);
     }
   }
+
+    public List<Hours> parseMarketHours(InputStream in) throws IOException {
+      LOGGER.trace("parsing market hours...");
+      try (BufferedInputStream bIn = new BufferedInputStream(in)) {
+
+        List<Hours> hoursList = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.readTree(bIn);
+        for (Iterator<JsonNode> itype = rootNode.elements(); itype.hasNext(); ) {
+          JsonNode typeNode = itype.next();
+          for (Iterator<JsonNode> icode = typeNode.elements(); icode.hasNext(); ) {
+            JsonNode hoursNode = icode.next();
+            Hours hours = mapper.treeToValue(hoursNode, Hours.class);
+            if(hours != null) {
+              hoursList.add(hours);
+            }
+          }
+        }
+        return hoursList;
+      } catch (IOException e) {
+        e.printStackTrace();
+        throw new RuntimeException(e);
+      }
+    }
 
 //  public <T> T parseTdaJson(InputStream in, Class<T> type){
 //    try (BufferedInputStream bIn = new BufferedInputStream(in)) {

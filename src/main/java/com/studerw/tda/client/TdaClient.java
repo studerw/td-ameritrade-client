@@ -10,6 +10,7 @@ import com.studerw.tda.model.instrument.Instrument;
 import com.studerw.tda.model.instrument.Query;
 import com.studerw.tda.model.marketdata.Mover;
 import com.studerw.tda.model.marketdata.MoversReq;
+import com.studerw.tda.model.markethours.Hours;
 import com.studerw.tda.model.option.OptionChain;
 import com.studerw.tda.model.quote.Quote;
 import com.studerw.tda.model.transaction.Transaction;
@@ -17,6 +18,9 @@ import com.studerw.tda.model.transaction.TransactionRequest;
 import com.studerw.tda.model.user.Preferences;
 import com.studerw.tda.model.user.UserPrincipals;
 import com.studerw.tda.model.user.UserPrincipals.Field;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -137,6 +141,16 @@ public interface TdaClient {
    * @return {@link SecuritiesAccount} with the passed id.
    */
   SecuritiesAccount getAccount(String accountId, boolean positions, boolean orders);
+
+  /**
+   * Fetch market hours.
+   *
+   * @param marketTypes the market of the hours to return Valid markets are EQUITY, OPTION, FUTURE, BOND, FOREX.
+   * @param date the date of the market hours (default is now)
+   * @return {@link Hours}
+   */
+  List<Hours> getMarketHours(List<Hours.MarketType> marketTypes, LocalDateTime date);
+  List<Hours> getMarketHours(List<Hours.MarketType> marketTypes);
 
   /**
    * Fetch all your accounts. By default, balances are included. Positions and Orders can also be
