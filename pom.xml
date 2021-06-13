@@ -7,7 +7,7 @@
 
   <groupId>com.studerw.tda</groupId>
   <artifactId>td-ameritrade-client</artifactId>
-  <version>2.4.1-SNAPSHOT</version>
+  <version>2.4.1</version>
   <packaging>jar</packaging>
 
   <name>td-ameritrade-client</name>
