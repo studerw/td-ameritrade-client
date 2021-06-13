@@ -24,6 +24,14 @@ public class FetchTransactionsTestIT extends BaseTestIT {
   }
 
   @Test
+  public void testFetchTransactionsDefaultEmpty() {
+    TransactionRequest request = new TransactionRequest();
+    final List<Transaction> transactions = this.httpTdaClient.fetchTransactions(getAccountId());
+    assertThat(transactions).isNotNull();
+    LOGGER.debug("{}", transactions);
+  }
+
+  @Test
   public void testFetchTransactions() {
     TransactionRequest request = new TransactionRequest();
     final List<Transaction> transactions = this.httpTdaClient.fetchTransactions(getAccountId(), request);

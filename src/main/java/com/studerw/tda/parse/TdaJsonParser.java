@@ -93,14 +93,6 @@ public class TdaJsonParser {
     LOGGER.trace("parsing securitiesAccounts...");
     try (BufferedInputStream bIn = new BufferedInputStream(in)) {
 
-      byte[] contents = new byte[1024];
-
-      int bytesRead = 0;
-      String strFileContents = "";
-      while((bytesRead = bIn.read(contents)) != -1) {
-        strFileContents += new String(contents, 0, bytesRead);
-      }
-
       TypeReference<List<Map<String, SecuritiesAccount>>> typeReference = new TypeReference<List<Map<String, SecuritiesAccount>>>() {
       };
       ObjectMapper mapper = new ObjectMapper();

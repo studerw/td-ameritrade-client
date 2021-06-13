@@ -29,6 +29,8 @@ import com.studerw.tda.model.instrument.FullInstrument;
 import com.studerw.tda.model.instrument.Fundamental;
 import com.studerw.tda.model.marketdata.Mover;
 import com.studerw.tda.model.marketdata.Mover.Direction;
+import com.studerw.tda.model.markethours.Hours;
+import com.studerw.tda.model.markethours.Hours.MarketType;
 import com.studerw.tda.model.option.Option;
 import com.studerw.tda.model.option.Option.PutCall;
 import com.studerw.tda.model.option.OptionChain;
@@ -656,5 +658,31 @@ public class TdaJsonParserTest {
       LOGGER.debug("{}", userPrincipals);
     }
   }
+
+  @Test
+  public void testParseMarketHoursEquity() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/markethours-equity-resp.json")) {
+      final List<Hours> hours = tdaJsonParser.parseMarketHours(in);
+      assertThat(hours).isNotNull();
+      assertThat(hours.size()).isEqualTo(1);
+      assertThat(hours.get(0).getMarketType()).isEqualTo(MarketType.EQUITY);
+      LOGGER.debug("{}", hours);
+    }
+  }
+
+  @Test
+  public void testParseMarketHoursMulti() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/markethours-multi-resp.json")) {
+      final List<Hours> hours = tdaJsonParser.parseMarketHours(in);
+      assertThat(hours).isNotNull();
+      assertThat(hours.size()).isEqualTo(2);
+      assertThat(hours.get(0).getMarketType()).isEqualTo(MarketType.EQUITY);
+      assertThat(hours.get(1).getMarketType()).isEqualTo(MarketType.BOND);
+      LOGGER.debug("{}", hours);
+    }
+  }
+
 }
 

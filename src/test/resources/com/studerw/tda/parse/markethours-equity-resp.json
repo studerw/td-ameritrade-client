@@ -1,0 +1,33 @@
+{
+  "equity": {
+    "EQ": {
+      "date": "2021-06-14",
+      "marketType": "EQUITY",
+      "exchange": "NULL",
+      "category": "NULL",
+      "product": "EQ",
+      "productName": "equity",
+      "isOpen": true,
+      "sessionHours": {
+        "preMarket": [
+          {
+            "start": "2021-06-14T07:00:00-04:00",
+            "end": "2021-06-14T09:30:00-04:00"
+          }
+        ],
+        "regularMarket": [
+          {
+            "start": "2021-06-14T09:30:00-04:00",
+            "end": "2021-06-14T16:00:00-04:00"
+          }
+        ],
+        "postMarket": [
+          {
+            "start": "2021-06-14T16:00:00-04:00",
+            "end": "2021-06-14T20:00:00-04:00"
+          }
+        ]
+      }
+    }
+  }
+}
