@@ -17,6 +17,7 @@ import com.studerw.tda.model.marketdata.Mover;
 import com.studerw.tda.model.marketdata.MoversReq;
 import com.studerw.tda.model.markethours.Hours;
 import com.studerw.tda.model.option.OptionChain;
+import com.studerw.tda.model.option.OptionChainReq;
 import com.studerw.tda.model.quote.Quote;
 import com.studerw.tda.model.transaction.Transaction;
 import com.studerw.tda.model.transaction.TransactionRequest;
@@ -33,6 +34,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -611,33 +613,55 @@ public class HttpTdaClient implements TdaClient {
   }
 
   @Override
-  public OptionChain getOptionChain(String symbol) {
-    LOGGER.info("get option chain for symbol: {}", symbol);
+  public OptionChain getOptionChain(OptionChainReq chainRequest) {
+    LOGGER.info("get option chain for: {}", chainRequest.toString());
 
-    if (StringUtils.isBlank(symbol)) {
+    if (StringUtils.isBlank(chainRequest.getSymbol())) {
       throw new IllegalArgumentException("Symbol cannot be blank.");
     }
 
     Builder urlBuilder = baseUrl("marketdata", "chains")
-        .addQueryParameter("symbol", symbol.toUpperCase());
-
-//    if (orderRequest.getMaxResults() != null) {
-//      urlBuilder.addQueryParameter("maxResults", String.valueOf(orderRequest.getMaxResults()));
-//    }
-//    if (orderRequest.getToEnteredTime() != null) {
-//      urlBuilder
-//          .addQueryParameter("toEnteredTime", Utils.toTdaISO8601(orderRequest.getToEnteredTime()));
-//    }
-//    if (orderRequest.getFromEnteredTime() != null) {
-//      urlBuilder.addQueryParameter("fromEnteredTime",
-//          Utils.toTdaISO8601(orderRequest.getFromEnteredTime()));
-//    }
-//    if (orderRequest.getStatus() != null) {
-//      urlBuilder.addQueryParameter("status", orderRequest.getStatus().name());
-//    }
+            .addQueryParameter("symbol", chainRequest.getSymbol().toUpperCase())
+            .addQueryParameter("contractType", chainRequest.getContractType().toString())
+            .addQueryParameter("strategy", chainRequest.getStrategy().toString())
+            .addQueryParameter("range", chainRequest.getRange().toString())
+            .addQueryParameter("optionType", chainRequest.getOptionType().toString());
+    if(chainRequest.getStrikeCount() != null && chainRequest.getStrikeCount() > 0) {
+      urlBuilder.addQueryParameter("strikeCount", chainRequest.getStrikeCount().toString());
+    }
+    if(chainRequest.getIncludeQuotes() != null) {
+      urlBuilder.addQueryParameter("includeQuotes", chainRequest.getIncludeQuotes().toString());
+    }
+    if(chainRequest.getInterval() != null) {
+      urlBuilder.addQueryParameter("interval", chainRequest.getInterval().toString());
+    }
+    if(chainRequest.getStrike() != null) {
+      urlBuilder.addQueryParameter("strike", chainRequest.getStrike().toString());
+    }
+    if(chainRequest.getFromDate() != null) {
+      urlBuilder.addQueryParameter("fromDate", chainRequest.getFromDate().format(DateTimeFormatter.ISO_DATE_TIME));
+    }
+    if(chainRequest.getToDate() != null) {
+      urlBuilder.addQueryParameter("toDate", chainRequest.getToDate().format(DateTimeFormatter.ISO_DATE_TIME));
+    }
+    if(chainRequest.getVolatility() != null) {
+      urlBuilder.addQueryParameter("volatility", chainRequest.getVolatility().toString());
+    }
+    if(chainRequest.getUnderlyingPrice() != null) {
+      urlBuilder.addQueryParameter("underlyingPrice", chainRequest.getUnderlyingPrice().toString());
+    }
+    if(chainRequest.getInterestRate() != null) {
+      urlBuilder.addQueryParameter("interestRate", chainRequest.getInterestRate().toString());
+    }
+    if(chainRequest.getDaysToExpiration() != null) {
+      urlBuilder.addQueryParameter("daysToExpiration", chainRequest.getDaysToExpiration().toString());
+    }
+    if(chainRequest.getMonth() != null) {
+      urlBuilder.addQueryParameter("month", chainRequest.getMonth().toString().substring(0, 3).toUpperCase());
+    }
 
     Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
-        .build();
+            .build();
 
     try (Response response = this.httpClient.newCall(request).execute()) {
       checkResponse(response, false);
@@ -646,6 +670,19 @@ public class HttpTdaClient implements TdaClient {
       throw new RuntimeException(e);
     }
 
+  }
+
+  @Override
+  public OptionChain getOptionChain(String symbol) {
+    LOGGER.info("get option chain for symbol: {}", symbol);
+
+    if (StringUtils.isBlank(symbol)) {
+      throw new IllegalArgumentException("Symbol cannot be blank.");
+    }
+
+    OptionChainReq request = OptionChainReq.Builder.optionChainReq()
+            .withSymbol(symbol).build();
+    return getOptionChain(request);
   }
 
   @Override
