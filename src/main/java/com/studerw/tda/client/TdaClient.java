@@ -12,6 +12,7 @@ import com.studerw.tda.model.marketdata.Mover;
 import com.studerw.tda.model.marketdata.MoversReq;
 import com.studerw.tda.model.markethours.Hours;
 import com.studerw.tda.model.option.OptionChain;
+import com.studerw.tda.model.option.OptionChainReq;
 import com.studerw.tda.model.quote.Quote;
 import com.studerw.tda.model.transaction.Transaction;
 import com.studerw.tda.model.transaction.TransactionRequest;
@@ -328,6 +329,12 @@ public interface TdaClient {
    */
   OptionChain getOptionChain(String symbol);
 
+  /**
+   *
+   * @param request - should be upper case (e.g. <em>MSFT</em>)
+   * @return an option chain using all TDA Default parameters
+   */
+  OptionChain getOptionChain(OptionChainReq request);
 
   /**
    *
