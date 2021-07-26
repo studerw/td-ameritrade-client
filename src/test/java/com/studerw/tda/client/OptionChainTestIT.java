@@ -3,6 +3,7 @@ package com.studerw.tda.client;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.studerw.tda.model.option.OptionChain;
+import com.studerw.tda.model.option.OptionChainReq;
 import com.studerw.tda.model.option.Underlying;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -53,6 +54,26 @@ public class OptionChainTestIT extends BaseTestIT {
 //    assertThat(optionChain.getUnderlying().get).isEqualTo(AssetType.EQUITY);
     LOGGER.debug("{}",optionChain);
 
+  }
+
+  @Test
+  public void testOptionChainRequest() {
+    final OptionChainReq request = OptionChainReq.Builder.optionChainReq()
+            .withSymbol("msft")
+            .withStrikeCount(5)
+            .withContractType(OptionChainReq.ContractType.CALL)
+            .build();
+    final OptionChain optionChain = httpTdaClient.getOptionChain(request);
+    assertThat(optionChain).isNotNull();
+    assertThat(optionChain.getStatus()).isEqualTo("SUCCESS");
+    assertThat(optionChain.getSymbol()).isEqualTo("MSFT");
+    assertThat(optionChain.getUnderlying()).isNull();
+    assertThat(optionChain.getPutExpDateMap()).isEmpty();
+    assertThat(optionChain.getCallExpDateMap()).isNotEmpty();
+
+    LOGGER.debug("{}", optionChain);
+    LOGGER.debug("Size of puts: {}", optionChain.getPutExpDateMap().size());
+    LOGGER.debug("Size of calls: {}", optionChain.getCallExpDateMap().size());
   }
 
 }
