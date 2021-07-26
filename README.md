@@ -194,7 +194,7 @@ Unfortunately the old API is being [deprecated in 2020](https://apiforums.tdamer
 original source code for this project has been moved to the [old-xml-api](https://github.com/studerw/td-ameritrade-client/tree/old-xml-api) branch and is now known as version 1.0.0.
 
 ## TODO
-* Figure out a way to deal with the order ID upon sumitting an order. Either show an example or delay
+* Figure out a way to deal with the order ID upon submitting an order. Either show an example or delay
     - didn't someone mention there is a URL returned in the header to follow up?
 * Use these [ameritrade-api-schemas](https://github.com/blais/ameritrade-api-schemas) to monitor changes to API -> models
 * Junit 5

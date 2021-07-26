@@ -21,6 +21,7 @@ import com.studerw.tda.model.account.OrderLegCollection.Instruction;
 import com.studerw.tda.model.account.OrderLegCollection.OrderLegType;
 import com.studerw.tda.model.account.OrderStrategyType;
 import com.studerw.tda.model.account.Position;
+import com.studerw.tda.model.account.RequestedDestination;
 import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.account.SecuritiesAccount.Type;
 import com.studerw.tda.model.history.Candle;
@@ -684,5 +685,17 @@ public class TdaJsonParserTest {
     }
   }
 
+  @Test
+  public void testParseGithub48() throws IOException {
+    try (InputStream in = ParseQuotesTest.class.getClassLoader().
+        getResourceAsStream("com/studerw/tda/parse/orders-resp-github48.json")) {
+      List<Order> orders = tdaJsonParser.parseOrders(in);
+      assertThat(orders).isNotNull();
+      assertThat(orders.size()).isEqualTo(1);
+      Order order = orders.get(0);
+      assertThat(order.getRequestedDestination()).isEqualTo(RequestedDestination.C2);
+      LOGGER.debug("{}", order);
+    }
+  }
 }
 

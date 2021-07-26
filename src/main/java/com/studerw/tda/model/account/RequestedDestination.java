@@ -11,6 +11,6 @@ public enum RequestedDestination {
   NYSE,
   NASDAQ,
   BATS,
-  C_2,
+  C2,
   AUTO
 }
