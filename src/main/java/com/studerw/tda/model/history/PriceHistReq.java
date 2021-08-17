@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
  * <pre class="code">
  *     //Price history for AMTD for the last week by the minute
- *     PriceHistReq request = PriceHistReqBuilder.priceHistReq()
+ *     PriceHistReq request = PriceHistReq.Builder.priceHistReq()
  *       .withSymbol("AMTD")
  *       .withStartDate(System.currentTimeMillis() - (1000 * 60 * 60 * 24 * 7))
  *       .withFrequencyType(FrequencyType.minute)
