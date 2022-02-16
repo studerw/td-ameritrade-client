@@ -1,5 +1,6 @@
 package com.studerw.tda.client;
 
+import com.studerw.tda.exception.TdaClientException;
 import com.studerw.tda.http.LoggingInterceptor;
 import com.studerw.tda.http.cookie.CookieJarImpl;
 import com.studerw.tda.http.cookie.store.MemoryCookieStore;
@@ -7,6 +8,7 @@ import com.studerw.tda.model.account.Order;
 import com.studerw.tda.model.account.OrderRequest;
 import com.studerw.tda.model.account.OrderRequestValidator;
 import com.studerw.tda.model.account.SecuritiesAccount;
+import com.studerw.tda.model.auth.AuthToken;
 import com.studerw.tda.model.history.PriceHistReq;
 import com.studerw.tda.model.history.PriceHistReqValidator;
 import com.studerw.tda.model.history.PriceHistory;
@@ -38,17 +40,13 @@ import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
+import okhttp3.*;
 import okhttp3.HttpUrl.Builder;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static com.studerw.tda.constants.TdaConstants.*;
 
 /**
  * HTTP implementation of {@link TdaClient} which uses OKHttp3 under the hood and uses the new OAuth
@@ -63,6 +61,7 @@ public class HttpTdaClient implements TdaClient {
   protected static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE;
   protected static final String DEFAULT_PATH = "https://api.tdameritrade.com/v1";
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpTdaClient.class);
+  private static final String AUTHORIZATION_HEADER = "Authorization";
 
   final TdaJsonParser tdaJsonParser = new TdaJsonParser();
   final OkHttpClient httpClient;
@@ -87,7 +86,7 @@ public class HttpTdaClient implements TdaClient {
    * </p>
    */
   public HttpTdaClient() {
-    this(null);
+    this(null, null);
   }
 
   /**
@@ -110,18 +109,22 @@ public class HttpTdaClient implements TdaClient {
    *
    * @param props required properties
    */
-  public HttpTdaClient(Properties props) {
+  public HttpTdaClient(OkHttpClient httpClient, Properties props) {
     LOGGER.info("Initiating HttpTdaClient...");
 
     this.tdaProps = (props == null) ? initTdaProps() : props;
     validateProps(this.tdaProps);
 
-    this.httpClient = new OkHttpClient.Builder().
-        cookieJar(new CookieJarImpl(new MemoryCookieStore())).
-        addInterceptor(new OauthInterceptor(this, tdaProps)).
-        addInterceptor(new LoggingInterceptor("TDA_HTTP",
-            Integer.parseInt(tdaProps.getProperty("tda.debug.bytes.length")))).
-        build();
+    if (null != httpClient) {
+      this.httpClient = httpClient;
+    } else {
+      this.httpClient = new OkHttpClient.Builder().
+              cookieJar(new CookieJarImpl(new MemoryCookieStore())).
+              addInterceptor(new OauthInterceptor(this, tdaProps)).
+              addInterceptor(new LoggingInterceptor("TDA_HTTP",
+                                                    Integer.parseInt(tdaProps.getProperty("tda.debug.bytes.length")))).
+              build();
+    }
   }
 
   protected static Properties initTdaProps() {
@@ -137,28 +140,33 @@ public class HttpTdaClient implements TdaClient {
   }
 
   /**
-   * validates the necessary props like refresh token and client id (consumer key). If others are missing, just use
+   * validates the necessary props like access token, refresh token and client id (consumer key). If others are missing, just use
    * friendly defaults.
    *
    * @param tdaProps the required props to validate
    */
   protected static void validateProps(Properties tdaProps) {
     LOGGER.trace("Validating props: {}", tdaProps.toString());
-    String clientId = tdaProps.getProperty("tda.client_id");
+    String clientId = tdaProps.getProperty(CLIENT_ID);
     if (StringUtils.isBlank(clientId)) {
       throw new IllegalArgumentException(
           "Missing tda.client_id property. This is obtained from TDA developer API when registering an app");
     }
 
-    String refreshToken = tdaProps.getProperty("tda.token.refresh");
+    String refreshToken = tdaProps.getProperty(REFRESH_TOKEN);
     if (StringUtils.isBlank(refreshToken)) {
       throw new IllegalArgumentException(
           "Missing tda.token.refresh property. This is obtained from the TDA developer API page when creating a temporary authentication token");
     }
 
-    String url = tdaProps.getProperty("tda.url");
+    String accessToken = tdaProps.getProperty(ACCESS_TOKEN);
+    if (StringUtils.isBlank(accessToken)) {
+      tdaProps.setProperty(ACCESS_TOKEN, "access_token");
+    }
+
+    String url = tdaProps.getProperty(TDA_URL);
     if (StringUtils.isBlank(url)) {
-      tdaProps.setProperty("tda.url", DEFAULT_PATH);
+      tdaProps.setProperty(TDA_URL, DEFAULT_PATH);
     }
 
     if (tdaProps.get("tda.debug.bytes.length") == null) {
@@ -176,11 +184,9 @@ public class HttpTdaClient implements TdaClient {
 
     HttpUrl url = baseUrl("marketdata", symbol, "pricehistory").build();
     Request request = new Request.Builder().url(url).headers(defaultHeaders()).build();
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       return tdaJsonParser.parsePriceHistory(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -220,11 +226,9 @@ public class HttpTdaClient implements TdaClient {
         headers(defaultHeaders())
         .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       return tdaJsonParser.parsePriceHistory(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -239,11 +243,9 @@ public class HttpTdaClient implements TdaClient {
         .headers(defaultHeaders())
         .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       return tdaJsonParser.parseQuotes(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -276,11 +278,9 @@ public class HttpTdaClient implements TdaClient {
         .headers(defaultHeaders())
         .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       return tdaJsonParser.parseAccount(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -304,11 +304,9 @@ public class HttpTdaClient implements TdaClient {
         .headers(defaultHeaders())
         .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       return tdaJsonParser.parseAccounts(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
 
   }
@@ -350,7 +348,7 @@ public class HttpTdaClient implements TdaClient {
             .headers(defaultHeaders())
             .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       return tdaJsonParser.parseMarketHours(response.body().byteStream());
     } catch (IOException e) {
@@ -375,13 +373,11 @@ public class HttpTdaClient implements TdaClient {
         .post(body)
         .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       if (response.code() != 201) {
         LOGGER.warn("Expected 201 response, but received " + response.code());
       }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
 
   }
@@ -419,11 +415,9 @@ public class HttpTdaClient implements TdaClient {
         .headers(defaultHeaders())
         .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       return tdaJsonParser.parseOrders(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -456,11 +450,9 @@ public class HttpTdaClient implements TdaClient {
         .headers(defaultHeaders())
         .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       return tdaJsonParser.parseOrders(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -473,11 +465,9 @@ public class HttpTdaClient implements TdaClient {
         .headers(defaultHeaders())
         .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       return tdaJsonParser.parseOrders(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -497,11 +487,9 @@ public class HttpTdaClient implements TdaClient {
     Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
         .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       return tdaJsonParser.parseOrder(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
 
   }
@@ -523,10 +511,8 @@ public class HttpTdaClient implements TdaClient {
         .delete()
         .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -551,11 +537,9 @@ public class HttpTdaClient implements TdaClient {
 
     Request request = new Request.Builder().url(url).headers(defaultHeaders()).build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       return tdaJsonParser.parseInstrumentMap(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -572,7 +556,7 @@ public class HttpTdaClient implements TdaClient {
 
     Request request = new Request.Builder().url(url).headers(defaultHeaders()).build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       final List<FullInstrument> fullInstruments = tdaJsonParser
           .parseFullInstrumentMap(response.body().byteStream());
@@ -581,8 +565,6 @@ public class HttpTdaClient implements TdaClient {
             "Expecting a single instrument but received: " + fullInstruments.size());
       }
       return fullInstruments.get(0);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -604,11 +586,9 @@ public class HttpTdaClient implements TdaClient {
     Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
         .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, true);
       return tdaJsonParser.parseMovers(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -663,11 +643,9 @@ public class HttpTdaClient implements TdaClient {
     Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
             .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       return tdaJsonParser.parseOptionChain(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
 
   }
@@ -721,11 +699,9 @@ public class HttpTdaClient implements TdaClient {
         .url(urlBuilder.build()).headers(defaultHeaders())
         .build();
 
-    try (Response response = this.httpClient.newCall(httpReq).execute()) {
+    try (Response response = this.call(httpReq)) {
       checkResponse(response, true);
       return tdaJsonParser.parseTransactions(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
 
   }
@@ -750,11 +726,9 @@ public class HttpTdaClient implements TdaClient {
     Request request = new Request.Builder().url(urlBuilder.build()).headers(defaultHeaders())
         .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       return tdaJsonParser.parseTransaction(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -773,11 +747,9 @@ public class HttpTdaClient implements TdaClient {
         .headers(defaultHeaders())
         .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       return tdaJsonParser.parsePreferences(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -801,11 +773,9 @@ public class HttpTdaClient implements TdaClient {
         .headers(defaultHeaders())
         .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       return tdaJsonParser.parseUserPrincipals(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -829,11 +799,9 @@ public class HttpTdaClient implements TdaClient {
         headers(defaultHeaders())
         .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       return tdaJsonParser.parseInstrumentArraySingle(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -851,11 +819,9 @@ public class HttpTdaClient implements TdaClient {
         .headers(defaultHeaders())
         .build();
 
-    try (Response response = this.httpClient.newCall(request).execute()) {
+    try (Response response = this.call(request)) {
       checkResponse(response, false);
       return tdaJsonParser.parseSubscriptionKeys(response.body().byteStream());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -897,19 +863,95 @@ public class HttpTdaClient implements TdaClient {
   private Headers defaultHeaders() {
     Map<String, String> defaultHeaders = new HashMap<>();
     defaultHeaders.put("Accept", "application/json");
-//    defaultHeaders.put("Accept-Encoding", "gzip");
+    defaultHeaders.put(AUTHORIZATION_HEADER, "Bearer " + tdaProps.getProperty(ACCESS_TOKEN));
 //    defaultHeaders.put("Accept-Language", "en-US");
     return Headers.of(defaultHeaders);
   }
 
   protected HttpUrl.Builder baseUrl(String... pathSegments) {
     if (this.httpUrl == null) {
-      this.httpUrl = HttpUrl.parse(tdaProps.getProperty("tda.url"));
+      this.httpUrl = HttpUrl.parse(tdaProps.getProperty(TDA_URL));
     }
     Builder builder = httpUrl.newBuilder();
     for (String segment : pathSegments) {
       builder.addPathSegment(segment);
     }
     return builder;
+  }
+
+  private Response call(Request request) {
+    Response response = null;
+    try {
+      response = httpClient.newCall(request).execute();
+      if (response.code() == 401) {
+        String token = request.header(AUTHORIZATION_HEADER).substring(7);
+        LOGGER.debug("Unauthorized, trying to refresh token...");
+        synchronized (this) {
+          String accessToken = tdaProps.getProperty(ACCESS_TOKEN);
+          if (token.equals(accessToken)) {
+            LOGGER.debug("Refreshing access token...");
+            boolean updated = updateAuthToken();
+            if (!updated) {
+              throw new TdaClientException("Failed to update auth token");
+            }
+          } else {
+            LOGGER.debug("Token has already been refreshed by another thread");
+          }
+          return httpClient.newCall(request.newBuilder().header(AUTHORIZATION_HEADER, "Bearer " + tdaProps.getProperty(ACCESS_TOKEN)).build()).execute();
+        }
+
+      }
+      return response;
+    } catch (IOException e) {
+      throw new TdaClientException(e);
+    } finally {
+      if (response != null && response.code() == 401) {
+        response.close();
+      }
+    }
+  }
+
+  private boolean updateAuthToken() {
+    RequestBody formBody = new FormBody.Builder()
+            .add(AuthToken.GRANT_TYPE_PARAM, AuthToken.GRANT_TYPE_REFRESH)
+            .add(AuthToken.REFRESH_TOKEN_PARAM, tdaProps.getProperty(REFRESH_TOKEN))
+            .add(AuthToken.CLIENT_ID_PARAM, this.tdaProps.getProperty(CLIENT_ID))
+            .build();
+
+    HttpUrl url = baseUrl()
+            .addPathSegments("oauth2/token")
+            .build();
+
+    LOGGER.debug("Attempting to obtain new authentication token using refresh token at {}",
+                 url.toString());
+
+    Request authRequest = new Request.Builder()
+            .url(url)
+            .header("Content-Type", "application/x-www-form-urlencoded")
+            .header("Accept", "application/json")
+            .post(formBody)
+            .build();
+
+    try (Response authResponse = httpClient.newCall(authRequest).execute()) {
+      //if the auth failed again, we can't get a new auth token so we're screwed.
+      if (!authResponse.isSuccessful()) {
+        LOGGER.error("Failed to get auth token using refresh token: {} {}",
+                     authResponse.code(),
+                     authResponse.body());
+        return false;
+      }
+      InputStream in = authResponse.body().byteStream();
+      AuthToken authToken = DefaultMapper.fromJson(in, AuthToken.class);
+      LOGGER.info("new authToken received: {}", authToken);
+      String _accessToken = authToken.getAccessToken();
+      if (StringUtils.isBlank(_accessToken)) {
+        LOGGER.warn("Got successful OAuth response, but access token is missing");
+        return false;
+      }
+      tdaProps.setProperty(ACCESS_TOKEN, _accessToken);
+      return true;
+    } catch (IOException e) {
+      throw new TdaClientException(e);
+    }
   }
 }

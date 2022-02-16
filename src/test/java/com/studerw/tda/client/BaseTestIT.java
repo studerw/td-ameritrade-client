@@ -22,7 +22,7 @@ public abstract class BaseTestIT {
           "Could not load default properties from classpath at com.studerw.my-test.properties");
     }
 
-    httpTdaClient = new HttpTdaClient(props);
+    httpTdaClient = new HttpTdaClient(null, props);
   }
 
   String getAccountId(){

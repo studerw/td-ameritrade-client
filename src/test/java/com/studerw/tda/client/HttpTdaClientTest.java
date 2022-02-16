@@ -1,5 +1,6 @@
 package com.studerw.tda.client;
 
+import static com.studerw.tda.constants.TdaConstants.ACCESS_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 
@@ -17,7 +18,7 @@ public class HttpTdaClientTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testNoProps() {
-    new HttpTdaClient(new Properties());
+    new HttpTdaClient(null, new Properties());
     fail("should not get here");
   }
 
@@ -36,7 +37,7 @@ public class HttpTdaClientTest {
     props.setProperty("tda.token.refresh", "abd");
     props.setProperty("tda.client_id", "abd");
     LOGGER.debug("Set valid props, others using defaults");
-    HttpTdaClient client = new HttpTdaClient(props);
+    HttpTdaClient client = new HttpTdaClient(null, props);
     assertThat(client.tdaProps.getProperty("tda.token.refresh")).isEqualTo("abd");
     assertThat(client.tdaProps.getProperty("tda.client_id")).isEqualTo("abd");
     assertThat(client.tdaProps.getProperty("tda.url")).isEqualTo(HttpTdaClient.DEFAULT_PATH);
