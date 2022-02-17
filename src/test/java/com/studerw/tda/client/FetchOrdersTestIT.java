@@ -47,13 +47,15 @@ public class FetchOrdersTestIT extends BaseTestIT {
   @Test
   @Ignore
   public void testPlaceSimpleOrder() {
-    this.httpTdaClient.placeOrder(getAccountId(), simpleOrder());
+    Long orderId = this.httpTdaClient.placeOrder(getAccountId(), simpleOrder());
+    assertThat(orderId).isNotNull();
   }
 
   @Test
   @Ignore
   public void testPlaceSimpleOrder2() {
-    this.httpTdaClient.placeOrder(getAccountId(), simpleOrder2());
+    Long orderId = this.httpTdaClient.placeOrder(getAccountId(), simpleOrder2());
+    assertThat(orderId).isNotNull();
   }
 
   @Test
@@ -79,12 +81,14 @@ public class FetchOrdersTestIT extends BaseTestIT {
     final List<Order> originalOrders = this.httpTdaClient.fetchOrders();
     LOGGER.debug("Initial count of orders: {}", originalOrders.size());
 
-    this.httpTdaClient.placeOrder(getAccountId(), simpleOrder());
+    Long createdOrderId = this.httpTdaClient.placeOrder(getAccountId(), simpleOrder());
+    assertThat(createdOrderId).isNotNull();
     final List<Order> orders = httpTdaClient.fetchOrders();
     LOGGER.debug("new count of orders: {}", orders.size());
     assertThat(orders.size()).isEqualTo(originalOrders.size() + 1);
 
     final Long orderId = orders.get(0).getOrderId();
+    assertThat(orderId).isEqualTo(createdOrderId);
     LOGGER.debug("OrderId: {}", orderId);
     httpTdaClient.cancelOrder(getAccountId(), String.valueOf(orderId));
 
