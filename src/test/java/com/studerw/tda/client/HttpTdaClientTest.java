@@ -1,6 +1,5 @@
 package com.studerw.tda.client;
 
-import static com.studerw.tda.constants.TdaConstants.ACCESS_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 

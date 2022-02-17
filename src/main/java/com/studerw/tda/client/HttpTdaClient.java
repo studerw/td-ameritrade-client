@@ -1,6 +1,5 @@
 package com.studerw.tda.client;
 
-import com.studerw.tda.exception.TdaClientException;
 import com.studerw.tda.http.LoggingInterceptor;
 import com.studerw.tda.http.cookie.CookieJarImpl;
 import com.studerw.tda.http.cookie.store.MemoryCookieStore;
@@ -34,9 +33,7 @@ import com.studerw.tda.parse.Utils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -46,7 +43,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.studerw.tda.constants.TdaConstants.*;
+import static com.studerw.tda.client.TdaClientProperty.*;
 
 /**
  * HTTP implementation of {@link TdaClient} which uses OKHttp3 under the hood and uses the new OAuth
@@ -145,7 +142,7 @@ public class HttpTdaClient implements TdaClient {
     return new OkHttpClient.Builder().
             cookieJar(new CookieJarImpl(new MemoryCookieStore())).
             addInterceptor(new LoggingInterceptor("TDA_HTTP",
-                    Integer.parseInt(tdaProps.getProperty("tda.debug.bytes.length")))).
+                    Integer.parseInt(tdaProps.getProperty(DEBUG_BYTES_LENGTH)))).
             build();
   }
 
@@ -181,8 +178,8 @@ public class HttpTdaClient implements TdaClient {
       tdaProps.setProperty(TDA_URL, DEFAULT_PATH);
     }
 
-    if (tdaProps.get("tda.debug.bytes.length") == null) {
-      tdaProps.setProperty("tda.debug.bytes.length", "-1");
+    if (tdaProps.get(DEBUG_BYTES_LENGTH) == null) {
+      tdaProps.setProperty(DEBUG_BYTES_LENGTH, "-1");
     }
   }
 

@@ -45,8 +45,8 @@ See TDA's [Simple Auth for Local Apps](https://developer.tdameritrade.com/conten
 
 ```
   Properties props = new Properties();
-  props.setProperty("tda.client_id", "...");
-  props.setProperty("tda.token.refresh", "...")
+  props.setProperty(TdaClientProperty.CLIENT_ID, "...");
+  props.setProperty(TdaClientProperty.REFRESH_TOKEN, "...")
 
   TdaClient tdaClient = new HttpTdaClient(props);
   final Quote quote = tdaClient.fetchQuote("msft");
