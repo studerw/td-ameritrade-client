@@ -189,8 +189,9 @@ public interface TdaClient {
    * @param order the order to place
    * @see <a href="https://developer.tdameritrade.com/content/place-order-samples">Place Order
    * Samples</a>
+   * @return Identifier of created order.
    */
-  void placeOrder(String accountId, Order order);
+  Long placeOrder(String accountId, Order order);
 
   /**
    * <p>

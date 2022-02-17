@@ -59,6 +59,7 @@ public class HttpTdaClient implements TdaClient {
   protected static final String DEFAULT_PATH = "https://api.tdameritrade.com/v1";
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpTdaClient.class);
   private static final String AUTHORIZATION_HEADER = "Authorization";
+  private static final String LOCATION_HEADER = "location";
 
   final TdaJsonParser tdaJsonParser = new TdaJsonParser();
   final OkHttpClient httpClient;
@@ -366,7 +367,7 @@ public class HttpTdaClient implements TdaClient {
   }
 
   @Override
-  public void placeOrder(String accountId, Order order) {
+  public Long placeOrder(String accountId, Order order) {
     LOGGER.info("Placing Order for account[{}] -> {}", accountId, order);
     if (StringUtils.isBlank(accountId)) {
       throw new IllegalArgumentException("accountId cannot be blank.");
@@ -387,6 +388,11 @@ public class HttpTdaClient implements TdaClient {
       if (response.code() != 201) {
         LOGGER.warn("Expected 201 response, but received " + response.code());
       }
+      String location = response.header(LOCATION_HEADER);
+      if (null == location) {
+        throw new TdaClientException("No location header found. Can't get order id.");
+      }
+      return Long.valueOf(location.substring(location.lastIndexOf("/") + 1));
     }
 
   }
