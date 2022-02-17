@@ -131,10 +131,9 @@ public class FetchQuotesTestIT extends BaseTestIT {
   //We want to make sure a token is generated only once per client
   //Turn on full logging in logback-test.xml set:
   //logger  name="TDA_HTTP" level="debug"
-  //logger name="com.studerw.tda.client.OauthInterceptor" level="debug"
   //
   //You will see that the call to get the first quote has a header: Authorization: Bearer UNSET
-  //That triggers a 401 resposne from the server which the OAuthInterceptor detects and then makes a call for new auth token.
+  //That triggers a 401 response from the server which the HttpTdaClient detects and then makes a call for new auth token.
   //On all subsequent calls, you see that the Bearer header is now using the new auth token, and thus the
   //interceptor is never forced to create a new refresh token.
   @Test

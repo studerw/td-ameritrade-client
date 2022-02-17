@@ -74,6 +74,7 @@ public class HttpTdaClient implements TdaClient {
    * classpath:/tda-api.properties}. This props file can include:
    * <ul>
    *   <li>tda.token.refresh</li>
+   *   <li>tda.token.access (optional, it will be automatically retrieved using refresh token if not specified or expired)</li>
    *   <li>tda.client_id (or sometimes referenced as <em>Consumer Key</em> and it should not have <em>@AMER.OAUTHAP</em> appended</li>
    *   <li>tda.url=<em>https://api.tdameritrade.com/v1</em></li>
    *   <li>tda.debug.bytes.length=<em>-1</em> (How many bytes of logging interceptor debug to print, -1 is unlimited)</li>
@@ -109,22 +110,23 @@ public class HttpTdaClient implements TdaClient {
    *
    * @param props required properties
    */
+  public HttpTdaClient(Properties props) {
+    this(null, props);
+  }
+
+  /**
+   * Using this constructor allows to supply own instance of http client.
+   * It's useful for connecting to multiple TDA accounts and re-using single shared http client.
+   *
+   * @param httpClient http client to use
+   * @param props required properties
+   */
   public HttpTdaClient(OkHttpClient httpClient, Properties props) {
     LOGGER.info("Initiating HttpTdaClient...");
 
     this.tdaProps = (props == null) ? initTdaProps() : props;
     validateProps(this.tdaProps);
-
-    if (null != httpClient) {
-      this.httpClient = httpClient;
-    } else {
-      this.httpClient = new OkHttpClient.Builder().
-              cookieJar(new CookieJarImpl(new MemoryCookieStore())).
-              addInterceptor(new OauthInterceptor(this, tdaProps)).
-              addInterceptor(new LoggingInterceptor("TDA_HTTP",
-                                                    Integer.parseInt(tdaProps.getProperty("tda.debug.bytes.length")))).
-              build();
-    }
+    this.httpClient = (httpClient == null) ? initHttpClient() : httpClient;
   }
 
   protected static Properties initTdaProps() {
@@ -137,6 +139,14 @@ public class HttpTdaClient implements TdaClient {
       throw new IllegalArgumentException(
           "Could not load default properties from com.studerw.tda.tda-api.properties in classpath");
     }
+  }
+
+  private OkHttpClient initHttpClient() {
+    return new OkHttpClient.Builder().
+            cookieJar(new CookieJarImpl(new MemoryCookieStore())).
+            addInterceptor(new LoggingInterceptor("TDA_HTTP",
+                    Integer.parseInt(tdaProps.getProperty("tda.debug.bytes.length")))).
+            build();
   }
 
   /**
@@ -161,7 +171,9 @@ public class HttpTdaClient implements TdaClient {
 
     String accessToken = tdaProps.getProperty(ACCESS_TOKEN);
     if (StringUtils.isBlank(accessToken)) {
-      tdaProps.setProperty(ACCESS_TOKEN, "access_token");
+      // This gets updated using the refresh code - the first call will always fail, forcing a
+      // new access_token to be set.
+      tdaProps.setProperty(ACCESS_TOKEN, "UNSET");
     }
 
     String url = tdaProps.getProperty(TDA_URL);
@@ -352,7 +364,7 @@ public class HttpTdaClient implements TdaClient {
       checkResponse(response, false);
       return tdaJsonParser.parseMarketHours(response.body().byteStream());
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new TdaClientException(e);
     }
   }
 
@@ -561,7 +573,7 @@ public class HttpTdaClient implements TdaClient {
       final List<FullInstrument> fullInstruments = tdaJsonParser
           .parseFullInstrumentMap(response.body().byteStream());
       if (fullInstruments.size() != 1) {
-        throw new RuntimeException(
+        throw new TdaClientException(
             "Expecting a single instrument but received: " + fullInstruments.size());
       }
       return fullInstruments.get(0);
@@ -843,7 +855,7 @@ public class HttpTdaClient implements TdaClient {
       String msg = String
           .format("Non 200 response:  [%d - %s] - %s", response.code(), errorMsg,
               response.request().url());
-      throw new RuntimeException(msg);
+      throw new TdaClientException(msg);
     }
     if (!emptyJsonOk) {
       try {
@@ -852,10 +864,10 @@ public class HttpTdaClient implements TdaClient {
           String msg = String
               .format("Empty json body:  [%d - %s] - %s", response.code(), response.message(),
                   response.request().url());
-          throw new RuntimeException(msg);
+          throw new TdaClientException(msg);
         }
       } catch (IOException e) {
-        throw new RuntimeException("Error checking for JSON empty body on response");
+        throw new TdaClientException("Error checking for JSON empty body on response");
       }
     }
   }
@@ -890,10 +902,7 @@ public class HttpTdaClient implements TdaClient {
           String accessToken = tdaProps.getProperty(ACCESS_TOKEN);
           if (token.equals(accessToken)) {
             LOGGER.debug("Refreshing access token...");
-            boolean updated = updateAuthToken();
-            if (!updated) {
-              throw new TdaClientException("Failed to update auth token");
-            }
+            updateAuthToken();
           } else {
             LOGGER.debug("Token has already been refreshed by another thread");
           }
@@ -911,7 +920,7 @@ public class HttpTdaClient implements TdaClient {
     }
   }
 
-  private boolean updateAuthToken() {
+  private void updateAuthToken() {
     RequestBody formBody = new FormBody.Builder()
             .add(AuthToken.GRANT_TYPE_PARAM, AuthToken.GRANT_TYPE_REFRESH)
             .add(AuthToken.REFRESH_TOKEN_PARAM, tdaProps.getProperty(REFRESH_TOKEN))
@@ -922,8 +931,7 @@ public class HttpTdaClient implements TdaClient {
             .addPathSegments("oauth2/token")
             .build();
 
-    LOGGER.debug("Attempting to obtain new authentication token using refresh token at {}",
-                 url.toString());
+    LOGGER.debug("Attempting to obtain new authentication token using refresh token at {}", url);
 
     Request authRequest = new Request.Builder()
             .url(url)
@@ -933,23 +941,16 @@ public class HttpTdaClient implements TdaClient {
             .build();
 
     try (Response authResponse = httpClient.newCall(authRequest).execute()) {
-      //if the auth failed again, we can't get a new auth token so we're screwed.
-      if (!authResponse.isSuccessful()) {
-        LOGGER.error("Failed to get auth token using refresh token: {} {}",
-                     authResponse.code(),
-                     authResponse.body());
-        return false;
-      }
+      // If the auth failed again, we can't get a new auth token, so we're screwed.
+      checkResponse(authResponse, false);
       InputStream in = authResponse.body().byteStream();
       AuthToken authToken = DefaultMapper.fromJson(in, AuthToken.class);
       LOGGER.info("new authToken received: {}", authToken);
       String _accessToken = authToken.getAccessToken();
       if (StringUtils.isBlank(_accessToken)) {
-        LOGGER.warn("Got successful OAuth response, but access token is missing");
-        return false;
+        throw new TdaClientException("Got successful OAuth response, but access token is missing");
       }
       tdaProps.setProperty(ACCESS_TOKEN, _accessToken);
-      return true;
     } catch (IOException e) {
       throw new TdaClientException(e);
     }

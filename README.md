@@ -150,7 +150,6 @@ You can use any implementation like [Logback](http://logback.qos.ch/) or [Log4j2
 Specific Loggers that you can tune:
 
 * `TDA_HTTP` - set this to _INFO_ for basic request / response info, or _DEBUG_ to see full headers and body.
-* `com.studerw.tda.client.OauthInterceptor` - detailed info on OAUTH can be seen using either _INFO_ or _DEBUG_
 * `com.studerw.tda` - basic API logging with either _INFO_ or _DEBUG_
 * `com.squareup.okhttp3` - lower level OKHTTP library.
 
@@ -180,7 +179,6 @@ Add a `logback.xml` file to you classpath (e.g. _src/main/resources/_)
 
   <logger name="TDA_HTTP" level="INFO"/>
   <logger name="com.studerw.tda" level="INFO"/>
-  <logger name="com.studerw.tda.client.OauthInterceptor" level="INFO"/>
   <logger name="com.squareup.okhttp3" level="INFO"/>
 
   <root level="WARN">
