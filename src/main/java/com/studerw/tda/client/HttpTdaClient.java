@@ -135,7 +135,7 @@ public class HttpTdaClient implements TdaClient {
       return tdProperties;
     } catch (IOException e) {
       throw new IllegalArgumentException(
-          "Could not load default properties from com.studerw.tda.tda-api.properties in classpath");
+          "Could not load default properties from com.studerw.tda.tda-api.properties in classpath", e);
     }
   }
 
@@ -851,7 +851,7 @@ public class HttpTdaClient implements TdaClient {
         try {
           errorMsg = response.body().string();
         } catch (Exception e) {
-          LOGGER.warn("No error message nor error body");
+          LOGGER.warn("No error message nor error body", e);
           errorMsg = "UNKNOWN";
         }
       }
@@ -870,7 +870,7 @@ public class HttpTdaClient implements TdaClient {
           throw new TdaClientException(msg);
         }
       } catch (IOException e) {
-        throw new TdaClientException("Error checking for JSON empty body on response");
+        throw new TdaClientException("Error checking for JSON empty body on response", e);
       }
     }
   }
