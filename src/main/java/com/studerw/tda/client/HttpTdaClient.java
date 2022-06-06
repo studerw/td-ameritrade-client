@@ -167,13 +167,6 @@ public class HttpTdaClient implements TdaClient {
           "Missing tda.token.refresh property. This is obtained from the TDA developer API page when creating a temporary authentication token");
     }
 
-    String accessToken = tdaProps.getProperty(ACCESS_TOKEN);
-    if (StringUtils.isBlank(accessToken)) {
-      // This gets updated using the refresh code - the first call will always fail, forcing a
-      // new access_token to be set.
-      tdaProps.setProperty(ACCESS_TOKEN, "UNSET");
-    }
-
     String url = tdaProps.getProperty(TDA_URL);
     if (StringUtils.isBlank(url)) {
       tdaProps.setProperty(TDA_URL, DEFAULT_PATH);
@@ -846,18 +839,24 @@ public class HttpTdaClient implements TdaClient {
    */
   private void checkResponse(Response response, boolean emptyJsonOk) {
     if (!response.isSuccessful()) {
-      String errorMsg = response.message();
-      if (StringUtils.isBlank(errorMsg)) {
-        try {
-          errorMsg = response.body().string();
-        } catch (Exception e) {
+      String responseMessage = response.message();
+      String bodyMessage = null;
+      try {
+         if (response.body() != null) {
+           bodyMessage = response.body().string();
+         }
+      } catch (IOException e) {
+        if (StringUtils.isBlank(responseMessage)) {
           LOGGER.warn("No error message nor error body", e);
-          errorMsg = "UNKNOWN";
+          responseMessage = "UNKNOWN";
         }
       }
-      String msg = String
-          .format("Non 200 response:  [%d - %s] - %s", response.code(), errorMsg,
-              response.request().url());
+
+      String msg = String.format("Non 200 response:  [%d - %s] - %s",
+              response.code(), responseMessage, response.request().url());
+      if (bodyMessage != null) {
+        msg = msg + "\n" + bodyMessage;
+      }
       throw new TdaClientException(msg);
     }
     if (!emptyJsonOk) {
@@ -878,8 +877,7 @@ public class HttpTdaClient implements TdaClient {
   private Headers defaultHeaders() {
     Map<String, String> defaultHeaders = new HashMap<>();
     defaultHeaders.put("Accept", "application/json");
-    defaultHeaders.put(AUTHORIZATION_HEADER, "Bearer " + tdaProps.getProperty(ACCESS_TOKEN));
-//    defaultHeaders.put("Accept-Language", "en-US");
+    defaultHeaders.put(AUTHORIZATION_HEADER, getAuthHeader());
     return Headers.of(defaultHeaders);
   }
 
@@ -899,19 +897,9 @@ public class HttpTdaClient implements TdaClient {
     try {
       response = httpClient.newCall(request).execute();
       if (response.code() == 401) {
-        String token = request.header(AUTHORIZATION_HEADER).substring(7);
         LOGGER.debug("Unauthorized, trying to refresh token...");
-        synchronized (this) {
-          String accessToken = tdaProps.getProperty(ACCESS_TOKEN);
-          if (token.equals(accessToken)) {
-            LOGGER.debug("Refreshing access token...");
-            updateAuthToken();
-          } else {
-            LOGGER.debug("Token has already been refreshed by another thread");
-          }
-          return httpClient.newCall(request.newBuilder().header(AUTHORIZATION_HEADER, "Bearer " + tdaProps.getProperty(ACCESS_TOKEN)).build()).execute();
-        }
-
+        resetAuthHeader(request.header(AUTHORIZATION_HEADER));
+        return httpClient.newCall(request.newBuilder().headers(defaultHeaders()).build()).execute();
       }
       return response;
     } catch (IOException e) {
@@ -923,7 +911,15 @@ public class HttpTdaClient implements TdaClient {
     }
   }
 
-  private void updateAuthToken() {
+  private void resetAuthHeader(String failedHeader) {
+    String token = failedHeader.substring(7);
+    tdaProps.remove(ACCESS_TOKEN, token);
+  }
+  private String getAuthHeader() {
+    return "Bearer " + tdaProps.computeIfAbsent(ACCESS_TOKEN, key -> fetchNewAuthToken());
+  }
+
+  private String fetchNewAuthToken() {
     RequestBody formBody = new FormBody.Builder()
             .add(AuthToken.GRANT_TYPE_PARAM, AuthToken.GRANT_TYPE_REFRESH)
             .add(AuthToken.REFRESH_TOKEN_PARAM, tdaProps.getProperty(REFRESH_TOKEN))
@@ -953,7 +949,7 @@ public class HttpTdaClient implements TdaClient {
       if (StringUtils.isBlank(_accessToken)) {
         throw new TdaClientException("Got successful OAuth response, but access token is missing");
       }
-      tdaProps.setProperty(ACCESS_TOKEN, _accessToken);
+      return _accessToken;
     } catch (IOException e) {
       throw new TdaClientException(e);
     }
