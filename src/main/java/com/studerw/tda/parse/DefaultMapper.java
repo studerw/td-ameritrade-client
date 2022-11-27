@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -19,15 +20,13 @@ public class  DefaultMapper {
   private final static ObjectMapper defaultMapper;
 
   static {
-    defaultMapper = new ObjectMapper();
-
     SimpleModule module =
         new SimpleModule("BigDecimalNanDeserializer", new Version(1, 0, 0, null, null, null));
     module.addDeserializer(BigDecimal.class, new BigDecimalNanDeserializer());
-    defaultMapper.registerModule(module);
-    defaultMapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
-//    defaultMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
-//    defaultMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    defaultMapper = JsonMapper.builder()
+            .addModule(module)
+            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
+            .build();
   }
 
 

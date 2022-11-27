@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.studerw.tda.client.TdaClientException;
 import com.studerw.tda.model.account.Order;
 import com.studerw.tda.model.account.SecuritiesAccount;
 import com.studerw.tda.model.history.PriceHistory;
@@ -42,8 +43,7 @@ public class TdaJsonParser {
       quotesMap.forEach((k, v) -> quotes.add(v));
       return quotes;
     } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+      throw new TdaClientException(e);
     }
   }
 
@@ -59,8 +59,7 @@ public class TdaJsonParser {
           priceHistory.getCandles().size());
       return priceHistory;
     } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+      throw new TdaClientException(e);
     }
   }
 
@@ -80,8 +79,7 @@ public class TdaJsonParser {
           securitiesAccount.getClass().getName());
       return securitiesAccount;
     } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+      throw new TdaClientException(e);
     }
   }
 
@@ -109,8 +107,7 @@ public class TdaJsonParser {
       LOGGER.debug("returned a a list of {} securitiesAccounts: {}", accounts.size(), accounts);
       return accounts;
     } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+      throw new TdaClientException(e);
     }
   }
 
@@ -121,8 +118,7 @@ public class TdaJsonParser {
       LOGGER.debug("Returned order of id: {}", order.getOrderId());
       return order;
     } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+      throw new TdaClientException(e);
     }
   }
 
@@ -134,8 +130,7 @@ public class TdaJsonParser {
       LOGGER.debug("Returned list of orders of size: {}", orders.size());
       return orders;
     } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+      throw new TdaClientException(e);
     }
   }
 
@@ -156,8 +151,7 @@ public class TdaJsonParser {
       LOGGER.debug("Returned instrument: {}", instrument);
       return instrument;
     } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+      throw new TdaClientException(e);
     }
   }
 
@@ -172,10 +166,9 @@ public class TdaJsonParser {
       TypeReference<Map<String, Instrument>> typeReference = new TypeReference<Map<String, Instrument>>() {};
       Map<String, Instrument> instruments = DefaultMapper.fromJson(bIn, typeReference);
       LOGGER.debug("Returned instruments map of size: {}", instruments.size());
-      return new ArrayList(instruments.values());
+      return new ArrayList<>(instruments.values());
     } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+      throw new TdaClientException(e);
     }
   }
 
@@ -190,10 +183,9 @@ public class TdaJsonParser {
       TypeReference<Map<String, FullInstrument>> typeReference = new TypeReference<Map<String, FullInstrument>>() {};
       Map<String, FullInstrument> instruments = DefaultMapper.fromJson(bIn, typeReference);
       LOGGER.debug("Returned full instruments map of size: {}", instruments.size());
-      return new ArrayList(instruments.values());
+      return new ArrayList<>(instruments.values());
     } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+      throw new TdaClientException(e);
     }
   }
 
@@ -205,8 +197,7 @@ public class TdaJsonParser {
       LOGGER.debug("Returned list of movers of size: {}", movers.size());
       return movers;
     } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+      throw new TdaClientException(e);
     }
   }
 
@@ -218,8 +209,7 @@ public class TdaJsonParser {
       LOGGER.debug("Returned optionChain: {}", optionChain);
       return optionChain;
     } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+      throw new TdaClientException(e);
     }
   }
 
@@ -231,8 +221,7 @@ public class TdaJsonParser {
       LOGGER.debug("Returned transactions: {}", transactions);
       return transactions;
     } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+      throw new TdaClientException(e);
     }
   }
 
@@ -244,8 +233,7 @@ public class TdaJsonParser {
       LOGGER.debug("Returned transaction: {}", transaction);
       return transaction;
     } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+      throw new TdaClientException(e);
     }
   }
 
@@ -257,8 +245,7 @@ public class TdaJsonParser {
       LOGGER.debug("Returned preferences: {}", preferences);
       return preferences;
     } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+      throw new TdaClientException(e);
     }
   }
 
@@ -270,8 +257,7 @@ public class TdaJsonParser {
       LOGGER.debug("Returned userPrincipals: {}", userPrincipals);
       return userPrincipals;
     } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+      throw new TdaClientException(e);
     }
   }
 
@@ -284,8 +270,7 @@ public class TdaJsonParser {
       LOGGER.debug("Returned subscription keys: {}", streamerSubscriptionKeys);
       return streamerSubscriptionKeys;
     } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+      throw new TdaClientException(e);
     }
   }
 
@@ -308,19 +293,8 @@ public class TdaJsonParser {
         }
         return hoursList;
       } catch (IOException e) {
-        e.printStackTrace();
-        throw new RuntimeException(e);
+        throw new TdaClientException(e);
       }
     }
 
-//  public <T> T parseTdaJson(InputStream in, Class<T> type){
-//    try (BufferedInputStream bIn = new BufferedInputStream(in)) {
-//      LOGGER.debug("parsing JSON input to type: {}", type.getName());
-//      final T tdaPojo = DefaultMapper.fromJson(in, new TypeReference<T>(){});
-//      return tdaPojo;
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//      throw new RuntimeException(e);
-//    }
-//  }
 }

@@ -7,10 +7,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,7 +77,7 @@ public class PriceHistReqValidator {
       LOGGER.warn(msg);
       return violations;
     }
-    return Collections.EMPTY_LIST;
+    return Collections.emptyList();
   }
 
   /**
@@ -110,12 +110,12 @@ public class PriceHistReqValidator {
 
     //if both null, that's okay, it will use defaults or start and end dates
     if (period == null && periodType == null) {
-      return Collections.EMPTY_LIST;
+      return Collections.emptyList();
     }
 
     //if periodType is set, but period is empty, defaults go into effect: OK
     if (periodType != null && period == null) {
-      return Collections.EMPTY_LIST;
+      return Collections.emptyList();
     }
 
     List<String> violations = new ArrayList<>();
@@ -178,7 +178,7 @@ public class PriceHistReqValidator {
     LOGGER.debug("Checking PeriodType: {}, and FrequencyType: {}", periodType, frequencyType);
     //this is okay as frequencyType will use default
     if (periodType != null && frequencyType == null) {
-      return Collections.EMPTY_LIST;
+      return Collections.emptyList();
     }
 
     //however if periodType == null (default == day), then only minute is allowed
@@ -226,7 +226,7 @@ public class PriceHistReqValidator {
       }
     }
 
-    return Collections.EMPTY_LIST;
+    return Collections.emptyList();
   }
 
   /**
@@ -241,12 +241,12 @@ public class PriceHistReqValidator {
 
     //if they're both null, it's okay as long as dates are set or defaults are used
     if (frequencyType == null && frequency == null) {
-      return Collections.EMPTY_LIST;
+      return Collections.emptyList();
     }
 
     //if FrequencyType is not null, we can use the default frequency
     if (frequencyType != null && frequency == null) {
-      return Collections.EMPTY_LIST;
+      return Collections.emptyList();
     }
 
     List<String> violations = new ArrayList<>();
@@ -295,6 +295,6 @@ public class PriceHistReqValidator {
       }
       return violations;
     }
-    return Collections.EMPTY_LIST;
+    return Collections.emptyList();
   }
 }

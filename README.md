@@ -199,12 +199,12 @@ original source code for this project has been moved to the [old-xml-api](https:
 
 ## TODO
 * Figure out a way to deal with the order ID upon submitting an order. Either show an example or delay
-    - didn't someone mention there is a URL returned in the header to follow up?
+    - (Done) didn't someone mention there is a URL returned in the header to follow up?
 * Use these [ameritrade-api-schemas](https://github.com/blais/ameritrade-api-schemas) to monitor changes to API -> models
 * Junit 5
 * OptionChain query parameters are commented out in HttpTdaClient
 * Streaming API
-* convert to jakarta packages for validation / javax (or maybe get rid of it completely)
+* (Done) convert to jakarta packages for validation / javax (or maybe get rid of it completely)
 * Maybe get rid of Commons IO and Commons Lang to pare down dependencies
 * Add EZ order abstraction (e.g. simple buy and sell equity)
 * JSON Client

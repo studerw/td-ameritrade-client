@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +45,7 @@ public class OrderRequestValidator {
    */
   private static List<String> checkDates(OrderRequest orderRequest) {
     if (orderRequest.getFromEnteredTime() == null && orderRequest.getToEnteredTime() == null) {
-      return Collections.EMPTY_LIST;
+      return Collections.emptyList();
     }
     List<String> violations = new ArrayList<>();
 
@@ -79,7 +79,7 @@ public class OrderRequestValidator {
       return violations;
     }
 
-    return Collections.EMPTY_LIST;
+    return Collections.emptyList();
   }
 
   /**
