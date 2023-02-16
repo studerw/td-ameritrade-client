@@ -70,8 +70,14 @@ so just include the dependency in your Maven pom or Gradle build file.
 ## Integration Tests
 Integration tests do require a client app ID and refresh token to run.
 
-To run integration tests, you will need to rename the file *src/test/resources/my-test.properties.changeme* 
-to *my-test.properties* and fill in the necessary TDA properties.
+To run integration tests, you will need create the file *src/test/resources/com/studerw/tda/my-test.properties* 
+and fill in the necessary TDA properties:
+
+```properties
+tda.token.refresh=<VALID_REFRESH_TOKEN>
+tda.client_id=<CLIENT_OR_CUSTOMER_ID>
+tda.account.id=<ACCOUNT_ID>
+```
 
 Then run the following command.
 

@@ -140,7 +140,7 @@ public class FetchQuotesTestIT extends BaseTestIT {
   @Test
   public void testOAuthCreatedOnlyOnce(){
     List<String> symbols = Arrays
-        .asList("AAPL", "MSFT", "AMZN", "FB", "GOOGL", "GOOG", "BRK.B", "JNJ", "V", "PG");
+        .asList("AAPL", "MSFT", "AMZN", "META", "GOOGL", "GOOG", "BRK.B", "JNJ", "V", "PG");
 
     for (String symbol : symbols) {
       final Quote quote = httpTdaClient.fetchQuote(symbol);
