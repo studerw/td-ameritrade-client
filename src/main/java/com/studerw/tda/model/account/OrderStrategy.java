@@ -83,7 +83,7 @@ public class OrderStrategy implements Serializable {
   private TaxLotMethod taxLotMethod;
 
   @JsonProperty("orderLegCollection")
-  private List<OrderLegCollection> orderLegCollection = new ArrayList<>();
+  private List<OrderLeg> orderLegs = new ArrayList<>();
 
   @JsonProperty("activationPrice")
   private BigDecimal activationPrice;
@@ -213,8 +213,8 @@ public class OrderStrategy implements Serializable {
     return taxLotMethod;
   }
 
-  public List<OrderLegCollection> getOrderLegCollection() {
-    return orderLegCollection;
+  public List<OrderLeg> getOrderLegCollection() {
+    return orderLegs;
   }
 
   public BigDecimal getActivationPrice() {
@@ -305,7 +305,7 @@ public class OrderStrategy implements Serializable {
         .append("priceLinkType", priceLinkType)
         .append("price", price)
         .append("taxLotMethod", taxLotMethod)
-        .append("orderLegCollection", orderLegCollection)
+        .append("orderLegs", orderLegs)
         .append("activationPrice", activationPrice)
         .append("specialInstruction", specialInstruction)
         .append("orderStrategyType", orderStrategyType)
