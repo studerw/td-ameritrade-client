@@ -166,4 +166,12 @@ public class MiscTest {
      ZonedDateTime zdt = Utils.fromTdaISO8601(isoStr);
     LOGGER.debug("{}", zdt);
   }
+
+  @Test
+  public void testParseLocationHeader(){
+    String locationHeader = "https://api.tdameritrade.com/v1/accounts/1234/orders/1234";
+    Long orderId = Long.valueOf(locationHeader.substring(locationHeader.lastIndexOf("/") + 1));
+    LOGGER.info("OrderId: {}", orderId);
+    assertThat(orderId).isEqualTo(1234L);
+  }
 }

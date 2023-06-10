@@ -20,9 +20,9 @@ import com.studerw.tda.model.user.Preferences;
 import com.studerw.tda.model.user.UserPrincipals;
 import com.studerw.tda.model.user.UserPrincipals.Field;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Main interface of the TDA Client. Implementations should be thread safe.
@@ -191,6 +191,36 @@ public interface TdaClient {
    * Samples</a>
    */
   void placeOrder(String accountId, Order order);
+
+  /**
+   * Place an Order and return the order ID. According to TDA docs, this order ID can be obtained from the
+   * response within a <em>location</em> header. Users need to check the response code as it is wrapped in
+   * a {@link java.util.Optional}.
+   *
+   * <p>Note the documentation on the official TDA site
+   * is not all that clear on what kinds of orders and in which cases the order ID will and will not be returned.
+   * </p>
+   * <p>
+   * For example, if the TDA system is overloaded, the order
+   * may be queued and the ID cannot yet be known by the time the call must return (it is synchronous).
+   * Users are then required to poll for the new order using {@link TdaClient#fetchOrders()} or similar.
+   *</p>
+   * <p>
+   * In order to deal with this case without throwing an exception we return the ID wrapped in a {@link java.util.Optional}. We
+   * do this instead of throwing an exception to differentiate between an order that likely failed
+   * and one that will eventually be placed but didn't have the order ID at the time of return. Users need
+   * check the Optional themselves and handle accordingly.
+   * </p>
+   *
+   * @param accountId the account under which the order is to be placed
+   * @param order the order to place
+   * @return the order ID wrapped in an Optional which will be empty if the order ID was not returned by TDA, but the call otherwise returned
+   * a successful response. It's likely the order will eventually be placed, and users will need to poll for that ordeer ID using existing methods.
+   * @see <a href="https://developer.tdameritrade.com/content/place-order-samples">Place Order
+   * Samples</a>
+   */
+  Optional<Long> placeOrderReturnId(String accountId, Order order);
+
 
   /**
    * <p>

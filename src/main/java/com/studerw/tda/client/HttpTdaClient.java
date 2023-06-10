@@ -62,6 +62,7 @@ public class HttpTdaClient implements TdaClient {
   protected static final int LOGGING_BYTES = -1;
   protected static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE;
   protected static final String DEFAULT_PATH = "https://api.tdameritrade.com/v1";
+  private static final String LOCATION_HEADER = "location";
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpTdaClient.class);
 
   final TdaJsonParser tdaJsonParser = new TdaJsonParser();
@@ -383,7 +384,41 @@ public class HttpTdaClient implements TdaClient {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
 
+  @Override
+  public Optional<Long> placeOrderReturnId(String accountId, Order order) {
+    LOGGER.info("Placing Order for account[{}] -> {}", accountId, order);
+    if (StringUtils.isBlank(accountId)) {
+      throw new IllegalArgumentException("accountId cannot be blank.");
+    }
+
+    HttpUrl url = baseUrl("accounts", accountId, "orders")
+            .build();
+
+    String json = DefaultMapper.toJson(order);
+    RequestBody body = RequestBody.create(MediaType.parse("application/json"), json);
+    Request request = new Request.Builder().url(url).
+            headers(defaultHeaders())
+            .post(body)
+            .build();
+
+    try (Response response = this.httpClient.newCall(request).execute()) {
+      checkResponse(response, false);
+      if (response.code() != 201) {
+        LOGGER.warn("Expected 201 response, but received " + response.code());
+      }
+      String location = response.header(LOCATION_HEADER);
+      if (null == location) {
+        LOGGER.warn("Expected Location header with new order id but not found. Returning empty optional...");
+        return Optional.empty();
+      }
+      Long orderId = Long.valueOf(location.substring(location.lastIndexOf("/") + 1));
+      LOGGER.debug("Retrieved OrderID: {}", orderId);
+      return Optional.of(orderId);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override

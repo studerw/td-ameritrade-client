@@ -1,32 +1,21 @@
 package com.studerw.tda.client;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-
-import com.studerw.tda.model.account.ComplexOrderStrategyType;
-import com.studerw.tda.model.account.Duration;
-import com.studerw.tda.model.account.EquityInstrument;
-import com.studerw.tda.model.account.Instrument;
+import com.studerw.tda.model.account.*;
 import com.studerw.tda.model.account.Instrument.AssetType;
-import com.studerw.tda.model.account.Order;
-import com.studerw.tda.model.account.OrderLegCollection;
 import com.studerw.tda.model.account.OrderLegCollection.Instruction;
 import com.studerw.tda.model.account.OrderLegCollection.QuantityType;
-import com.studerw.tda.model.account.OrderRequest;
-import com.studerw.tda.model.account.OrderStrategyType;
-import com.studerw.tda.model.account.OrderType;
-import com.studerw.tda.model.account.Session;
-import com.studerw.tda.model.account.Status;
-import com.studerw.tda.model.account.StopPriceLinkBasis;
-import com.studerw.tda.model.account.StopPriceLinkType;
-import java.math.BigDecimal;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 
 public class FetchOrdersTestIT extends BaseTestIT {
@@ -47,7 +36,17 @@ public class FetchOrdersTestIT extends BaseTestIT {
   @Test
   @Ignore
   public void testPlaceSimpleOrder() {
-    this.httpTdaClient.placeOrder(getAccountId(), simpleOrder());
+    this.httpTdaClient.placeOrder(getAccountId(), simpleBuyOrder());
+  }
+
+  @Test
+  @Ignore
+  public void testPlaceSimpleOrderWithReturn() {
+    Optional<Long> optOrderId = this.httpTdaClient.placeOrderReturnId(getAccountId(), simpleBuyOrder());
+    assertThat(optOrderId).isNotEmpty();
+    Long orderId = optOrderId.get();
+    assertThat(orderId).isGreaterThan(0);
+    LOGGER.info("New order: {}", orderId);
   }
 
   @Test
@@ -129,6 +128,25 @@ public class FetchOrdersTestIT extends BaseTestIT {
     final Order order = this.httpTdaClient.fetchOrder(getAccountId(), -1L);
     fail("Should have thrown RuntimeException");
 
+  }
+
+  private Order simpleBuyOrder() {
+    Order order = new Order();
+    order.setOrderType(OrderType.MARKET);
+    order.setSession(Session.NORMAL);
+    order.setDuration(Duration.DAY);
+    order.setOrderStrategyType(OrderStrategyType.SINGLE);
+
+    OrderLegCollection olc = new OrderLegCollection();
+    olc.setInstruction(Instruction.BUY);
+    olc.setQuantity(new BigDecimal("1.0"));
+    order.getOrderLegCollection().add(olc);
+
+    Instrument instrument = new EquityInstrument();
+    instrument.setSymbol("F");
+    olc.setInstrument(instrument);
+    LOGGER.debug(order.toString());
+    return order;
   }
 
   private Order simpleOrder() {
