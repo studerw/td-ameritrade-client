@@ -62,7 +62,7 @@ To build the jar, check out the source and run:
 ```bash
 git clone https://github.com/studerw/td-ameritrade-client.git
 cd td-ameritrade-client
-mvn clean install
+mvn clean install -Dgpg.skip
 ```
 You do not need to build the project to use it. The latest release is available on Maven Central,
 so just include the dependency in your Maven pom or Gradle build file. 
