@@ -1,4 +1,7 @@
 # TD Ameritrade Java Client
+
+**Note this library will likely not work for your TDA accounts since the merger with Schwab** 
+
 ![TDA_LOGO](https://github.com/studerw/td-ameritrade-client/blob/master/td_logo.png)
 
 ![Java CI with Maven](https://github.com/studerw/td-ameritrade-client/workflows/Java%20CI%20with%20Maven/badge.svg)
